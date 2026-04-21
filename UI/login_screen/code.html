@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hulu Coffee POS - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d5e3ff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#dec29f",
+                        "on-tertiary-fixed": "#2d1604",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1a1c1d",
+                        "primary-container": "#1a4b84",
+                        "secondary": "#705b3e",
+                        "on-tertiary-fixed-variant": "#5f402a",
+                        "surface-container-highest": "#e2e2e4",
+                        "background": "#f9f9fb",
+                        "on-primary-container": "#93bcfc",
+                        "secondary-fixed": "#fbdeb9",
+                        "on-tertiary-container": "#ddb195",
+                        "inverse-surface": "#2f3132",
+                        "outline": "#737781",
+                        "surface-dim": "#d9dadc",
+                        "tertiary-fixed-dim": "#eabda0",
+                        "surface-container": "#eeeef0",
+                        "surface-tint": "#335f99",
+                        "on-background": "#1a1c1d",
+                        "surface-bright": "#f9f9fb",
+                        "surface": "#f9f9fb",
+                        "surface-container-high": "#e8e8ea",
+                        "on-secondary-fixed-variant": "#564428",
+                        "on-surface-variant": "#424750",
+                        "on-primary-fixed": "#001c3b",
+                        "secondary-container": "#fbdeb9",
+                        "on-primary-fixed-variant": "#144780",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e2e2e4",
+                        "primary-fixed-dim": "#a6c8ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f3f5",
+                        "on-secondary-fixed": "#271903",
+                        "primary": "#003466",
+                        "tertiary": "#492d19",
+                        "inverse-on-surface": "#f0f0f2",
+                        "on-secondary-container": "#766143",
+                        "tertiary-container": "#63432d",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c3c6d1",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#a6c8ff",
+                        "tertiary-fixed": "#ffdcc6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex items-center justify-center p-4 sm:p-8">
+<main class="w-full max-w-md mx-auto">
+<div class="bg-surface-container-lowest rounded-[2rem] p-8 sm:p-12 shadow-[0_8px_32px_rgba(26,28,29,0.06)] flex flex-col gap-8 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-primary-container"></div>
+<div class="flex flex-col items-center text-center gap-4 pt-4">
+<div class="w-16 h-16 bg-surface-container-low rounded-xl flex items-center justify-center text-primary mb-2 shadow-sm">
+<span class="material-symbols-outlined text-4xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<h1 class="font-headline font-black text-3xl tracking-tight text-primary">Hulu Coffee</h1>
+<p class="font-body text-sm text-on-surface-variant">Authorized Personnel Only</p>
+</div>
+<form class="flex flex-col gap-6">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-sm font-semibold text-on-surface" for="username">Employee ID / Username</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">person</span>
+<input class="w-full bg-surface-variant border-none rounded-sm py-4 pl-12 pr-4 text-on-surface font-body placeholder:text-on-surface-variant/60 focus:ring-0 focus:bg-primary-fixed focus:text-on-primary-fixed transition-colors" id="username" placeholder="Enter your ID" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-sm font-semibold text-on-surface" for="password">PIN / Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">lock</span>
+<input class="w-full bg-surface-variant border-none rounded-sm py-4 pl-12 pr-4 text-on-surface font-body placeholder:text-on-surface-variant/60 focus:ring-0 focus:bg-primary-fixed focus:text-on-primary-fixed transition-colors" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">visibility_off</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded-sm border-outline-variant text-primary focus:ring-primary-container bg-surface-variant h-5 w-5 transition-all" type="checkbox"/>
+<span class="font-body text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Remember me on this terminal</span>
+</label>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl py-4 font-headline font-bold text-lg tracking-wide hover:scale-[0.98] active:scale-95 transition-all shadow-[0_8px_24px_rgba(0,52,102,0.15)] flex items-center justify-center gap-2 mt-4" type="button">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+</form>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 pt-6 border-t-[0.5px] border-outline-variant/15">
+<a class="font-body text-sm text-primary hover:text-primary-container transition-colors font-medium flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-[16px]">key</span>
+                    Reset PIN
+                </a>
+<a class="font-body text-sm text-primary hover:text-primary-container transition-colors font-medium flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-[16px]">support_agent</span>
+                    IT Support
+                </a>
+</div>
+<div class="absolute bottom-[-50px] right-[-50px] w-40 h-40 bg-secondary-container/30 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+<div class="absolute top-[-30px] left-[-30px] w-32 h-32 bg-primary-fixed/20 rounded-full blur-2xl -z-10 pointer-events-none"></div>
+</div>
+<p class="text-center font-body text-xs text-on-surface-variant mt-8 opacity-60">
+            Hulu Coffee POS v2.4.1 • Secure Connection
+        </p>
+</main>
+</body></html>

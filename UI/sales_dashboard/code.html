@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hulu Coffee - Sales Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d5e3ff",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#dec29f",
+                      "on-tertiary-fixed": "#2d1604",
+                      "on-error-container": "#93000a",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface": "#1a1c1d",
+                      "primary-container": "#1a4b84",
+                      "secondary": "#705b3e",
+                      "on-tertiary-fixed-variant": "#5f402a",
+                      "surface-container-highest": "#e2e2e4",
+                      "background": "#f9f9fb",
+                      "on-primary-container": "#93bcfc",
+                      "secondary-fixed": "#fbdeb9",
+                      "on-tertiary-container": "#ddb195",
+                      "inverse-surface": "#2f3132",
+                      "outline": "#737781",
+                      "surface-dim": "#d9dadc",
+                      "tertiary-fixed-dim": "#eabda0",
+                      "surface-container": "#eeeef0",
+                      "surface-tint": "#335f99",
+                      "on-background": "#1a1c1d",
+                      "surface-bright": "#f9f9fb",
+                      "surface": "#f9f9fb",
+                      "surface-container-high": "#e8e8ea",
+                      "on-secondary-fixed-variant": "#564428",
+                      "on-surface-variant": "#424750",
+                      "on-primary-fixed": "#001c3b",
+                      "secondary-container": "#fbdeb9",
+                      "on-primary-fixed-variant": "#144780",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e2e2e4",
+                      "primary-fixed-dim": "#a6c8ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-low": "#f3f3f5",
+                      "on-secondary-fixed": "#271903",
+                      "primary": "#003466",
+                      "tertiary": "#492d19",
+                      "inverse-on-surface": "#f0f0f2",
+                      "on-secondary-container": "#766143",
+                      "tertiary-container": "#63432d",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#c3c6d1",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#a6c8ff",
+                      "tertiary-fixed": "#ffdcc6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Manrope"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Inter"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            padding-top: 80px; /* Space for TopAppBar */
+            padding-bottom: 100px; /* Space for BottomNavBar */
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl bg-slate-100 dark:bg-slate-800 shadow-sm shadow-blue-900/5">
+<button class="text-slate-500 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors active:scale-95 transition-transform duration-200 p-2 rounded-full">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-400">storefront</span>
+</button>
+<h1 class="font-['Manrope'] font-bold text-lg tracking-tight font-['Manrope'] font-black text-blue-900 dark:text-blue-100">Hulu Coffee - Downtown Booth</h1>
+<button class="text-slate-500 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors active:scale-95 transition-transform duration-200 p-2 rounded-full">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-400">sensors</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+<!-- Header Section -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div>
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-wider mb-1">Today's Overview</p>
+<h2 class="font-headline text-3xl font-extrabold text-primary">Daily Report</h2>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-DEFAULT">
+<span class="material-symbols-outlined text-on-surface-variant">calendar_today</span>
+<span class="font-body text-sm font-medium text-on-surface">Oct 24, 2023</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-primary transition-colors">expand_more</span>
+</div>
+</section>
+<!-- Bento Grid Dashboard -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Hero Metric: Today's Revenue -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)] relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+<!-- Decorative background blur -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-fixed/30 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex justify-between items-start z-10">
+<div>
+<h3 class="font-label text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Gross Revenue</h3>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline text-5xl md:text-6xl font-black text-primary">Rp 4.289.450</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-DEFAULT flex flex-col items-end">
+<span class="flex items-center text-primary font-body text-sm font-semibold gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +14.2%
+                        </span>
+<span class="text-xs text-on-surface-variant mt-1">vs Yesterday</span>
+</div>
+</div>
+<div class="z-10 mt-8">
+<!-- Faux Line Chart using flex/divs -->
+<div class="h-24 w-full flex items-end justify-between gap-1">
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[30%]"></div>
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[45%]"></div>
+<div class="w-1/12 bg-primary-container rounded-t-sm h-[60%]"></div>
+<div class="w-1/12 bg-primary-container rounded-t-sm h-[85%] relative">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs py-1 px-2 rounded shadow-sm opacity-0 hover:opacity-100 transition-opacity">8am</div>
+</div>
+<div class="w-1/12 bg-primary rounded-t-sm h-[100%] relative">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-surface text-surface text-xs font-bold py-1 px-2 rounded shadow-md pointer-events-none after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-on-surface">Peak</div>
+</div>
+<div class="w-1/12 bg-primary-container rounded-t-sm h-[90%]"></div>
+<div class="w-1/12 bg-primary-container rounded-t-sm h-[75%]"></div>
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[50%]"></div>
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[40%]"></div>
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[55%]"></div>
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[30%]"></div>
+<div class="w-1/12 bg-surface-variant rounded-t-sm h-[20%]"></div>
+</div>
+<div class="flex justify-between text-xs text-on-surface-variant mt-2 px-1">
+<span>6 AM</span>
+<span>12 PM</span>
+<span>6 PM</span>
+</div>
+</div>
+</div>
+<!-- Secondary Metrics Column -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<!-- Orders Card -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)] flex-1 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<h3 class="font-label text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Total Orders</h3>
+</div>
+<div class="flex items-end justify-between">
+<span class="font-headline text-4xl font-bold text-on-surface">342</span>
+<span class="text-sm font-medium text-tertiary-container bg-tertiary-fixed-dim/50 px-2 py-1 rounded">-2%</span>
+</div>
+</div>
+<!-- Average Ticket Card -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)] flex-1 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<h3 class="font-label text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Avg Ticket Size</h3>
+</div>
+<div class="flex items-end justify-between">
+<span class="font-headline text-4xl font-bold text-on-surface">Rp 125.400</span>
+<span class="text-sm font-medium text-primary bg-primary-fixed-dim/30 px-2 py-1 rounded">+5%</span>
+</div>
+</div>
+</div>
+<!-- Best Sellers List -->
+<div class="md:col-span-12 bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-bold text-on-surface">Top Movers</h3>
+<button class="text-sm font-medium text-primary hover:text-primary-container transition-colors flex items-center">
+                        View Full Menu <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-DEFAULT group hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-surface flex items-center justify-center text-on-surface-variant shadow-sm">
+<span class="material-symbols-outlined">local_cafe</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-semibold text-on-surface">Oat Milk Latte</h4>
+<p class="font-body text-sm text-on-surface-variant">Hot Beverages</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline text-base font-bold text-primary">84 sold</p>
+<p class="font-body text-sm text-on-surface-variant">Rp 487.200</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-DEFAULT group hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-surface flex items-center justify-center text-on-surface-variant shadow-sm">
+<span class="material-symbols-outlined">bakery_dining</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-semibold text-on-surface">Almond Croissant</h4>
+<p class="font-body text-sm text-on-surface-variant">Pastries</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline text-base font-bold text-primary">62 sold</p>
+<p class="font-body text-sm text-on-surface-variant">Rp 279.000</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-DEFAULT group hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-surface flex items-center justify-center text-on-surface-variant shadow-sm">
+<span class="material-symbols-outlined">icecream</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-semibold text-on-surface">Cold Brew Reserve</h4>
+<p class="font-body text-sm text-on-surface-variant">Cold Beverages</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline text-base font-bold text-primary">45 sold</p>
+<p class="font-body text-sm text-on-surface-variant">Rp 247.500</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-t-[3rem] shadow-[0_-8px_32px_rgba(26,75,132,0.08)] no-border tonal-shift-surface md:hidden">
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+<span class="material-symbols-outlined mb-1">point_of_sale</span>
+<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">POS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+<span class="material-symbols-outlined mb-1">layers</span>
+<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Queue</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1) -translate-y-4 shadow-lg shadow-blue-900/20">
+<span class="material-symbols-outlined fill-icon">analytics</span>
+<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider sr-only">Reports</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
+</button>
+</nav>
+</body></html>
