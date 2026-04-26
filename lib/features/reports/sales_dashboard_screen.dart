@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hulu_coffee_pos/core/config/theme.dart';
+import 'package:hulu_coffee_pos/shared/widgets/app_header.dart';
+import 'package:hulu_coffee_pos/shared/widgets/app_bottom_nav.dart';
 
 class SalesDashboardScreen extends StatelessWidget {
   const SalesDashboardScreen({super.key});
@@ -8,9 +10,10 @@ class SalesDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.surface,
+      appBar: const AppHeader(),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(context),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -62,35 +65,6 @@ class SalesDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    return SliverAppBar(
-      floating: true,
-      backgroundColor: Colors.white.withOpacity(0.8),
-      surfaceTintColor: Colors.transparent,
-      elevation: 0,
-      centerTitle: true,
-      leading: IconButton(
-        icon: const Icon(Icons.storefront, color: AppTheme.primary),
-        onPressed: () {},
-      ),
-      title: Text(
-        'Hulu Coffee - Downtown',
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: AppTheme.primary,
-              letterSpacing: -0.5,
-            ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.sensors, color: AppTheme.primary),
-          onPressed: () {},
-        ),
-        const SizedBox(width: 12),
-      ],
-    );
-  }
-
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,7 +98,8 @@ class SalesDashboardScreen extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(Icons.calendar_today, size: 14, color: AppTheme.onSurfaceVariant),
+              const Icon(Icons.calendar_today,
+                  size: 14, color: AppTheme.onSurfaceVariant),
               const SizedBox(width: 8),
               Text(
                 'Oct 24, 2023',
@@ -133,7 +108,8 @@ class SalesDashboardScreen extends StatelessWidget {
                     ),
               ),
               const SizedBox(width: 4),
-              const Icon(Icons.expand_more, size: 16, color: AppTheme.onSurfaceVariant),
+              const Icon(Icons.expand_more,
+                  size: 16, color: AppTheme.onSurfaceVariant),
             ],
           ),
         ),
@@ -191,16 +167,18 @@ class SalesDashboardScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Rp 4.289.450',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900,
-                              color: AppTheme.primary,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.displayMedium?.copyWith(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                  color: AppTheme.primary,
+                                ),
                       ),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: AppTheme.surfaceContainerLow,
                       borderRadius: BorderRadius.circular(8),
@@ -211,11 +189,15 @@ class SalesDashboardScreen extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.trending_up, size: 14, color: AppTheme.primary),
+                            const Icon(Icons.trending_up,
+                                size: 14, color: AppTheme.primary),
                             const SizedBox(width: 4),
                             Text(
                               '+14.2%',
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(
                                     color: AppTheme.primary,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -224,8 +206,12 @@ class SalesDashboardScreen extends StatelessWidget {
                         ),
                         Text(
                           'vs Yesterday',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: AppTheme.onSurfaceVariant.withOpacity(0.6),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(
+                                color:
+                                    AppTheme.onSurfaceVariant.withOpacity(0.6),
                                 fontSize: 9,
                               ),
                         ),
@@ -242,40 +228,64 @@ class SalesDashboardScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(12, (index) {
-                    final heights = [0.3, 0.45, 0.6, 0.85, 1.0, 0.9, 0.75, 0.5, 0.4, 0.55, 0.3, 0.2];
+                    final heights = [
+                      0.3,
+                      0.45,
+                      0.6,
+                      0.85,
+                      1.0,
+                      0.9,
+                      0.75,
+                      0.5,
+                      0.4,
+                      0.55,
+                      0.3,
+                      0.2
+                    ];
                     final height = heights[index];
                     final isPeak = index == 4;
-                    
+
                     return Expanded(
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         height: 80 * height,
                         decoration: BoxDecoration(
-                          color: isPeak ? AppTheme.primary : (index > 2 && index < 7 ? AppTheme.primaryContainer : AppTheme.surfaceVariant),
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          color: isPeak
+                              ? AppTheme.primary
+                              : (index > 2 && index < 7
+                                  ? AppTheme.primaryContainer
+                                  : AppTheme.surfaceVariant),
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(4)),
                         ),
-                        child: isPeak ? Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Positioned(
-                              top: -24,
-                              left: -10,
-                              right: -10,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.onSurface,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: const Text(
-                                  'Peak',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ) : null,
+                        child: isPeak
+                            ? Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Positioned(
+                                    top: -24,
+                                    left: -10,
+                                    right: -10,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 4),
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.onSurface,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: const Text(
+                                        'Peak',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 8,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : null,
                       ),
                     );
                   }),
@@ -285,9 +295,15 @@ class SalesDashboardScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('6 AM', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10, color: AppTheme.onSurfaceVariant)),
-                  Text('12 PM', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10, color: AppTheme.onSurfaceVariant)),
-                  Text('6 PM', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10, color: AppTheme.onSurfaceVariant)),
+                  Text('6 AM',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontSize: 10, color: AppTheme.onSurfaceVariant)),
+                  Text('12 PM',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontSize: 10, color: AppTheme.onSurfaceVariant)),
+                  Text('6 PM',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontSize: 10, color: AppTheme.onSurfaceVariant)),
                 ],
               ),
             ],
@@ -363,7 +379,9 @@ class SalesDashboardScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: isPositive ? AppTheme.primary.withOpacity(0.1) : AppTheme.error.withOpacity(0.1),
+                  color: isPositive
+                      ? AppTheme.primary.withOpacity(0.1)
+                      : AppTheme.error.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
@@ -396,14 +414,15 @@ class SalesDashboardScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {},
-              child: Row(
+              child: const Row(
                 children: [
                   Text(
                     'View Full Menu',
-                    style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: AppTheme.primary, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.arrow_forward, color: AppTheme.primary, size: 16),
+                  SizedBox(width: 4),
+                  Icon(Icons.arrow_forward, color: AppTheme.primary, size: 16),
                 ],
               ),
             ),
@@ -478,13 +497,14 @@ class SalesDashboardScreen extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Text(
                   category,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.onSurfaceVariant,
-                  ),
+                        color: AppTheme.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
@@ -494,7 +514,7 @@ class SalesDashboardScreen extends StatelessWidget {
             children: [
               Text(
                 sold,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppTheme.primary,
                   fontWeight: FontWeight.w900,
                   fontSize: 15,
@@ -503,8 +523,8 @@ class SalesDashboardScreen extends StatelessWidget {
               Text(
                 revenue,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppTheme.onSurfaceVariant,
-                ),
+                      color: AppTheme.onSurfaceVariant,
+                    ),
               ),
             ],
           ),

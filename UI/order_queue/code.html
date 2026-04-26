@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hulu Coffee - Queue</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hulu Coffee - Queue</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -78,125 +86,156 @@
             },
         }
     </script>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
 <body class="bg-surface text-on-surface font-body pt-20 pb-28 md:pb-0 h-screen overflow-hidden flex flex-col">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-900/5 docked full-width top-0 font-['Manrope'] font-bold text-lg tracking-tight text-blue-900 dark:text-blue-400">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
-<span class="font-['Manrope'] font-black text-blue-900 dark:text-blue-100">Hulu Coffee - Downtown Booth</span>
-</div>
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
-</div>
-</header>
-<!-- Main Content -->
-<main class="flex-1 overflow-x-auto p-6 md:px-8 mt-4">
-<div class="flex gap-6 h-full min-w-max pb-8">
-<!-- Column 1: Pending -->
-<div class="w-[340px] flex flex-col gap-4 bg-surface-container-low rounded-xl p-4 shrink-0">
-<div class="flex justify-between items-center mb-2 px-2">
-<h2 class="font-headline font-bold text-xl text-primary">Pending</h2>
-<span class="bg-surface-variant text-on-surface-variant font-label text-xs font-bold px-2 py-1 rounded-full">3</span>
-</div>
-<!-- Order Card -->
-<div class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-sm">
-<div class="flex justify-between items-start">
-<span class="font-headline font-bold text-lg">#042</span>
-<span class="text-error font-label font-bold text-sm bg-error-container/30 px-2 py-0.5 rounded">4m</span>
-</div>
-<div class="flex flex-col gap-1">
-<p class="font-body text-base font-semibold">Iced Latte</p>
-<div class="flex flex-wrap gap-2 mt-1">
-<span class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Oat Milk</span>
-<span class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Extra Shot</span>
-</div>
-</div>
-<p class="font-body text-base font-semibold mt-2 border-t border-surface pt-2">Cortado</p>
-<button class="mt-2 w-full bg-surface-container-highest text-on-surface font-body font-semibold py-3 rounded-lg hover:bg-surface-variant transition-colors">Start Preparing</button>
-</div>
-<!-- Order Card -->
-<div class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-sm">
-<div class="flex justify-between items-start">
-<span class="font-headline font-bold text-lg">#043</span>
-<span class="text-tertiary font-label font-bold text-sm bg-tertiary-container/20 px-2 py-0.5 rounded">2m</span>
-</div>
-<div class="flex flex-col gap-1">
-<p class="font-body text-base font-semibold">Pour Over</p>
-<div class="flex flex-wrap gap-2 mt-1">
-<span class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Ethiopia</span>
-</div>
-</div>
-<button class="mt-2 w-full bg-surface-container-highest text-on-surface font-body font-semibold py-3 rounded-lg hover:bg-surface-variant transition-colors">Start Preparing</button>
-</div>
-</div>
-<!-- Column 2: Preparing -->
-<div class="w-[340px] flex flex-col gap-4 bg-surface-container-low rounded-xl p-4 shrink-0">
-<div class="flex justify-between items-center mb-2 px-2">
-<h2 class="font-headline font-bold text-xl text-primary">Preparing</h2>
-<span class="bg-surface-variant text-on-surface-variant font-label text-xs font-bold px-2 py-1 rounded-full">2</span>
-</div>
-<!-- Order Card (Preparing) -->
-<div class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-[0_8px_24px_rgba(26,28,29,0.06)] relative overflow-hidden">
-<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
-<div class="flex justify-between items-start pl-2">
-<span class="font-headline font-bold text-lg">#040</span>
-<span class="text-tertiary font-label font-bold text-sm bg-tertiary-container/20 px-2 py-0.5 rounded">6m</span>
-</div>
-<div class="flex flex-col gap-1 pl-2">
-<p class="font-body text-base font-semibold">Americano</p>
-</div>
-<div class="flex flex-col gap-1 pl-2 mt-2 border-t border-surface pt-2">
-<p class="font-body text-base font-semibold">Cappuccino</p>
-<div class="flex flex-wrap gap-2 mt-1">
-<span class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Dry</span>
-</div>
-</div>
-<button class="mt-2 w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-body font-semibold py-3 rounded-lg shadow-sm hover:scale-[0.98] transition-transform">Mark as Ready</button>
-</div>
-</div>
-<!-- Column 3: Ready -->
-<div class="w-[340px] flex flex-col gap-4 bg-surface-container-low rounded-xl p-4 shrink-0 opacity-80">
-<div class="flex justify-between items-center mb-2 px-2">
-<h2 class="font-headline font-bold text-xl text-primary">Ready</h2>
-<span class="bg-surface-variant text-on-surface-variant font-label text-xs font-bold px-2 py-1 rounded-full">1</span>
-</div>
-<!-- Order Card (Ready) -->
-<div class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-sm border border-outline-variant/15">
-<div class="flex justify-between items-start">
-<span class="font-headline font-bold text-lg text-outline">#039</span>
-<span class="text-outline font-label font-bold text-sm px-2 py-0.5 rounded">10m ago</span>
-</div>
-<div class="flex flex-col gap-1">
-<p class="font-body text-base text-outline line-through">Mocha</p>
-</div>
-<button class="mt-2 w-full bg-surface-container-highest text-on-surface-variant font-body font-semibold py-3 rounded-lg hover:bg-surface-variant transition-colors">Done (Handed Off)</button>
-</div>
-</div>
-</div>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl docked full-width bottom-0 rounded-t-[3rem] no-border tonal-shift-surface shadow-[0_-8px_32px_rgba(26,75,132,0.08)] md:hidden">
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="point_of_sale">point_of_sale</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">POS</span>
-</div>
-<div class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="layers">layers</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider hidden">Queue</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Reports</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
-</div>
-</nav>
-</body></html>
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-900/5 docked full-width top-0 font-['Manrope'] font-bold text-lg tracking-tight text-blue-900 dark:text-blue-400">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+            <span class="font-['Manrope'] font-black text-blue-900 dark:text-blue-100">Hulu Coffee</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-1 overflow-x-auto p-6 md:px-8 mt-4">
+        <div class="flex gap-6 h-full min-w-max pb-8">
+            <!-- Column 1: Pending -->
+            <div class="w-[340px] flex flex-col gap-4 bg-surface-container-low rounded-xl p-4 shrink-0">
+                <div class="flex justify-between items-center mb-2 px-2">
+                    <h2 class="font-headline font-bold text-xl text-primary">Pending</h2>
+                    <span
+                        class="bg-surface-variant text-on-surface-variant font-label text-xs font-bold px-2 py-1 rounded-full">3</span>
+                </div>
+                <!-- Order Card -->
+                <div class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <span class="font-headline font-bold text-lg">#042</span>
+                        <span
+                            class="text-error font-label font-bold text-sm bg-error-container/30 px-2 py-0.5 rounded">4m</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <p class="font-body text-base font-semibold">Iced Latte</p>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <span
+                                class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Oat
+                                Milk</span>
+                            <span
+                                class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Extra
+                                Shot</span>
+                        </div>
+                    </div>
+                    <p class="font-body text-base font-semibold mt-2 border-t border-surface pt-2">Cortado</p>
+                    <button
+                        class="mt-2 w-full bg-surface-container-highest text-on-surface font-body font-semibold py-3 rounded-lg hover:bg-surface-variant transition-colors">Start
+                        Preparing</button>
+                </div>
+                <!-- Order Card -->
+                <div class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <span class="font-headline font-bold text-lg">#043</span>
+                        <span
+                            class="text-tertiary font-label font-bold text-sm bg-tertiary-container/20 px-2 py-0.5 rounded">2m</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <p class="font-body text-base font-semibold">Pour Over</p>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <span
+                                class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Ethiopia</span>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-2 w-full bg-surface-container-highest text-on-surface font-body font-semibold py-3 rounded-lg hover:bg-surface-variant transition-colors">Start
+                        Preparing</button>
+                </div>
+            </div>
+            <!-- Column 2: Preparing -->
+            <div class="w-[340px] flex flex-col gap-4 bg-surface-container-low rounded-xl p-4 shrink-0">
+                <div class="flex justify-between items-center mb-2 px-2">
+                    <h2 class="font-headline font-bold text-xl text-primary">Preparing</h2>
+                    <span
+                        class="bg-surface-variant text-on-surface-variant font-label text-xs font-bold px-2 py-1 rounded-full">2</span>
+                </div>
+                <!-- Order Card (Preparing) -->
+                <div
+                    class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-[0_8px_24px_rgba(26,28,29,0.06)] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+                    <div class="flex justify-between items-start pl-2">
+                        <span class="font-headline font-bold text-lg">#040</span>
+                        <span
+                            class="text-tertiary font-label font-bold text-sm bg-tertiary-container/20 px-2 py-0.5 rounded">6m</span>
+                    </div>
+                    <div class="flex flex-col gap-1 pl-2">
+                        <p class="font-body text-base font-semibold">Americano</p>
+                    </div>
+                    <div class="flex flex-col gap-1 pl-2 mt-2 border-t border-surface pt-2">
+                        <p class="font-body text-base font-semibold">Cappuccino</p>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <span
+                                class="bg-secondary-container text-on-secondary-container font-label text-xs px-2 py-1 rounded-md">Dry</span>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-2 w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-body font-semibold py-3 rounded-lg shadow-sm hover:scale-[0.98] transition-transform">Mark
+                        as Ready</button>
+                </div>
+            </div>
+            <!-- Column 3: Ready -->
+            <div class="w-[340px] flex flex-col gap-4 bg-surface-container-low rounded-xl p-4 shrink-0 opacity-80">
+                <div class="flex justify-between items-center mb-2 px-2">
+                    <h2 class="font-headline font-bold text-xl text-primary">Ready</h2>
+                    <span
+                        class="bg-surface-variant text-on-surface-variant font-label text-xs font-bold px-2 py-1 rounded-full">1</span>
+                </div>
+                <!-- Order Card (Ready) -->
+                <div
+                    class="bg-surface-container-lowest rounded p-4 flex flex-col gap-3 shadow-sm border border-outline-variant/15">
+                    <div class="flex justify-between items-start">
+                        <span class="font-headline font-bold text-lg text-outline">#039</span>
+                        <span class="text-outline font-label font-bold text-sm px-2 py-0.5 rounded">10m ago</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <p class="font-body text-base text-outline line-through">Mocha</p>
+                    </div>
+                    <button
+                        class="mt-2 w-full bg-surface-container-highest text-on-surface-variant font-body font-semibold py-3 rounded-lg hover:bg-surface-variant transition-colors">Done
+                        (Handed Off)</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl docked full-width bottom-0 rounded-t-[3rem] no-border tonal-shift-surface shadow-[0_-8px_32px_rgba(26,75,132,0.08)] md:hidden">
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="point_of_sale">point_of_sale</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">POS</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="layers">layers</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider hidden">Queue</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Reports</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
+        </div>
+    </nav>
+</body>
+
+</html>

@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           // Background Gradient to replicate subtle styling from HTML
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

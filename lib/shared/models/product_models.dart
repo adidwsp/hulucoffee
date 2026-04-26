@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum ProductCategory { coffee, nonCoffee, tea, snacks }
+enum ProductCategory { all, coffee, nonCoffee, tea, snacks }
 
 class Product extends Equatable {
   final String id;
@@ -31,6 +31,33 @@ class Product extends Equatable {
         isAvailable,
         category,
       ];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+      'isAvailable': isAvailable ? 1 : 0,
+      'category': category.name,
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
+      id: map['id'],
+      name: map['name'],
+      description: map['description'],
+      price: (map['price'] as num).toDouble(),
+      imageUrl: map['imageUrl'],
+      isAvailable: map['isAvailable'] == 1,
+      category: ProductCategory.values.firstWhere(
+        (e) => e.name == map['category'],
+        orElse: () => ProductCategory.coffee,
+      ),
+    );
+  }
 }
 
 class CustomizationOptions extends Equatable {

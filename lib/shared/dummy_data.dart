@@ -2,6 +2,14 @@ import 'package:hulu_coffee_pos/shared/models/product_models.dart';
 
 final List<Product> dummyProducts = [
   const Product(
+    id: 'p0',
+    name: 'All',
+    description: 'ALL',
+    price: 0,
+    imageUrl: 'assets/images/all.png',
+    category: ProductCategory.all,
+  ),
+  const Product(
     id: 'p1',
     name: 'Iced Latte',
     description: 'ESPRESSO • MILK',

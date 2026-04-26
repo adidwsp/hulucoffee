@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hulu Coffee - Cart</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hulu Coffee - Cart</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -77,130 +85,184 @@
             }
         }
     </script>
-<style>
-        body { font-family: 'Inter', sans-serif; background-color: theme('colors.surface'); color: theme('colors.on-surface'); }
-        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-headline {
+            font-family: 'Manrope', sans-serif;
+        }
+
         .glass-panel {
             background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
         }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
 </head>
+
 <body class="antialiased min-h-screen flex flex-col pt-20 pb-32">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-900/5 bg-slate-100 dark:bg-slate-800">
-<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors active:scale-95 transition-transform duration-200">
-<span class="material-symbols-outlined text-blue-900 dark:text-blue-400">storefront</span>
-</button>
-<h1 class="font-['Manrope'] font-bold text-lg tracking-tight font-['Manrope'] font-black text-blue-900 dark:text-blue-100">Hulu Coffee - Downtown Booth</h1>
-<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors active:scale-95 transition-transform duration-200">
-<span class="material-symbols-outlined text-blue-900 dark:text-blue-400">sensors</span>
-</button>
-</header>
-<main class="flex-grow px-6 max-w-4xl mx-auto w-full flex flex-col gap-8">
-<!-- Order Header -->
-<div class="flex items-end justify-between mt-8">
-<div>
-<p class="font-label text-sm uppercase tracking-widest text-on-surface-variant mb-1">Current Order</p>
-<h2 class="font-headline text-4xl font-extrabold text-primary">#402</h2>
-</div>
-<button class="font-label text-sm text-tertiary flex items-center gap-1 hover:text-tertiary-container transition-colors">
-<span class="material-symbols-outlined text-base">delete</span> Clear All
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-900/5 bg-slate-100 dark:bg-slate-800">
+        <button
+            class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors active:scale-95 transition-transform duration-200">
+            <span class="material-symbols-outlined text-blue-900 dark:text-blue-400">storefront</span>
+        </button>
+        <h1
+            class="font-['Manrope'] font-bold text-lg tracking-tight font-['Manrope'] font-black text-blue-900 dark:text-blue-100">
+            Hulu Coffee</h1>
+        <button
+            class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors active:scale-95 transition-transform duration-200">
+            <span class="material-symbols-outlined text-blue-900 dark:text-blue-400">sensors</span>
+        </button>
+    </header>
+    <main class="flex-grow px-6 max-w-4xl mx-auto w-full flex flex-col gap-8">
+        <!-- Order Header -->
+        <div class="flex items-end justify-between mt-8">
+            <div>
+                <p class="font-label text-sm uppercase tracking-widest text-on-surface-variant mb-1">Current Order</p>
+                <h2 class="font-headline text-4xl font-extrabold text-primary">#402</h2>
+            </div>
+            <button
+                class="font-label text-sm text-tertiary flex items-center gap-1 hover:text-tertiary-container transition-colors">
+                <span class="material-symbols-outlined text-base">delete</span> Clear All
             </button>
-</div>
-<!-- Order Items -->
-<div class="flex flex-col gap-4">
-<!-- Item 1 -->
-<div class="bg-surface-container-lowest rounded p-4 flex gap-4 items-center">
-<img alt="Pour over coffee" class="w-20 h-20 rounded-lg object-cover" data-alt="close up of artisan pour over coffee being made in a chemex on a light marble counter, warm natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfCSdk15EIuhQfednIgCihURKwAQjrnJ_gMy1CfcaRi9cUDYEufuHTEU9srYDpN9KdUB8FZVvs5pyl9b5pJzqxs8qTY7qTOHbmlLV3FZdxb_hs__315EtogFt1hy61r9vaTxvTUgwxxN5EBhvTEMkgJA_dSjlaKC0ifrvdBHOA_I9AtoALWezS0O01xv3rMMNrS1F2ycngWB4TEaixsiAKjDPUxCab1mhjEX1Ps9gdnS0xS2y9DVEMc46-zm-nqdksuKi5s75Ro9UE"/>
-<div class="flex-grow">
-<h3 class="font-headline text-lg font-bold text-on-surface">Ethiopia Yirgacheffe</h3>
-<div class="flex flex-wrap gap-2 mt-2">
-<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Pour Over</span>
-<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Hot</span>
-</div>
-</div>
-<div class="flex flex-col items-end gap-3">
-<span class="font-headline font-bold text-lg text-primary">Rp 95.000</span>
-<div class="flex items-center gap-3 bg-surface-container-low rounded-full px-2 py-1">
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
-<span class="font-body font-semibold w-4 text-center">1</span>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
-</div>
-</div>
-</div>
-<!-- Item 2 -->
-<div class="bg-surface-container-lowest rounded p-4 flex gap-4 items-center">
-<img alt="Latte" class="w-20 h-20 rounded-lg object-cover" data-alt="latte with beautiful fern latte art in a ceramic cup on a wooden saucer, bright cafe lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5Ea08-Ouddfl37HgSV8DcexqoPL0xXjCaewvIDsJN-wiW9IhqwBtqNYjzw2Zvges1qGRggr2YK1pBMRL7_ZLbCGBxOsofPVIO5E1tn5zIL3bF7G7VJ5-LMjhBaXVsnBKrsU8spceZ6PseGmHqDSX6zvhBlVyfA-I4CZ4fEYMQ-F5FZ3aViM7jjiwlrvwUGuMdSiPicis4s-etvnmfISPT3KCGA2G7umqMsfaaBt6ITSW2-Ddkul9GeRWWN9-bypmPp6M1kKo2dw1a"/>
-<div class="flex-grow">
-<h3 class="font-headline text-lg font-bold text-on-surface">Vanilla Latte</h3>
-<div class="flex flex-wrap gap-2 mt-2">
-<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Oat Milk</span>
-<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Extra Shot</span>
-<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Iced</span>
-</div>
-</div>
-<div class="flex flex-col items-end gap-3">
-<span class="font-headline font-bold text-lg text-primary">Rp 115.000</span>
-<div class="flex items-center gap-3 bg-surface-container-low rounded-full px-2 py-1">
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
-<span class="font-body font-semibold w-4 text-center">2</span>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
-</div>
-</div>
-</div>
-<!-- Add Item Button -->
-<button class="w-full py-4 border border-dashed border-outline-variant/30 rounded flex items-center justify-center gap-2 text-primary font-body font-medium hover:bg-surface-container-low transition-colors">
-<span class="material-symbols-outlined">add_circle</span> Add another item
+        </div>
+        <!-- Order Items -->
+        <div class="flex flex-col gap-4">
+            <!-- Item 1 -->
+            <div class="bg-surface-container-lowest rounded p-4 flex gap-4 items-center">
+                <img alt="Pour over coffee" class="w-20 h-20 rounded-lg object-cover"
+                    data-alt="close up of artisan pour over coffee being made in a chemex on a light marble counter, warm natural lighting"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfCSdk15EIuhQfednIgCihURKwAQjrnJ_gMy1CfcaRi9cUDYEufuHTEU9srYDpN9KdUB8FZVvs5pyl9b5pJzqxs8qTY7qTOHbmlLV3FZdxb_hs__315EtogFt1hy61r9vaTxvTUgwxxN5EBhvTEMkgJA_dSjlaKC0ifrvdBHOA_I9AtoALWezS0O01xv3rMMNrS1F2ycngWB4TEaixsiAKjDPUxCab1mhjEX1Ps9gdnS0xS2y9DVEMc46-zm-nqdksuKi5s75Ro9UE" />
+                <div class="flex-grow">
+                    <h3 class="font-headline text-lg font-bold text-on-surface">Ethiopia Yirgacheffe</h3>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        <span
+                            class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Pour
+                            Over</span>
+                        <span
+                            class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Hot</span>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end gap-3">
+                    <span class="font-headline font-bold text-lg text-primary">Rp 95.000</span>
+                    <div class="flex items-center gap-3 bg-surface-container-low rounded-full px-2 py-1">
+                        <button
+                            class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span
+                                class="material-symbols-outlined text-sm">remove</span></button>
+                        <span class="font-body font-semibold w-4 text-center">1</span>
+                        <button
+                            class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span
+                                class="material-symbols-outlined text-sm">add</span></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="bg-surface-container-lowest rounded p-4 flex gap-4 items-center">
+                <img alt="Latte" class="w-20 h-20 rounded-lg object-cover"
+                    data-alt="latte with beautiful fern latte art in a ceramic cup on a wooden saucer, bright cafe lighting"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5Ea08-Ouddfl37HgSV8DcexqoPL0xXjCaewvIDsJN-wiW9IhqwBtqNYjzw2Zvges1qGRggr2YK1pBMRL7_ZLbCGBxOsofPVIO5E1tn5zIL3bF7G7VJ5-LMjhBaXVsnBKrsU8spceZ6PseGmHqDSX6zvhBlVyfA-I4CZ4fEYMQ-F5FZ3aViM7jjiwlrvwUGuMdSiPicis4s-etvnmfISPT3KCGA2G7umqMsfaaBt6ITSW2-Ddkul9GeRWWN9-bypmPp6M1kKo2dw1a" />
+                <div class="flex-grow">
+                    <h3 class="font-headline text-lg font-bold text-on-surface">Vanilla Latte</h3>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        <span
+                            class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Oat
+                            Milk</span>
+                        <span
+                            class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Extra
+                            Shot</span>
+                        <span
+                            class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label uppercase tracking-wider">Iced</span>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end gap-3">
+                    <span class="font-headline font-bold text-lg text-primary">Rp 115.000</span>
+                    <div class="flex items-center gap-3 bg-surface-container-low rounded-full px-2 py-1">
+                        <button
+                            class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span
+                                class="material-symbols-outlined text-sm">remove</span></button>
+                        <span class="font-body font-semibold w-4 text-center">2</span>
+                        <button
+                            class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span
+                                class="material-symbols-outlined text-sm">add</span></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Item Button -->
+            <button
+                class="w-full py-4 border border-dashed border-outline-variant/30 rounded flex items-center justify-center gap-2 text-primary font-body font-medium hover:bg-surface-container-low transition-colors">
+                <span class="material-symbols-outlined">add_circle</span> Add another item
             </button>
-</div>
-<!-- Summary & Payment -->
-<div class="bg-surface-container-low rounded-lg p-6 mt-4">
-<div class="flex gap-4 mb-6">
-<input class="flex-grow bg-surface-variant border-none rounded-sm px-4 py-3 text-on-surface focus:bg-primary-fixed focus:text-on-primary-fixed font-body placeholder:text-on-surface-variant/60" placeholder="Promo Code" type="text"/>
-<button class="px-6 py-3 bg-surface-container-high text-on-surface rounded-sm font-label font-semibold hover:bg-surface-container-highest transition-colors">Apply</button>
-</div>
-<div class="space-y-3 mb-6">
-<div class="flex justify-between font-body text-on-surface-variant">
-<span>Subtotal</span>
-<span>Rp 310.000</span>
-</div>
-<div class="flex justify-between font-body text-on-surface-variant">
-<span>Tax (8.5%)</span>
-<span>Rp 15.000</span>
-</div>
-</div>
-<div class="flex justify-between items-end mb-8 pt-4 border-t border-outline-variant/15">
-<span class="font-headline font-bold text-xl text-on-surface">Total</span>
-<span class="font-headline font-black text-4xl text-primary">Rp 325.000</span>
-</div>
-<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl py-4 font-headline font-bold text-lg shadow-[0_8px_32px_rgba(26,28,29,0.06)] hover:scale-[0.98] transition-transform active:brightness-90 flex items-center justify-center gap-2">
+        </div>
+        <!-- Summary & Payment -->
+        <div class="bg-surface-container-low rounded-lg p-6 mt-4">
+            <div class="flex gap-4 mb-6">
+                <input
+                    class="flex-grow bg-surface-variant border-none rounded-sm px-4 py-3 text-on-surface focus:bg-primary-fixed focus:text-on-primary-fixed font-body placeholder:text-on-surface-variant/60"
+                    placeholder="Promo Code" type="text" />
+                <button
+                    class="px-6 py-3 bg-surface-container-high text-on-surface rounded-sm font-label font-semibold hover:bg-surface-container-highest transition-colors">Apply</button>
+            </div>
+            <div class="space-y-3 mb-6">
+                <div class="flex justify-between font-body text-on-surface-variant">
+                    <span>Subtotal</span>
+                    <span>Rp 310.000</span>
+                </div>
+                <div class="flex justify-between font-body text-on-surface-variant">
+                    <span>Tax (8.5%)</span>
+                    <span>Rp 15.000</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-end mb-8 pt-4 border-t border-outline-variant/15">
+                <span class="font-headline font-bold text-xl text-on-surface">Total</span>
+                <span class="font-headline font-black text-4xl text-primary">Rp 325.000</span>
+            </div>
+            <button
+                class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl py-4 font-headline font-bold text-lg shadow-[0_8px_32px_rgba(26,28,29,0.06)] hover:scale-[0.98] transition-transform active:brightness-90 flex items-center justify-center gap-2">
                 Proceed to Payment <span class="material-symbols-outlined">arrow_forward</span>
-</button>
-</div>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl shadow-[0_-8px_32px_rgba(26,75,132,0.08)] rounded-t-[3rem]">
-<button class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">point_of_sale</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider hidden">POS</span>
-</button>
-<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined">layers</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Queue</span>
-</button>
-<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined">analytics</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Reports</span>
-</button>
-<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Settings</span>
-</button>
-</nav>
-</body></html>
+            </button>
+        </div>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl shadow-[0_-8px_32px_rgba(26,75,132,0.08)] rounded-t-[3rem]">
+        <button
+            class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined" data-weight="fill"
+                style="font-variation-settings: 'FILL' 1;">point_of_sale</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider hidden">POS</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined">layers</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Queue</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined">analytics</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Reports</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Settings</span>
+        </button>
+    </nav>
+</body>
+
+</html>

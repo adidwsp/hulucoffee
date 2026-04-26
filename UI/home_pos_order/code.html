@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hulu Coffee POS</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hulu Coffee POS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -77,217 +85,292 @@
             }
         }
     </script>
-<style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
-        .material-symbols-outlined { font-family: 'Material Symbols Outlined'; }
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-headline {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+        }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
 </head>
+
 <body class="bg-surface text-on-surface antialiased min-h-screen pb-32 pt-24 flex flex-col">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-900/5 bg-slate-100 dark:bg-slate-800">
-<div class="flex items-center gap-4 text-blue-900 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors rounded-full p-2 active:scale-95 transition-transform duration-200 cursor-pointer">
-<span class="material-symbols-outlined text-2xl" data-icon="storefront">storefront</span>
-</div>
-<div class="flex-1 text-center">
-<h1 class="font-['Manrope'] font-bold text-lg tracking-tight font-['Manrope'] font-black text-blue-900 dark:text-blue-100">Hulu Coffee - Downtown Booth</h1>
-</div>
-<div class="flex items-center gap-4 text-blue-900 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors rounded-full p-2 active:scale-95 transition-transform duration-200 cursor-pointer">
-<span class="material-symbols-outlined text-2xl" data-icon="sensors">sensors</span>
-</div>
-</header>
-<!-- Main Content -->
-<main class="flex-1 flex flex-col md:flex-row gap-6 px-4 md:px-8 max-w-7xl mx-auto w-full">
-<!-- POS Area -->
-<div class="flex-1 flex flex-col gap-6 w-full pb-24 md:pb-0">
-<!-- Search & Categories -->
-<section class="flex flex-col gap-4 sticky top-24 z-30 bg-surface/90 backdrop-blur-md py-2">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full bg-surface-variant text-on-surface pl-12 pr-4 py-3 rounded-sm border-none focus:ring-0 focus:bg-primary-fixed focus:text-on-primary-fixed transition-colors font-body text-sm placeholder:text-on-surface-variant/70 shadow-sm" placeholder="Search menu items..." type="text"/>
-</div>
-<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-<button class="bg-primary text-on-primary px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium shadow-[0_4px_12px_rgba(0,52,102,0.15)] flex-shrink-0">Coffee</button>
-<button class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Non-Coffee</button>
-<button class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Tea</button>
-<button class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Snacks</button>
-<button class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Add-ons</button>
-</div>
-</section>
-<!-- Product Grid -->
-<section class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 bg-surface-container-low p-4 rounded-xl">
-<!-- Product Card 1 -->
-<article class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow">
-<div class="h-40 bg-surface-variant w-full relative">
-<img alt="Iced Latte" class="w-full h-full object-cover" data-alt="close up of an iced latte in a clear plastic cup with condensation, dark roasted espresso mixing with creamy milk over ice cubes, neutral bright cafe setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBSE6CAmjuVtL1ySHP150PThSFmtZtLGsHfiRB853SwokCbUb0F5AK5BtQikvxhXvYEu66Sp3lQxS89o79VOwNqQGSS7Tj9Fq5c4LxpUJHyl2yMk7DFIc9v7-C4e_tNvaTc91lOEP_AwrvB-ktLR93AToUCWNeZ0vqaggSzh3XyPhLqlIKPM279cnzpGGVKhm-ZVdAjvKyeRCVhnQzmXNJbIhr7TusZbR954TmZLZ6VXIPDtqTxptNPXBlN0Y6J2RJD26vHoxx49__"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between gap-3">
-<div>
-<h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Iced Latte</h3>
-<p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso • Milk</p>
-</div>
-<div class="flex items-center justify-between mt-auto">
-<span class="font-headline font-bold text-primary text-lg">Rp 65.000</span>
-<button class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</article>
-<!-- Product Card 2 -->
-<article class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow border-[0.5px] border-outline-variant/15">
-<div class="h-40 bg-surface-variant w-full relative">
-<img alt="Americano" class="w-full h-full object-cover" data-alt="top down view of a black americano in a white ceramic mug, rich dark crema on top, minimalist wooden table setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfT2Mz3M_x5xlgdR3B4xFizDBWoz_lFpFHfYw0g3RjanCCCinxiIy08Cnt-W_CPZvRdZQqSF347Jnmp0vKlN3LJ63UrDFWiX-fnzhBy_Vyl83-OBezKtZ47nH8BsfaTyM37iPDgPjZ7uE38A00jeCO1ZPTYlfXn0GK-nSVmpoXSOa0keliATyFTvD2i5o3nzTnE0E8TXcWweI0-F0uer9qYE2puyzEzrtaswava5TqYC5d_faVv7P5hyhJVbWZMyh970vQ90dJvoEz"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between gap-3">
-<div>
-<h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Americano</h3>
-<p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso • Water</p>
-</div>
-<div class="flex items-center justify-between mt-auto">
-<span class="font-headline font-bold text-primary text-lg">Rp 50.000</span>
-<button class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</article>
-<!-- Product Card 3 -->
-<article class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow">
-<div class="h-40 bg-surface-variant w-full relative">
-<img alt="Cappuccino" class="w-full h-full object-cover" data-alt="classic cappuccino in a wide ceramic cup with intricate latte art on top, warm morning lighting casting soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbZhKa7Zu_RUDkGdjDWdSACAfoelaZTiUgIZKQQGJYFXpylZmVvhaYasY0eqAS3wufdz1cIvPQPSFbXZ05lPOy1ZvG-bie5ClxOrmEDnh5NZlbc6p_kD5J6lzeoMskWBZadZ78GFT4buM9Lb0vwPrdwS91LspAE_pkJ913KPo_v7w-E-7UkuV1bCWHZLR1S50S2rovNPGpMPcfP005kHAiWiFHVZmUlo4_F4U9LEg9LykPIApQ-1zVkiugPqshghe-P_0M_6-2Y7yS"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between gap-3">
-<div>
-<h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Cappuccino</h3>
-<p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso • Foam</p>
-</div>
-<div class="flex items-center justify-between mt-auto">
-<span class="font-headline font-bold text-primary text-lg">Rp 68.000</span>
-<button class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</article>
-<!-- Product Card 4 -->
-<article class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow">
-<div class="h-40 bg-surface-variant w-full relative">
-<img alt="Mocha" class="w-full h-full object-cover" data-alt="rich dark chocolate mocha in a glass mug topped with whipped cream and cocoa powder dusting, dark moody background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOkMajEL57eybz-Q4fZVFJGSlQ54i0PKjRLuIAKpPshZpsiFBOgVEvcbcNGL6JkQK7MLVwPuPpLUE-dqjMDLnH6pHcddpjMOMJ1XV3D0LGbZXhk4KcE7L2m6rGLGFXnM6JCFpFdtM0rqz3tnwT_rjiL8NSdOhF12gl8FkIxTvm-UmBkFOtyDGT8fxjm2jQGHcex7aYCJE818lmqeTufd1WAGvj-bncOTTB2ySrYgITag2IaIuFghVU-xMWYA7uiRWrXpTDKDHu47_u"/>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between gap-3">
-<div>
-<h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Mocha</h3>
-<p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso • Chocolate</p>
-</div>
-<div class="flex items-center justify-between mt-auto">
-<span class="font-headline font-bold text-primary text-lg">Rp 75.000</span>
-<button class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</article>
-<!-- Product Card 5 (Out of Stock Example) -->
-<article class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col opacity-75 grayscale-[0.5]">
-<div class="h-40 bg-surface-variant w-full relative">
-<img alt="Cold Brew" class="w-full h-full object-cover" data-alt="tall glass of dark cold brew coffee with ice, condensation on the glass, bright sunny cafe window in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtWlp9hs2zVc7buglMP-8cpi2d1-eqCiqF_8RghfhICrYG0L_8JJPkRTd_jL1fGqirkUoi6bOjBkDnu-F_EkleGwKorcnOwX-MplWYnvoUfzioFyNOe1XkwTd5-vk-a1KSJHzKPX7dYRQjvS534olC_lKQjRSkGaQIDb6xPlcplfiAeriS9gxzMSIX0MSErgDgRh9AqVUycmxHeFA0Liq0zpAXU7fBv8pAjXpi1OR8CYvQiaMpjVq2pueP4YbQH6DVmzRVVsxXCdTP"/>
-<div class="absolute inset-0 bg-surface-variant/40 flex items-center justify-center">
-<span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-sm font-label text-xs font-bold uppercase tracking-wider">Out of Stock</span>
-</div>
-</div>
-<div class="p-4 flex-1 flex flex-col justify-between gap-3">
-<div>
-<h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Cold Brew</h3>
-<p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Steeped 24h</p>
-</div>
-<div class="flex items-center justify-between mt-auto">
-<span class="font-headline font-bold text-on-surface-variant text-lg">Rp 55.000</span>
-<button class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center cursor-not-allowed">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</article>
-</section>
-</div>
-<!-- Sidebar Cart (Desktop) / Hidden Mobile -->
-<aside class="hidden md:flex flex-col w-80 lg:w-96 bg-surface-container-low rounded-xl h-[calc(100vh-140px)] sticky top-24 p-5 flex-shrink-0 shadow-inner">
-<h2 class="font-headline font-bold text-xl text-on-surface mb-6 border-b border-surface-variant pb-4">Current Order</h2>
-<!-- Cart Items -->
-<div class="flex-1 overflow-y-auto pr-2 space-y-4 scrollbar-hide">
-<div class="flex items-start justify-between gap-3 bg-surface-container-lowest p-3 rounded-DEFAULT shadow-sm">
-<div class="flex-1">
-<h4 class="font-headline font-semibold text-on-surface text-base">Iced Latte</h4>
-<div class="flex flex-wrap gap-1 mt-1">
-<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-label uppercase tracking-wide">Oat Milk</span>
-</div>
-</div>
-<div class="text-right">
-<span class="font-headline font-bold text-primary block">Rp 75.000</span>
-<div class="flex items-center gap-2 mt-2 bg-surface-container-high rounded-full px-2 py-1">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="remove">remove</span></button>
-<span class="font-body text-sm font-semibold w-4 text-center">1</span>
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="add">add</span></button>
-</div>
-</div>
-</div>
-</div>
-<!-- Cart Summary -->
-<div class="mt-4 pt-4 border-t border-surface-variant space-y-3">
-<div class="flex justify-between text-on-surface-variant font-body text-sm">
-<span>Subtotal</span>
-<span>Rp 75.000</span>
-</div>
-<div class="flex justify-between text-on-surface-variant font-body text-sm">
-<span>Tax</span>
-<span>Rp 7.500</span>
-</div>
-<div class="flex justify-between items-end mt-2 pt-2 border-t border-surface-variant">
-<span class="font-headline font-bold text-on-surface text-lg">Total</span>
-<span class="font-headline font-black text-primary text-3xl">Rp 82.500</span>
-</div>
-<button class="w-full mt-4 bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-xl font-headline font-bold text-lg shadow-[0_8px_32px_rgba(0,52,102,0.15)] active:scale-95 transition-transform">
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm shadow-blue-900/5 bg-slate-100 dark:bg-slate-800">
+        <div
+            class="flex items-center gap-4 text-blue-900 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors rounded-full p-2 active:scale-95 transition-transform duration-200 cursor-pointer">
+            <span class="material-symbols-outlined text-2xl" data-icon="storefront">storefront</span>
+        </div>
+        <div class="flex-1 text-center">
+            <h1
+                class="font-['Manrope'] font-bold text-lg tracking-tight font-['Manrope'] font-black text-blue-900 dark:text-blue-100">
+                Hulu Coffee</h1>
+        </div>
+        <div
+            class="flex items-center gap-4 text-blue-900 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors rounded-full p-2 active:scale-95 transition-transform duration-200 cursor-pointer">
+            <span class="material-symbols-outlined text-2xl" data-icon="sensors">sensors</span>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col md:flex-row gap-6 px-4 md:px-8 max-w-7xl mx-auto w-full">
+        <!-- POS Area -->
+        <div class="flex-1 flex flex-col gap-6 w-full pb-24 md:pb-0">
+            <!-- Search & Categories -->
+            <section class="flex flex-col gap-4 sticky top-24 z-30 bg-surface/90 backdrop-blur-md py-2">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                    <input
+                        class="w-full bg-surface-variant text-on-surface pl-12 pr-4 py-3 rounded-sm border-none focus:ring-0 focus:bg-primary-fixed focus:text-on-primary-fixed transition-colors font-body text-sm placeholder:text-on-surface-variant/70 shadow-sm"
+                        placeholder="Search menu items..." type="text" />
+                </div>
+                <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                    <button
+                        class="bg-primary text-on-primary px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium shadow-[0_4px_12px_rgba(0,52,102,0.15)] flex-shrink-0">Coffee</button>
+                    <button
+                        class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Non-Coffee</button>
+                    <button
+                        class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Tea</button>
+                    <button
+                        class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Snacks</button>
+                    <button
+                        class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-full font-label text-sm whitespace-nowrap font-medium hover:bg-surface-container-highest transition-colors flex-shrink-0">Add-ons</button>
+                </div>
+            </section>
+            <!-- Product Grid -->
+            <section class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 bg-surface-container-low p-4 rounded-xl">
+                <!-- Product Card 1 -->
+                <article
+                    class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow">
+                    <div class="h-40 bg-surface-variant w-full relative">
+                        <img alt="Iced Latte" class="w-full h-full object-cover"
+                            data-alt="close up of an iced latte in a clear plastic cup with condensation, dark roasted espresso mixing with creamy milk over ice cubes, neutral bright cafe setting"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBSE6CAmjuVtL1ySHP150PThSFmtZtLGsHfiRB853SwokCbUb0F5AK5BtQikvxhXvYEu66Sp3lQxS89o79VOwNqQGSS7Tj9Fq5c4LxpUJHyl2yMk7DFIc9v7-C4e_tNvaTc91lOEP_AwrvB-ktLR93AToUCWNeZ0vqaggSzh3XyPhLqlIKPM279cnzpGGVKhm-ZVdAjvKyeRCVhnQzmXNJbIhr7TusZbR954TmZLZ6VXIPDtqTxptNPXBlN0Y6J2RJD26vHoxx49__" />
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div>
+                            <h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Iced Latte</h3>
+                            <p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso
+                                • Milk</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="font-headline font-bold text-primary text-lg">Rp 65.000</span>
+                            <button
+                                class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
+                                <span class="material-symbols-outlined" data-icon="add">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Product Card 2 -->
+                <article
+                    class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow border-[0.5px] border-outline-variant/15">
+                    <div class="h-40 bg-surface-variant w-full relative">
+                        <img alt="Americano" class="w-full h-full object-cover"
+                            data-alt="top down view of a black americano in a white ceramic mug, rich dark crema on top, minimalist wooden table setting"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfT2Mz3M_x5xlgdR3B4xFizDBWoz_lFpFHfYw0g3RjanCCCinxiIy08Cnt-W_CPZvRdZQqSF347Jnmp0vKlN3LJ63UrDFWiX-fnzhBy_Vyl83-OBezKtZ47nH8BsfaTyM37iPDgPjZ7uE38A00jeCO1ZPTYlfXn0GK-nSVmpoXSOa0keliATyFTvD2i5o3nzTnE0E8TXcWweI0-F0uer9qYE2puyzEzrtaswava5TqYC5d_faVv7P5hyhJVbWZMyh970vQ90dJvoEz" />
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div>
+                            <h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Americano</h3>
+                            <p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso
+                                • Water</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="font-headline font-bold text-primary text-lg">Rp 50.000</span>
+                            <button
+                                class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
+                                <span class="material-symbols-outlined" data-icon="add">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Product Card 3 -->
+                <article
+                    class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow">
+                    <div class="h-40 bg-surface-variant w-full relative">
+                        <img alt="Cappuccino" class="w-full h-full object-cover"
+                            data-alt="classic cappuccino in a wide ceramic cup with intricate latte art on top, warm morning lighting casting soft shadows"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbZhKa7Zu_RUDkGdjDWdSACAfoelaZTiUgIZKQQGJYFXpylZmVvhaYasY0eqAS3wufdz1cIvPQPSFbXZ05lPOy1ZvG-bie5ClxOrmEDnh5NZlbc6p_kD5J6lzeoMskWBZadZ78GFT4buM9Lb0vwPrdwS91LspAE_pkJ913KPo_v7w-E-7UkuV1bCWHZLR1S50S2rovNPGpMPcfP005kHAiWiFHVZmUlo4_F4U9LEg9LykPIApQ-1zVkiugPqshghe-P_0M_6-2Y7yS" />
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div>
+                            <h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Cappuccino</h3>
+                            <p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso
+                                • Foam</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="font-headline font-bold text-primary text-lg">Rp 68.000</span>
+                            <button
+                                class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
+                                <span class="material-symbols-outlined" data-icon="add">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Product Card 4 -->
+                <article
+                    class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col hover:shadow-[0_4px_16px_rgba(26,28,29,0.08)] transition-shadow">
+                    <div class="h-40 bg-surface-variant w-full relative">
+                        <img alt="Mocha" class="w-full h-full object-cover"
+                            data-alt="rich dark chocolate mocha in a glass mug topped with whipped cream and cocoa powder dusting, dark moody background"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOkMajEL57eybz-Q4fZVFJGSlQ54i0PKjRLuIAKpPshZpsiFBOgVEvcbcNGL6JkQK7MLVwPuPpLUE-dqjMDLnH6pHcddpjMOMJ1XV3D0LGbZXhk4KcE7L2m6rGLGFXnM6JCFpFdtM0rqz3tnwT_rjiL8NSdOhF12gl8FkIxTvm-UmBkFOtyDGT8fxjm2jQGHcex7aYCJE818lmqeTufd1WAGvj-bncOTTB2ySrYgITag2IaIuFghVU-xMWYA7uiRWrXpTDKDHu47_u" />
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div>
+                            <h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Mocha</h3>
+                            <p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Espresso
+                                • Chocolate</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="font-headline font-bold text-primary text-lg">Rp 75.000</span>
+                            <button
+                                class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
+                                <span class="material-symbols-outlined" data-icon="add">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Product Card 5 (Out of Stock Example) -->
+                <article
+                    class="bg-surface-container-lowest rounded-DEFAULT overflow-hidden shadow-[0_2px_8px_rgba(26,28,29,0.04)] flex flex-col opacity-75 grayscale-[0.5]">
+                    <div class="h-40 bg-surface-variant w-full relative">
+                        <img alt="Cold Brew" class="w-full h-full object-cover"
+                            data-alt="tall glass of dark cold brew coffee with ice, condensation on the glass, bright sunny cafe window in the background"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtWlp9hs2zVc7buglMP-8cpi2d1-eqCiqF_8RghfhICrYG0L_8JJPkRTd_jL1fGqirkUoi6bOjBkDnu-F_EkleGwKorcnOwX-MplWYnvoUfzioFyNOe1XkwTd5-vk-a1KSJHzKPX7dYRQjvS534olC_lKQjRSkGaQIDb6xPlcplfiAeriS9gxzMSIX0MSErgDgRh9AqVUycmxHeFA0Liq0zpAXU7fBv8pAjXpi1OR8CYvQiaMpjVq2pueP4YbQH6DVmzRVVsxXCdTP" />
+                        <div class="absolute inset-0 bg-surface-variant/40 flex items-center justify-center">
+                            <span
+                                class="bg-tertiary text-on-tertiary px-3 py-1 rounded-sm font-label text-xs font-bold uppercase tracking-wider">Out
+                                of Stock</span>
+                        </div>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div>
+                            <h3 class="font-headline font-semibold text-on-surface text-base md:text-lg">Cold Brew</h3>
+                            <p class="font-label text-xs text-on-surface-variant uppercase tracking-wider mt-1">Steeped
+                                24h</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="font-headline font-bold text-on-surface-variant text-lg">Rp 55.000</span>
+                            <button
+                                class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center cursor-not-allowed">
+                                <span class="material-symbols-outlined" data-icon="add">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+        <!-- Sidebar Cart (Desktop) / Hidden Mobile -->
+        <aside
+            class="hidden md:flex flex-col w-80 lg:w-96 bg-surface-container-low rounded-xl h-[calc(100vh-140px)] sticky top-24 p-5 flex-shrink-0 shadow-inner">
+            <h2 class="font-headline font-bold text-xl text-on-surface mb-6 border-b border-surface-variant pb-4">
+                Current Order</h2>
+            <!-- Cart Items -->
+            <div class="flex-1 overflow-y-auto pr-2 space-y-4 scrollbar-hide">
+                <div
+                    class="flex items-start justify-between gap-3 bg-surface-container-lowest p-3 rounded-DEFAULT shadow-sm">
+                    <div class="flex-1">
+                        <h4 class="font-headline font-semibold text-on-surface text-base">Iced Latte</h4>
+                        <div class="flex flex-wrap gap-1 mt-1">
+                            <span
+                                class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-label uppercase tracking-wide">Oat
+                                Milk</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-headline font-bold text-primary block">Rp 75.000</span>
+                        <div class="flex items-center gap-2 mt-2 bg-surface-container-high rounded-full px-2 py-1">
+                            <button class="text-on-surface-variant hover:text-primary"><span
+                                    class="material-symbols-outlined text-sm" data-icon="remove">remove</span></button>
+                            <span class="font-body text-sm font-semibold w-4 text-center">1</span>
+                            <button class="text-on-surface-variant hover:text-primary"><span
+                                    class="material-symbols-outlined text-sm" data-icon="add">add</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Summary -->
+            <div class="mt-4 pt-4 border-t border-surface-variant space-y-3">
+                <div class="flex justify-between text-on-surface-variant font-body text-sm">
+                    <span>Subtotal</span>
+                    <span>Rp 75.000</span>
+                </div>
+                <div class="flex justify-between text-on-surface-variant font-body text-sm">
+                    <span>Tax</span>
+                    <span>Rp 7.500</span>
+                </div>
+                <div class="flex justify-between items-end mt-2 pt-2 border-t border-surface-variant">
+                    <span class="font-headline font-bold text-on-surface text-lg">Total</span>
+                    <span class="font-headline font-black text-primary text-3xl">Rp 82.500</span>
+                </div>
+                <button
+                    class="w-full mt-4 bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-xl font-headline font-bold text-lg shadow-[0_8px_32px_rgba(0,52,102,0.15)] active:scale-95 transition-transform">
                     Pay Now
                 </button>
-</div>
-</aside>
-</main>
-<!-- Bottom Mobile Cart Action (Visible only on mobile) -->
-<div class="fixed bottom-[88px] left-0 w-full px-4 z-40 md:hidden">
-<button class="w-full bg-surface-container-lowest/90 backdrop-blur-xl border border-outline-variant/20 shadow-[0_-8px_32px_rgba(26,28,29,0.08)] rounded-xl p-4 flex items-center justify-between active:scale-95 transition-transform">
-<div class="flex items-center gap-3">
-<div class="bg-primary-container text-on-primary-container w-10 h-10 rounded-full flex items-center justify-center font-headline font-bold">1</div>
-<div class="text-left">
-<span class="block font-body text-xs text-on-surface-variant uppercase tracking-wider">View Cart</span>
-<span class="block font-headline font-bold text-primary text-lg">Rp 85.000</span>
-</div>
-</div>
-<span class="material-symbols-outlined text-primary" data-icon="chevron_right">chevron_right</span>
-</button>
-</div>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-t-[3rem] no-border tonal-shift-surface shadow-[0_-8px_32px_rgba(26,75,132,0.08)]">
-<button class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="point_of_sale" data-weight="fill" style="font-variation-settings: 'FILL' 1;">point_of_sale</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider hidden">POS</span>
-</button>
-<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="layers">layers</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Queue</span>
-</button>
-<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Reports</span>
-</button>
-<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
-<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
-<span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
-</button>
-</nav>
-</body></html>
+            </div>
+        </aside>
+    </main>
+    <!-- Bottom Mobile Cart Action (Visible only on mobile) -->
+    <div class="fixed bottom-[88px] left-0 w-full px-4 z-40 md:hidden">
+        <button
+            class="w-full bg-surface-container-lowest/90 backdrop-blur-xl border border-outline-variant/20 shadow-[0_-8px_32px_rgba(26,28,29,0.08)] rounded-xl p-4 flex items-center justify-between active:scale-95 transition-transform">
+            <div class="flex items-center gap-3">
+                <div
+                    class="bg-primary-container text-on-primary-container w-10 h-10 rounded-full flex items-center justify-center font-headline font-bold">
+                    1</div>
+                <div class="text-left">
+                    <span class="block font-body text-xs text-on-surface-variant uppercase tracking-wider">View
+                        Cart</span>
+                    <span class="block font-headline font-bold text-primary text-lg">Rp 85.000</span>
+                </div>
+            </div>
+            <span class="material-symbols-outlined text-primary" data-icon="chevron_right">chevron_right</span>
+        </button>
+    </div>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-t-[3rem] no-border tonal-shift-surface shadow-[0_-8px_32px_rgba(26,75,132,0.08)]">
+        <button
+            class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 text-white rounded-full p-3 w-14 h-14 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="point_of_sale" data-weight="fill"
+                style="font-variation-settings: 'FILL' 1;">point_of_sale</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider hidden">POS</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="layers">layers</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Queue</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Reports</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-2 hover:text-blue-600 dark:hover:text-blue-300 active:scale-90 transition-all duration-300 cubic-bezier(0.34,1.56,0.64,1)">
+            <span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
+        </button>
+    </nav>
+</body>
+
+</html>

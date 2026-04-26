@@ -1,173 +1,211 @@
 <!DOCTYPE html>
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hulu Coffee - Payment</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "primary-fixed": "#d5e3ff",
-                    "error": "#ba1a1a",
-                    "secondary-fixed-dim": "#dec29f",
-                    "on-tertiary-fixed": "#2d1604",
-                    "on-error-container": "#93000a",
-                    "surface-container-lowest": "#ffffff",
-                    "on-surface": "#1a1c1d",
-                    "primary-container": "#1a4b84",
-                    "secondary": "#705b3e",
-                    "on-tertiary-fixed-variant": "#5f402a",
-                    "surface-container-highest": "#e2e2e4",
-                    "background": "#f9f9fb",
-                    "on-primary-container": "#93bcfc",
-                    "secondary-fixed": "#fbdeb9",
-                    "on-tertiary-container": "#ddb195",
-                    "inverse-surface": "#2f3132",
-                    "outline": "#737781",
-                    "surface-dim": "#d9dadc",
-                    "tertiary-fixed-dim": "#eabda0",
-                    "surface-container": "#eeeef0",
-                    "surface-tint": "#335f99",
-                    "on-background": "#1a1c1d",
-                    "surface-bright": "#f9f9fb",
-                    "surface": "#f9f9fb",
-                    "surface-container-high": "#e8e8ea",
-                    "on-secondary-fixed-variant": "#564428",
-                    "on-surface-variant": "#424750",
-                    "on-primary-fixed": "#001c3b",
-                    "secondary-container": "#fbdeb9",
-                    "on-primary-fixed-variant": "#144780",
-                    "on-tertiary": "#ffffff",
-                    "surface-variant": "#e2e2e4",
-                    "primary-fixed-dim": "#a6c8ff",
-                    "on-secondary": "#ffffff",
-                    "surface-container-low": "#f3f3f5",
-                    "on-secondary-fixed": "#271903",
-                    "primary": "#003466",
-                    "tertiary": "#492d19",
-                    "inverse-on-surface": "#f0f0f2",
-                    "on-secondary-container": "#766143",
-                    "tertiary-container": "#63432d",
-                    "error-container": "#ffdad6",
-                    "on-primary": "#ffffff",
-                    "outline-variant": "#c3c6d1",
-                    "on-error": "#ffffff",
-                    "inverse-primary": "#a6c8ff",
-                    "tertiary-fixed": "#ffdcc6"
-            },
-            "borderRadius": {
-                    "DEFAULT": "1rem",
-                    "lg": "2rem",
-                    "xl": "3rem",
-                    "full": "9999px"
-            },
-            "spacing": {},
-            "fontFamily": {
-                    "headline": [
-                            "Manrope"
-                    ],
-                    "body": [
-                            "Inter"
-                    ],
-                    "label": [
-                            "Inter"
-                    ]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Hulu Coffee - Payment</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <script id="tailwind-config">
+                tailwind.config = {
+                        darkMode: "class",
+                        theme: {
+                                extend: {
+                                        "colors": {
+                                                "primary-fixed": "#d5e3ff",
+                                                "error": "#ba1a1a",
+                                                "secondary-fixed-dim": "#dec29f",
+                                                "on-tertiary-fixed": "#2d1604",
+                                                "on-error-container": "#93000a",
+                                                "surface-container-lowest": "#ffffff",
+                                                "on-surface": "#1a1c1d",
+                                                "primary-container": "#1a4b84",
+                                                "secondary": "#705b3e",
+                                                "on-tertiary-fixed-variant": "#5f402a",
+                                                "surface-container-highest": "#e2e2e4",
+                                                "background": "#f9f9fb",
+                                                "on-primary-container": "#93bcfc",
+                                                "secondary-fixed": "#fbdeb9",
+                                                "on-tertiary-container": "#ddb195",
+                                                "inverse-surface": "#2f3132",
+                                                "outline": "#737781",
+                                                "surface-dim": "#d9dadc",
+                                                "tertiary-fixed-dim": "#eabda0",
+                                                "surface-container": "#eeeef0",
+                                                "surface-tint": "#335f99",
+                                                "on-background": "#1a1c1d",
+                                                "surface-bright": "#f9f9fb",
+                                                "surface": "#f9f9fb",
+                                                "surface-container-high": "#e8e8ea",
+                                                "on-secondary-fixed-variant": "#564428",
+                                                "on-surface-variant": "#424750",
+                                                "on-primary-fixed": "#001c3b",
+                                                "secondary-container": "#fbdeb9",
+                                                "on-primary-fixed-variant": "#144780",
+                                                "on-tertiary": "#ffffff",
+                                                "surface-variant": "#e2e2e4",
+                                                "primary-fixed-dim": "#a6c8ff",
+                                                "on-secondary": "#ffffff",
+                                                "surface-container-low": "#f3f3f5",
+                                                "on-secondary-fixed": "#271903",
+                                                "primary": "#003466",
+                                                "tertiary": "#492d19",
+                                                "inverse-on-surface": "#f0f0f2",
+                                                "on-secondary-container": "#766143",
+                                                "tertiary-container": "#63432d",
+                                                "error-container": "#ffdad6",
+                                                "on-primary": "#ffffff",
+                                                "outline-variant": "#c3c6d1",
+                                                "on-error": "#ffffff",
+                                                "inverse-primary": "#a6c8ff",
+                                                "tertiary-fixed": "#ffdcc6"
+                                        },
+                                        "borderRadius": {
+                                                "DEFAULT": "1rem",
+                                                "lg": "2rem",
+                                                "xl": "3rem",
+                                                "full": "9999px"
+                                        },
+                                        "spacing": {},
+                                        "fontFamily": {
+                                                "headline": [
+                                                        "Manrope"
+                                                ],
+                                                "body": [
+                                                        "Inter"
+                                                ],
+                                                "label": [
+                                                        "Inter"
+                                                ]
+                                        }
+                                },
+                        },
+                }
+        </script>
+        <style>
+                body {
+                        min-height: max(884px, 100dvh);
+                }
+        </style>
 </head>
+
 <body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col">
-<!-- TopAppBar JSON -->
-<header class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 bg-slate-100 dark:bg-slate-800 shadow-sm shadow-blue-900/5">
-<div class="flex items-center gap-4">
-<button class="p-2 text-primary active:scale-95 transition-transform duration-200 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_back</span>
-</button>
-<h1 class="font-['Manrope'] font-bold text-lg tracking-tight text-blue-900 dark:text-blue-400">Hulu Coffee - Downtown Booth</h1>
-</div>
-<div>
-<span class="material-symbols-outlined text-blue-900 dark:text-blue-400" style="font-variation-settings: 'FILL' 1;">sensors</span>
-</div>
-</header>
-<!-- Main Content Area -->
-<main class="flex-grow pt-24 pb-32 px-6 md:px-12 flex flex-col md:flex-row gap-8 max-w-7xl mx-auto w-full">
-<!-- Left Column: Payment Methods & Details -->
-<div class="flex-1 flex flex-col gap-6">
-<!-- Order Summary Card -->
-<div class="bg-surface-container-low rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)]">
-<h2 class="font-headline font-bold text-xl mb-4 text-on-surface">Order Summary</h2>
-<div class="flex justify-between items-end mb-2">
-<span class="font-body text-on-surface-variant">Total Amount</span>
-<span class="font-headline font-black text-4xl text-primary">Rp 350.000</span>
-</div>
-<div class="text-sm font-label text-on-surface-variant flex gap-2 items-center"><span class="material-symbols-outlined text-sm">receipt_long</span>
-                    Order #HC-8830</div>
-</div>
-<!-- Payment Method Selection -->
-<div class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)]">
-<h3 class="font-headline font-bold text-lg mb-4 text-on-surface">Select Payment Method</h3>
-<div class="grid grid-cols-2 gap-4">
-<!-- QRIS Selected State -->
-<button class="flex flex-col items-center justify-center gap-3 p-4 rounded-DEFAULT bg-primary-container text-on-primary-container border-2 border-transparent transition-all active:scale-95">
-<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
-<span class="font-label font-bold tracking-wide">QRIS</span>
-</button>
-<!-- Cash Unselected State -->
-<button class="flex flex-col items-center justify-center gap-3 p-4 rounded-DEFAULT bg-surface-container-high text-on-surface hover:bg-surface-variant transition-all active:scale-95">
-<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">payments</span>
-<span class="font-label font-bold tracking-wide">Cash</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Right Column: QR Area & Confirmation -->
-<div class="flex-1 flex flex-col gap-6">
-<!-- QR Display Area (Active for QRIS) -->
-<div class="bg-surface-container-lowest rounded-lg p-8 flex flex-col items-center justify-center shadow-[0_8px_32px_rgba(26,28,29,0.06)] relative overflow-hidden">
-<!-- Decorative gradient blob -->
-<div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-fixed-dim/30 to-transparent rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
-<h3 class="font-headline font-bold text-xl mb-2 text-on-surface text-center z-10">Scan to Pay</h3>
-<p class="font-body text-sm text-on-surface-variant mb-8 text-center z-10 max-w-[250px]">Open your banking or e-wallet app and scan the QR code below.</p>
-<!-- Mock QR Code Box -->
-<div class="w-64 h-64 bg-white p-4 rounded-DEFAULT shadow-sm border border-surface-variant z-10 relative flex items-center justify-center">
-<!-- In a real app, an img tag with the QR code would go here -->
-<img alt="Mock QR Code" class="w-full h-full object-cover rounded-sm opacity-80 mix-blend-multiply" data-alt="high contrast abstract geometric black and white square pattern resembling a qr code on a white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrG3KlEAVkrLEAW_t6JBo6QXGRt7QLVpTk7U7rZ2EYM4GptK-CKeEPmdbkik1XpYXtOiD7h7bL1I5fSdnl-VMDrMZ5gASt90YU39Phn3Ux1c7uO2dWjM-JU5rTUt1eEjEi5XPF-iKWvz9ubdIO90M1ScfVzQECO_1l5gOme1de9QDlxbaWrdj7KR6jtxBTMk1nAOI4NWaGtdz7uANuQyHEmG92p78fM2Oj0c7JKhjlI_CPzGCktJwRzTga7CL7xYttXBYxupWI9DiB"/>
-<!-- Scanning overlay line -->
-<div class="absolute top-1/2 left-4 right-4 h-0.5 bg-primary shadow-[0_0_8px_rgba(0,52,102,0.8)]"></div>
-</div>
-<!-- Status & Timer -->
-<div class="mt-8 flex items-center gap-4 bg-surface-container-high px-4 py-2 rounded-full z-10">
-<div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-<span class="font-label font-semibold text-sm">Waiting for payment...</span>
-</div>
-<div class="w-px h-4 bg-outline-variant/30"></div>
-<span class="font-label font-bold text-tertiary">04:59</span>
-</div>
-</div>
-<!-- Action Area -->
-<div class="mt-auto">
-<button class="w-full py-4 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-lg shadow-[0_8px_24px_rgba(0,52,102,0.2)] active:scale-95 transition-transform duration-200 flex items-center justify-center gap-2">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    Confirm Payment
-                </button>
-</div>
-</div>
-</main>
-<!-- BottomNavBar JSON (Suppressed as this is a transactional screen, per rules) -->
-<!-- Navigation shell is hidden to prioritize the focused checkout canvas -->
-</body></html>
+        <!-- TopAppBar JSON -->
+        <header
+                class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 bg-slate-100 dark:bg-slate-800 shadow-sm shadow-blue-900/5">
+                <div class="flex items-center gap-4">
+                        <button
+                                class="p-2 text-primary active:scale-95 transition-transform duration-200 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">arrow_back</span>
+                        </button>
+                        <h1 class="font-['Manrope'] font-bold text-lg tracking-tight text-blue-900 dark:text-blue-400">
+                                Hulu Coffee</h1>
+                </div>
+                <div>
+                        <span class="material-symbols-outlined text-blue-900 dark:text-blue-400"
+                                style="font-variation-settings: 'FILL' 1;">sensors</span>
+                </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="flex-grow pt-24 pb-32 px-6 md:px-12 flex flex-col md:flex-row gap-8 max-w-7xl mx-auto w-full">
+                <!-- Left Column: Payment Methods & Details -->
+                <div class="flex-1 flex flex-col gap-6">
+                        <!-- Order Summary Card -->
+                        <div
+                                class="bg-surface-container-low rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)]">
+                                <h2 class="font-headline font-bold text-xl mb-4 text-on-surface">Order Summary</h2>
+                                <div class="flex justify-between items-end mb-2">
+                                        <span class="font-body text-on-surface-variant">Total Amount</span>
+                                        <span class="font-headline font-black text-4xl text-primary">Rp 350.000</span>
+                                </div>
+                                <div class="text-sm font-label text-on-surface-variant flex gap-2 items-center"><span
+                                                class="material-symbols-outlined text-sm">receipt_long</span>
+                                        Order #HC-8830</div>
+                        </div>
+                        <!-- Payment Method Selection -->
+                        <div
+                                class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_8px_32px_rgba(26,28,29,0.06)]">
+                                <h3 class="font-headline font-bold text-lg mb-4 text-on-surface">Select Payment Method
+                                </h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                        <!-- QRIS Selected State -->
+                                        <button
+                                                class="flex flex-col items-center justify-center gap-3 p-4 rounded-DEFAULT bg-primary-container text-on-primary-container border-2 border-transparent transition-all active:scale-95">
+                                                <span class="material-symbols-outlined text-3xl"
+                                                        style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+                                                <span class="font-label font-bold tracking-wide">QRIS</span>
+                                        </button>
+                                        <!-- Cash Unselected State -->
+                                        <button
+                                                class="flex flex-col items-center justify-center gap-3 p-4 rounded-DEFAULT bg-surface-container-high text-on-surface hover:bg-surface-variant transition-all active:scale-95">
+                                                <span class="material-symbols-outlined text-3xl"
+                                                        style="font-variation-settings: 'FILL' 0;">payments</span>
+                                                <span class="font-label font-bold tracking-wide">Cash</span>
+                                        </button>
+                                </div>
+                        </div>
+                </div>
+                <!-- Right Column: QR Area & Confirmation -->
+                <div class="flex-1 flex flex-col gap-6">
+                        <!-- QR Display Area (Active for QRIS) -->
+                        <div
+                                class="bg-surface-container-lowest rounded-lg p-8 flex flex-col items-center justify-center shadow-[0_8px_32px_rgba(26,28,29,0.06)] relative overflow-hidden">
+                                <!-- Decorative gradient blob -->
+                                <div
+                                        class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-fixed-dim/30 to-transparent rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none">
+                                </div>
+                                <h3 class="font-headline font-bold text-xl mb-2 text-on-surface text-center z-10">Scan
+                                        to Pay</h3>
+                                <p
+                                        class="font-body text-sm text-on-surface-variant mb-8 text-center z-10 max-w-[250px]">
+                                        Open your banking or e-wallet app and scan the QR code below.</p>
+                                <!-- Mock QR Code Box -->
+                                <div
+                                        class="w-64 h-64 bg-white p-4 rounded-DEFAULT shadow-sm border border-surface-variant z-10 relative flex items-center justify-center">
+                                        <!-- In a real app, an img tag with the QR code would go here -->
+                                        <img alt="Mock QR Code"
+                                                class="w-full h-full object-cover rounded-sm opacity-80 mix-blend-multiply"
+                                                data-alt="high contrast abstract geometric black and white square pattern resembling a qr code on a white background"
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrG3KlEAVkrLEAW_t6JBo6QXGRt7QLVpTk7U7rZ2EYM4GptK-CKeEPmdbkik1XpYXtOiD7h7bL1I5fSdnl-VMDrMZ5gASt90YU39Phn3Ux1c7uO2dWjM-JU5rTUt1eEjEi5XPF-iKWvz9ubdIO90M1ScfVzQECO_1l5gOme1de9QDlxbaWrdj7KR6jtxBTMk1nAOI4NWaGtdz7uANuQyHEmG92p78fM2Oj0c7JKhjlI_CPzGCktJwRzTga7CL7xYttXBYxupWI9DiB" />
+                                        <!-- Scanning overlay line -->
+                                        <div
+                                                class="absolute top-1/2 left-4 right-4 h-0.5 bg-primary shadow-[0_0_8px_rgba(0,52,102,0.8)]">
+                                        </div>
+                                </div>
+                                <!-- Status & Timer -->
+                                <div
+                                        class="mt-8 flex items-center gap-4 bg-surface-container-high px-4 py-2 rounded-full z-10">
+                                        <div class="flex items-center gap-2 text-primary">
+                                                <span
+                                                        class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                                                <span class="font-label font-semibold text-sm">Waiting for
+                                                        payment...</span>
+                                        </div>
+                                        <div class="w-px h-4 bg-outline-variant/30"></div>
+                                        <span class="font-label font-bold text-tertiary">04:59</span>
+                                </div>
+                        </div>
+                        <!-- Action Area -->
+                        <div class="mt-auto">
+                                <button
+                                        class="w-full py-4 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-lg shadow-[0_8px_24px_rgba(0,52,102,0.2)] active:scale-95 transition-transform duration-200 flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined"
+                                                style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        Confirm Payment
+                                </button>
+                        </div>
+                </div>
+        </main>
+        <!-- BottomNavBar JSON (Suppressed as this is a transactional screen, per rules) -->
+        <!-- Navigation shell is hidden to prioritize the focused checkout canvas -->
+</body>
+
+</html>

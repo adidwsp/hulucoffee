@@ -364,7 +364,7 @@ class _QrisPaymentScreenState extends ConsumerState<QrisPaymentScreen> with Sing
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.check_circle_outline, color: Colors.white),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Text('Confirm Payment', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white)),
               ],
             ),

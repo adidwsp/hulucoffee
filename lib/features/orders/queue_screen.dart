@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hulu_coffee_pos/core/config/theme.dart';
+import 'package:hulu_coffee_pos/shared/widgets/app_header.dart';
+import 'package:hulu_coffee_pos/shared/widgets/app_bottom_nav.dart';
 
 class OrderQueueScreen extends StatelessWidget {
   const OrderQueueScreen({super.key});
@@ -8,9 +10,10 @@ class OrderQueueScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.surface,
+      appBar: const AppHeader(),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 1),
       body: Column(
         children: [
-          _buildAppBar(context),
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -28,7 +31,8 @@ class OrderQueueScreen extends StatelessWidget {
                         orderId: '#042',
                         time: '4m',
                         items: [
-                          _OrderItem('Iced Latte', options: ['Oat Milk', 'Extra Shot']),
+                          _OrderItem('Iced Latte',
+                              options: ['Oat Milk', 'Extra Shot']),
                           _OrderItem('Cortado'),
                         ],
                         actionLabel: 'Start Preparing',
@@ -96,41 +100,6 @@ class OrderQueueScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.primary.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.storefront, color: AppTheme.primary),
-              const SizedBox(width: 12),
-              Text(
-                'Hulu Coffee - Downtown',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppTheme.primary,
-                ),
-              ),
-            ],
-          ),
-          const Icon(Icons.sensors, color: AppTheme.primary),
-        ],
-      ),
-    );
-  }
-
   Widget _buildQueueColumn(
     BuildContext context, {
     required String title,
@@ -160,12 +129,13 @@ class OrderQueueScreen extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.primary,
-                      fontWeight: FontWeight.w900,
-                    ),
+                          color: AppTheme.primary,
+                          fontWeight: FontWeight.w900,
+                        ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppTheme.surfaceVariant,
                       borderRadius: BorderRadius.circular(100),
@@ -240,20 +210,29 @@ class OrderQueueScreen extends StatelessWidget {
                   Text(
                     orderId,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      color: isDone ? AppTheme.outline : AppTheme.onSurface,
-                    ),
+                          fontWeight: FontWeight.w900,
+                          color: isDone ? AppTheme.outline : AppTheme.onSurface,
+                        ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: isDone ? Colors.transparent : (isActive ? AppTheme.primaryContainer.withOpacity(0.2) : AppTheme.error.withOpacity(0.1)),
+                      color: isDone
+                          ? Colors.transparent
+                          : (isActive
+                              ? AppTheme.primaryContainer.withOpacity(0.2)
+                              : AppTheme.error.withOpacity(0.1)),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       time,
                       style: TextStyle(
-                        color: isDone ? AppTheme.outline : (isActive ? AppTheme.primaryContainer : AppTheme.error),
+                        color: isDone
+                            ? AppTheme.outline
+                            : (isActive
+                                ? AppTheme.primaryContainer
+                                : AppTheme.error),
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
                       ),
@@ -263,48 +242,60 @@ class OrderQueueScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ...items.map((item) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        decoration: isDone ? TextDecoration.lineThrough : null,
-                        color: isDone ? AppTheme.outline : AppTheme.onSurface,
-                      ),
-                    ),
-                    if (item.options != null && item.options!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
-                        child: Wrap(
-                          spacing: 8,
-                          children: item.options!.map((opt) => Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: AppTheme.secondaryContainer.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              opt,
-                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                            ),
-                          )).toList(),
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            decoration:
+                                isDone ? TextDecoration.lineThrough : null,
+                            color:
+                                isDone ? AppTheme.outline : AppTheme.onSurface,
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-              )).toList(),
+                        if (item.options != null && item.options!.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Wrap(
+                              spacing: 8,
+                              children: item.options!
+                                  .map((opt) => Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.secondaryContainer
+                                              .withOpacity(0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          opt,
+                                          style: const TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: onAction,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isActive ? AppTheme.primary : AppTheme.surfaceContainerHighest,
-                    foregroundColor: isActive ? Colors.white : AppTheme.onSurface,
+                    backgroundColor: isActive
+                        ? AppTheme.primary
+                        : AppTheme.surfaceContainerHighest,
+                    foregroundColor:
+                        isActive ? Colors.white : AppTheme.onSurface,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
