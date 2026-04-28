@@ -32,9 +32,9 @@ class ProductCard extends StatelessWidget {
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppTheme.surfaceContainerHighest,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16),
                       topRight: Radius.circular(16),
                     ),
@@ -103,7 +103,7 @@ class ProductCard extends StatelessWidget {
                           child: Container(
                             width: 36,
                             height: 36,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppTheme.surfaceContainer,
                               shape: BoxShape.circle,
                             ),

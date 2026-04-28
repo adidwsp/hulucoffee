@@ -42,7 +42,6 @@ class AppTheme {
         secondaryContainer: secondaryContainer,
         onSecondaryContainer: onSecondaryContainer,
         surface: surface,
-        surfaceVariant: surfaceVariant,
         surfaceContainerLow: surfaceContainerLow,
         surfaceContainerHigh: surfaceContainerHigh,
         surfaceContainerHighest: surfaceContainerHighest,
@@ -116,7 +115,7 @@ class AppTheme {
           elevation: 0,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 2,
         shadowColor: Colors.black.withOpacity(0.05),

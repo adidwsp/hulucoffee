@@ -72,10 +72,10 @@ class MenuManagementScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('Menu Management',
                             style: TextStyle(
                                 fontFamily: 'Manrope',
@@ -356,7 +356,7 @@ class MenuManagementScreen extends ConsumerWidget {
                           .read(productNotifierProvider.notifier)
                           .toggleAvailability(product);
                     },
-                    activeColor: AppTheme.primary,
+                    activeThumbColor: AppTheme.primary,
                   ),
                   const SizedBox(width: 8),
                   Text(

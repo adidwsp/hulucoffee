@@ -104,7 +104,7 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<ProductCategory>(
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 decoration: const InputDecoration(labelText: 'Category'),
                 items: ProductCategory.values
                     .where((c) => c != ProductCategory.all)

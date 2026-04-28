@@ -17,14 +17,18 @@ dependencies:
   uuid: ^4.3.3
   sqflite: ^2.4.1
   path_provider: ^2.1.5
-  sqflite_common_ffi: ^2.3.4+4
-  sqflite_common_ffi_web: ^0.4.5+4
+  sqflite_common_ffi: ^2.3.4
   sqlite3_flutter_libs: ^0.5.42
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+
+dependency_overrides:
+  sqlite3: '>=2.0.0 <3.0.0'
+  sqflite_common_ffi: 2.3.4+4
+  path_provider_android: 2.2.23
 
 flutter:
   uses-material-design: true

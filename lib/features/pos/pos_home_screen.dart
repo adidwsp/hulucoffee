@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/shared/models/product_models.dart';

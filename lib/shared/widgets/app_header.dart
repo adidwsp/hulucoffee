@@ -18,7 +18,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Row(
         children: [
-          Icon(Icons.storefront, color: AppTheme.primary),
+          const Icon(Icons.storefront, color: AppTheme.primary),
           const SizedBox(width: 8),
           Text(
             title,
