@@ -34,8 +34,13 @@ class ProductNotifier extends StateNotifier<AsyncValue<List<Product>>> {
     await loadProducts();
   }
 
+  Future<void> deleteProduct(String id) async {
+    await repository.deleteProduct(id);
+    await loadProducts();
+  }
+
   Future<void> toggleAvailability(Product product) async {
-    final updatedProduct = Product(
+    final updated = Product(
       id: product.id,
       name: product.name,
       description: product.description,
@@ -44,12 +49,13 @@ class ProductNotifier extends StateNotifier<AsyncValue<List<Product>>> {
       category: product.category,
       isAvailable: !product.isAvailable,
     );
-    await repository.updateProduct(updatedProduct);
+    await repository.updateProduct(updated);
     await loadProducts();
   }
 }
 
-final productNotifierProvider = StateNotifierProvider<ProductNotifier, AsyncValue<List<Product>>>((ref) {
+final productNotifierProvider =
+    StateNotifierProvider<ProductNotifier, AsyncValue<List<Product>>>((ref) {
   final repository = ref.watch(productRepositoryProvider);
   return ProductNotifier(repository);
 });

@@ -20,6 +20,8 @@ dependencies:
   sqflite_common_ffi: ^2.3.4
   sqflite_common_ffi_web: ^0.4.5+4
   sqlite3_flutter_libs: ^0.5.42
+  image_picker: ^0.8.9
+  flutter_image_compress: ^2.3.0
 
 dev_dependencies:
   flutter_test:

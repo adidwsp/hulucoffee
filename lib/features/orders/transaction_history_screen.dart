@@ -1,42 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+
 import 'package:hulu_coffee_pos/core/config/theme.dart';
+import 'package:hulu_coffee_pos/features/orders/transaction_provider.dart';
+import 'package:hulu_coffee_pos/shared/models/transaction_model.dart';
 import 'package:hulu_coffee_pos/shared/widgets/app_bottom_nav.dart';
 
-class TransactionHistoryScreen extends StatefulWidget {
+final _filterProvider = StateProvider<String>((ref) => 'all');
+
+class TransactionHistoryScreen extends ConsumerWidget {
   const TransactionHistoryScreen({super.key});
 
   @override
-  State<TransactionHistoryScreen> createState() =>
-      _TransactionHistoryScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filter = ref.watch(_filterProvider);
 
-class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+    final AsyncValue<List<Transaction>> txAsync = filter == 'all'
+        ? ref.watch(allTransactionsProvider)
+        : filter == 'today'
+            ? ref.watch(todayTransactionsProvider)
+            : ref.watch(weekTransactionsProvider);
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.background,
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        headerSliverBuilder: (context, _) => [
           SliverAppBar(
             pinned: true,
             expandedHeight: 120,
             backgroundColor: AppTheme.primary,
-            elevation: 0,
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
@@ -50,57 +43,62 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
                 child: SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Transaction History',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'All your completed orders',
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      const Text('Transaction History',
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
+                      const SizedBox(height: 4),
+                      Text('All completed orders',
+                          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 13)),
+                    ]),
                   ),
                 ),
               ),
             ),
-            bottom: TabBar(
-              controller: _tabController,
-              indicatorColor: Colors.white,
-              indicatorWeight: 3,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white60,
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 13,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(48),
+              child: Container(
+                color: AppTheme.primary,
+                child: Row(
+                  children: ['all', 'today', 'week'].map((f) {
+                    final label = f == 'all' ? 'All' : f == 'today' ? 'Today' : 'This Week';
+                    final selected = filter == f;
+                    return Expanded(
+                      child: GestureDetector(
+                        onTap: () => ref.read(_filterProvider.notifier).state = f,
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  color: selected ? Colors.white : Colors.transparent, width: 3),
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(label,
+                              style: TextStyle(
+                                  color: selected ? Colors.white : Colors.white60,
+                                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                                  fontSize: 13)),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-              tabs: const [
-                Tab(text: 'All'),
-                Tab(text: 'Today'),
-                Tab(text: 'This Week'),
-              ],
             ),
           ),
         ],
-        body: TabBarView(
-          controller: _tabController,
-          children: const [
-            _TransactionList(filter: 'all'),
-            _TransactionList(filter: 'today'),
-            _TransactionList(filter: 'week'),
-          ],
+        body: txAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(child: Text('Error: $e')),
+          data: (txList) => txList.isEmpty
+              ? _EmptyState()
+              : ListView.separated(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: txList.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (context, i) => _TxCard(tx: txList[i]),
+                ),
         ),
       ),
       bottomNavigationBar: const AppBottomNav(currentIndex: 3),
@@ -108,80 +106,77 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
   }
 }
 
-class _TransactionList extends StatelessWidget {
-  final String filter;
-  const _TransactionList({required this.filter});
+class _TxCard extends StatelessWidget {
+  final Transaction tx;
+  const _TxCard({required this.tx});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Wire to real transaction data from DB
-    // For now, showing empty state
+    final fmt = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final timeFmt = DateFormat('HH:mm');
+    final dateFmt = DateFormat('d MMM yyyy');
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48, height: 48,
+            decoration: BoxDecoration(
+              color: AppTheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.receipt_rounded, color: AppTheme.primary, size: 24),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text(tx.orderNumber,
+                    style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+                Text(fmt.format(tx.total),
+                    style: const TextStyle(fontWeight: FontWeight.w800, color: AppTheme.primary)),
+              ]),
+              const SizedBox(height: 4),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('${tx.itemCount} item${tx.itemCount == 1 ? '' : 's'} · ${tx.paymentMethod}',
+                    style: TextStyle(fontSize: 12, color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7))),
+                Text('${dateFmt.format(tx.createdAt)} ${timeFmt.format(tx.createdAt)}',
+                    style: TextStyle(fontSize: 11, color: AppTheme.onSurfaceVariant.withValues(alpha: 0.5))),
+              ]),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 96,
-              height: 96,
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceContainerHigh,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.receipt_long_rounded,
-                size: 48,
-                color: AppTheme.onSurfaceVariant.withValues(alpha: 0.3),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'No Transactions Yet',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: AppTheme.onSurface,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Transactions will appear here\nonce you complete your first order.',
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            width: 80, height: 80,
+            decoration: BoxDecoration(color: AppTheme.surfaceContainerHigh, shape: BoxShape.circle),
+            child: Icon(Icons.receipt_long_rounded, size: 40,
+                color: AppTheme.onSurfaceVariant.withValues(alpha: 0.3)),
+          ),
+          const SizedBox(height: 16),
+          const Text('No Transactions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 8),
+          Text('Complete an order from the POS to see it here.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.onSurfaceVariant.withValues(alpha: 0.6),
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: AppTheme.primary.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: AppTheme.primary.withValues(alpha: 0.2)),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.point_of_sale_rounded,
-                      color: AppTheme.primary, size: 18),
-                  SizedBox(width: 8),
-                  Text(
-                    'Go to POS to take an order',
-                    style: TextStyle(
-                      color: AppTheme.primary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+              style: TextStyle(color: AppTheme.onSurfaceVariant.withValues(alpha: 0.6), fontSize: 13)),
+        ]),
       ),
     );
   }

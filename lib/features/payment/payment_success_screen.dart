@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:hulu_coffee_pos/core/config/theme.dart';
+import 'package:hulu_coffee_pos/core/database/transaction_repository.dart';
+import 'package:hulu_coffee_pos/features/orders/transaction_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/cart_provider.dart';
 
 class PaymentSuccessScreen extends ConsumerWidget {
@@ -12,38 +14,24 @@ class PaymentSuccessScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
-    final formatCurrency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final fmt = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
       backgroundColor: AppTheme.surface,
       body: Stack(
         children: [
-          // Background accents
           Positioned(
-            top: -100,
-            left: -100,
-            child: Container(
-              width: 500,
-              height: 500,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppTheme.primaryFixedDim.withOpacity(0.2),
-              ),
-            ),
+            top: -100, left: -100,
+            child: Container(width: 400, height: 400,
+              decoration: BoxDecoration(shape: BoxShape.circle,
+                color: AppTheme.primaryFixedDim.withValues(alpha: 0.2))),
           ),
           Positioned(
-            bottom: -150,
-            right: -150,
-            child: Container(
-              width: 400,
-              height: 400,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppTheme.secondaryFixed.withOpacity(0.2),
-              ),
-            ),
+            bottom: -150, right: -150,
+            child: Container(width: 400, height: 400,
+              decoration: BoxDecoration(shape: BoxShape.circle,
+                color: AppTheme.secondaryFixed.withValues(alpha: 0.2))),
           ),
-          
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -51,175 +39,76 @@ class PaymentSuccessScreen extends ConsumerWidget {
                 constraints: const BoxConstraints(maxWidth: 480),
                 padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.95),
                   borderRadius: BorderRadius.circular(32),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.onSurface.withOpacity(0.06),
-                      blurRadius: 32,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 32, offset: const Offset(0, 8))],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Success Icon
                     Container(
-                      width: 96,
-                      height: 96,
-                      decoration: const BoxDecoration(
-                        color: AppTheme.secondaryContainer,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.check_circle,
-                        color: AppTheme.onSecondaryContainer,
-                        size: 48,
-                      ),
+                      width: 96, height: 96,
+                      decoration: const BoxDecoration(color: AppTheme.secondaryContainer, shape: BoxShape.circle),
+                      child: const Icon(Icons.check_circle_rounded, color: AppTheme.onSecondaryContainer, size: 52),
                     ),
-                    const SizedBox(height: 32),
-                    Text(
-                      'Payment Successful',
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
+                    const SizedBox(height: 24),
+                    Text('Payment Successful',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900)),
                     const SizedBox(height: 8),
-                    Text(
-                      'Your transaction has been processed.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppTheme.onSurfaceVariant,
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 40),
-                    
-                    // Order Summary Box
+                    Text('Transaction has been saved.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.onSurfaceVariant)),
+                    const SizedBox(height: 32),
                     Container(
-                      padding: const EdgeInsets.all(32),
-                      decoration: BoxDecoration(
-                        color: AppTheme.surfaceContainerLow,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(color: AppTheme.surfaceContainerLow, borderRadius: BorderRadius.circular(20)),
                       child: Column(
                         children: [
-                          Text(
-                            'ORDER NUMBER',
+                          Text('TOTAL PAID',
                             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppTheme.onSurfaceVariant,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                              color: AppTheme.onSurfaceVariant, letterSpacing: 1.5, fontWeight: FontWeight.w700)),
                           const SizedBox(height: 8),
-                          Text(
-                            '#042',
-                            style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                              color: AppTheme.primary,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          const Divider(height: 1),
-                          const SizedBox(height: 24),
-                          Text(
-                            'Total Paid',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppTheme.onSurfaceVariant,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            formatCurrency.format(cartState.subtotal),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 28,
-                            ),
-                          ),
+                          Text(fmt.format(cartState.subtotal),
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.w900, color: AppTheme.primary)),
+                          const SizedBox(height: 16),
+                          const Divider(),
+                          const SizedBox(height: 8),
+                          Text('${cartState.itemCount} item${cartState.itemCount == 1 ? '' : 's'} • QRIS',
+                            style: TextStyle(color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7), fontSize: 13)),
                         ],
                       ),
                     ),
-                    
-                    const SizedBox(height: 40),
-                    
-                    // Action Buttons
+                    const SizedBox(height: 32),
                     SizedBox(
-                      width: double.infinity,
-                      height: 60,
-                      child: ElevatedButton(
+                      width: double.infinity, height: 56,
+                      child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Clear cart and return to home
+                          backgroundColor: AppTheme.primary, foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                        onPressed: () async {
+                          // Save transaction then clear cart
+                          final repo = ref.read(transactionRepositoryProvider);
+                          await repo.saveFromCart(cartState);
+                          ref.invalidate(allTransactionsProvider);
+                          ref.invalidate(todayStatsProvider);
                           ref.read(cartProvider.notifier).clearCart();
-                          context.goNamed('home');
+                          if (context.mounted) context.goNamed('home');
                         },
-                        child: Ink(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [AppTheme.primary, AppTheme.primaryContainer],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add, color: Colors.white, size: 20),
-                                SizedBox(width: 8),
-                                Text(
-                                  'New Order',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        icon: const Icon(Icons.add_rounded),
+                        label: const Text('New Order', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                     ),
                     const SizedBox(height: 12),
                     SizedBox(
-                      width: double.infinity,
-                      height: 60,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.surfaceContainerHigh,
+                      width: double.infinity, height: 56,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
                           foregroundColor: AppTheme.onSurface,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.receipt_long_outlined, size: 20),
-                            SizedBox(width: 8),
-                            Text(
-                              'Print Receipt',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
+                          side: const BorderSide(color: AppTheme.outlineVariant),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                        onPressed: () => context.goNamed('history'),
+                        icon: const Icon(Icons.history_rounded),
+                        label: const Text('View History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                     ),
                   ],
