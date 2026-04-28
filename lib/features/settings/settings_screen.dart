@@ -12,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.surfaceContainerLow,
       appBar: const AppHeader(title: 'Settings'),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 3),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 4),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

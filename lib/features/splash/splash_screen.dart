@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         // Normally we'd check auth state here, for now redirect to Login
-        context.goNamed('login');
+        context.goNamed('dashboard');
       }
     });
   }

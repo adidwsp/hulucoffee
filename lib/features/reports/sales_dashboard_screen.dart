@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/shared/widgets/app_header.dart';
-import 'package:hulu_coffee_pos/shared/widgets/app_bottom_nav.dart';
+
 
 class SalesDashboardScreen extends StatelessWidget {
   const SalesDashboardScreen({super.key});
@@ -11,7 +11,7 @@ class SalesDashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.surface,
       appBar: const AppHeader(),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
+
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(

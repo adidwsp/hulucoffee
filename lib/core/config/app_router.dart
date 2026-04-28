@@ -2,11 +2,12 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hulu_coffee_pos/features/splash/splash_screen.dart';
 import 'package:hulu_coffee_pos/features/auth/presentation/screens/login_screen.dart';
+import 'package:hulu_coffee_pos/features/dashboard/dashboard_screen.dart';
 import 'package:hulu_coffee_pos/features/pos/pos_home_screen.dart';
 import 'package:hulu_coffee_pos/features/cart_order/cart_screen.dart';
 import 'package:hulu_coffee_pos/features/payment/qris_payment_screen.dart';
 import 'package:hulu_coffee_pos/features/payment/payment_success_screen.dart';
-import 'package:hulu_coffee_pos/features/orders/queue_screen.dart';
+import 'package:hulu_coffee_pos/features/orders/transaction_history_screen.dart';
 import 'package:hulu_coffee_pos/features/reports/sales_dashboard_screen.dart';
 import 'package:hulu_coffee_pos/features/menu/menu_management_screen.dart';
 import 'package:hulu_coffee_pos/features/settings/settings_screen.dart';
@@ -24,6 +25,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/login',
         name: 'login',
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) => const DashboardScreen(),
       ),
       GoRoute(
         path: '/home',
@@ -46,9 +52,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const PaymentSuccessScreen(),
       ),
       GoRoute(
-        path: '/queue',
-        name: 'queue',
-        builder: (context, state) => const OrderQueueScreen(),
+        path: '/history',
+        name: 'history',
+        builder: (context, state) => const TransactionHistoryScreen(),
       ),
       GoRoute(
         path: '/reports',

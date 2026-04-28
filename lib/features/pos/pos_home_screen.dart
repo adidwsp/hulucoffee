@@ -168,7 +168,7 @@ class PosHomeScreen extends ConsumerWidget {
           const CartSummaryPill(),
         ],
       ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 0),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
     );
   }
 }
