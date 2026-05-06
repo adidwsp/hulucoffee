@@ -140,13 +140,7 @@ class PosHomeScreen extends ConsumerWidget {
                                   ref
                                       .read(cartProvider.notifier)
                                       .addToCart(product, options: options);
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content:
-                                        Text('${product.name} added to cart'),
-                                    duration: const Duration(seconds: 1),
-                                    behavior: SnackBarBehavior.floating,
-                                  ));
+                                  context.pushNamed('cart');
                                 },
                               );
                             },

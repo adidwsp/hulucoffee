@@ -5,12 +5,9 @@ import 'package:hulu_coffee_pos/shared/models/product_models.dart';
 
 class ProductCustomizationSheet extends StatefulWidget {
   final Product product;
-  final Function(CustomizationOptions) onAddToCart;
-
   const ProductCustomizationSheet({
     super.key,
     required this.product,
-    required this.onAddToCart,
   });
 
   @override
@@ -243,14 +240,16 @@ class _ProductCustomizationSheetState extends State<ProductCustomizationSheet> {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
-                        widget.onAddToCart(CustomizationOptions(
-                          size: selectedSize,
-                          temperature: selectedTemp,
-                          sugarLevel: selectedSugar,
-                          extraShots: extraShots,
-                          notes: _notesController.text,
-                        ));
-                        Navigator.pop(context);
+                        Navigator.pop(
+                          context,
+                          CustomizationOptions(
+                            size: selectedSize,
+                            temperature: selectedTemp,
+                            sugarLevel: selectedSugar,
+                            extraShots: extraShots,
+                            notes: _notesController.text,
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.primary,

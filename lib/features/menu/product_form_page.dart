@@ -69,8 +69,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
       setState(() => _imagePath = 'data:image/jpeg;base64,$b64');
     } else {
       final docsDir = await getApplicationDocumentsDirectory();
-      final imgDir =
-          Directory(p.join(docsDir.path, 'product_images'));
+      final imgDir = Directory(p.join(docsDir.path, 'product_images'));
       await imgDir.create(recursive: true);
       final fileName = '${const Uuid().v4()}.jpg';
       final targetPath = p.join(imgDir.path, fileName);
@@ -104,8 +103,8 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                     borderRadius: BorderRadius.circular(2))),
             const SizedBox(height: 16),
             ListTile(
-              leading:
-                  const Icon(Icons.photo_library_rounded, color: AppTheme.primary),
+              leading: const Icon(Icons.photo_library_rounded,
+                  color: AppTheme.primary),
               title: const Text('Choose from Gallery'),
               onTap: () {
                 Navigator.pop(ctx);
@@ -114,7 +113,8 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
             ),
             if (!kIsWeb)
               ListTile(
-                leading: const Icon(Icons.camera_alt_rounded, color: AppTheme.primary),
+                leading: const Icon(Icons.camera_alt_rounded,
+                    color: AppTheme.primary),
                 title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -293,7 +293,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
               const SizedBox(height: 24),
 
               // ── Name ───────────────────────────────────────────────────────
-              _FieldLabel('Product Name'),
+              const _FieldLabel('Product Name'),
               const SizedBox(height: 6),
               TextFormField(
                 controller: _nameCtrl,
@@ -305,7 +305,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
               const SizedBox(height: 16),
 
               // ── Price ──────────────────────────────────────────────────────
-              _FieldLabel('Price (Rp)'),
+              const _FieldLabel('Price (Rp)'),
               const SizedBox(height: 6),
               TextFormField(
                 controller: _priceCtrl,
@@ -322,13 +322,13 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
               const SizedBox(height: 16),
 
               // ── Category ───────────────────────────────────────────────────
-              _FieldLabel('Category'),
+              const _FieldLabel('Category'),
               const SizedBox(height: 6),
               categoriesAsync.when(
                 loading: () => const LinearProgressIndicator(),
                 error: (_, __) => const Text('Failed to load categories'),
                 data: (cats) => DropdownButtonFormField<String>(
-                  value: cats.any((c) => c.name == _selectedCategory)
+                  initialValue: cats.any((c) => c.name == _selectedCategory)
                       ? _selectedCategory
                       : cats.first.name,
                   decoration: _inputDeco(null),
@@ -347,7 +347,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
               const SizedBox(height: 16),
 
               // ── Description ────────────────────────────────────────────────
-              _FieldLabel('Description'),
+              const _FieldLabel('Description'),
               const SizedBox(height: 6),
               TextFormField(
                 controller: _descCtrl,
@@ -373,13 +373,11 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                   subtitle: Text(
                     _isAvailable ? 'Visible in POS menu' : 'Hidden from menu',
                     style: TextStyle(
-                        color: _isAvailable
-                            ? AppTheme.primary
-                            : AppTheme.error,
+                        color: _isAvailable ? AppTheme.primary : AppTheme.error,
                         fontSize: 12),
                   ),
                   value: _isAvailable,
-                  activeColor: AppTheme.primary,
+                  activeThumbColor: AppTheme.primary,
                   onChanged: (v) => setState(() => _isAvailable = v),
                 ),
               ),
@@ -420,10 +418,12 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                   width: double.infinity,
                   child: OutlinedButton.icon(
                     onPressed: _delete,
-                    icon: const Icon(Icons.delete_rounded, color: AppTheme.error),
+                    icon:
+                        const Icon(Icons.delete_rounded, color: AppTheme.error),
                     label: const Text('Delete Item',
                         style: TextStyle(
-                            color: AppTheme.error, fontWeight: FontWeight.w600)),
+                            color: AppTheme.error,
+                            fontWeight: FontWeight.w600)),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppTheme.error),
                       shape: RoundedRectangleBorder(

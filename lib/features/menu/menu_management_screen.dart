@@ -59,8 +59,7 @@ class _MenuManagementScreenState extends ConsumerState<MenuManagementScreen>
                 ? IconButton(
                     icon: const Icon(Icons.add_circle_rounded,
                         color: AppTheme.primary, size: 28),
-                    onPressed: () =>
-                        context.pushNamed('product_form'),
+                    onPressed: () => context.pushNamed('product_form'),
                     tooltip: 'Add product',
                   )
                 : const SizedBox.shrink(),
@@ -107,14 +106,12 @@ class _ProductsTab extends ConsumerWidget {
     if (imageUrl.startsWith('http')) {
       return Image.network(imageUrl,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) =>
-              const Icon(Icons.broken_image));
+          errorBuilder: (_, __, ___) => const Icon(Icons.broken_image));
     }
     if (!kIsWeb) {
       return Image.file(File(imageUrl),
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) =>
-              const Icon(Icons.broken_image));
+          errorBuilder: (_, __, ___) => const Icon(Icons.broken_image));
     }
     return const Icon(Icons.coffee_rounded,
         color: AppTheme.outlineVariant, size: 24);
@@ -122,8 +119,8 @@ class _ProductsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fmt = NumberFormat.currency(
-        locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final fmt =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final searchQ = ref.watch(_menuSearchProvider).toLowerCase();
     final selectedCat = ref.watch(_menuCategoryProvider);
     final productsAsync = ref.watch(productNotifierProvider);
@@ -152,8 +149,7 @@ class _ProductsTab extends ConsumerWidget {
                     ref.read(_menuSearchProvider.notifier).state = v,
                 decoration: InputDecoration(
                   hintText: 'Search products...',
-                  prefixIcon:
-                      const Icon(Icons.search, color: AppTheme.outline),
+                  prefixIcon: const Icon(Icons.search, color: AppTheme.outline),
                   filled: true,
                   fillColor: AppTheme.surfaceContainerLow,
                   border: OutlineInputBorder(
@@ -198,16 +194,14 @@ class _ProductsTab extends ConsumerWidget {
         // ── Product list ───────────────────────────────────────────────
         Expanded(
           child: productsAsync.when(
-            loading: () =>
-                const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: CircularProgressIndicator()),
             error: (e, _) => Center(child: Text('Error: $e')),
             data: (_) => filtered.isEmpty
                 ? const Center(child: Text('No products found'))
                 : ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: filtered.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 8),
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, i) {
                       final product = filtered[i];
                       return Container(
@@ -259,7 +253,9 @@ class _ProductsTab extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
-                                    product.isAvailable ? 'AVAILABLE' : 'OUT OF STOCK',
+                                    product.isAvailable
+                                        ? 'AVAILABLE'
+                                        : 'OUT OF STOCK',
                                     style: TextStyle(
                                         fontSize: 9,
                                         fontWeight: FontWeight.bold,
@@ -287,7 +283,7 @@ class _ProductsTab extends ConsumerWidget {
                                 onChanged: (_) => ref
                                     .read(productNotifierProvider.notifier)
                                     .toggleAvailability(product),
-                                activeColor: AppTheme.primary,
+                                activeThumbColor: AppTheme.primary,
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                               ),
@@ -295,9 +291,8 @@ class _ProductsTab extends ConsumerWidget {
                               IconButton(
                                 icon: const Icon(Icons.edit_rounded,
                                     size: 18, color: AppTheme.primary),
-                                onPressed: () => context.pushNamed(
-                                    'product_form',
-                                    extra: product),
+                                onPressed: () => context
+                                    .pushNamed('product_form', extra: product),
                               ),
                               // Delete
                               IconButton(
@@ -308,8 +303,8 @@ class _ProductsTab extends ConsumerWidget {
                                     context: context,
                                     builder: (ctx) => AlertDialog(
                                       title: const Text('Delete Product'),
-                                      content: Text(
-                                          'Delete "${product.name}"?'),
+                                      content:
+                                          Text('Delete "${product.name}"?'),
                                       actions: [
                                         TextButton(
                                             onPressed: () =>
@@ -361,7 +356,8 @@ class _CategoriesTab extends ConsumerWidget {
         foregroundColor: Colors.white,
         onPressed: () => _showAddDialog(context, ref),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add Category', style: TextStyle(fontWeight: FontWeight.w700)),
+        label: const Text('Add Category',
+            style: TextStyle(fontWeight: FontWeight.w700)),
       ),
       body: categoriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -390,7 +386,8 @@ class _CategoriesTab extends ConsumerWidget {
                     child: Row(
                       children: [
                         Container(
-                          width: 40, height: 40,
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
                             color: AppTheme.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
@@ -405,33 +402,41 @@ class _CategoriesTab extends ConsumerWidget {
                             children: [
                               Text(cat.displayName,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w700, fontSize: 15)),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15)),
                               Text(cat.name,
                                   style: TextStyle(
                                       fontSize: 11,
-                                      color: AppTheme.onSurfaceVariant.withValues(alpha: 0.6))),
+                                      color: AppTheme.onSurfaceVariant
+                                          .withValues(alpha: 0.6))),
                             ],
                           ),
                         ),
                         if (cat.isBuiltIn)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               color: AppTheme.surfaceContainerHigh,
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: const Text('BUILT-IN',
-                                style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.8, color: AppTheme.onSurfaceVariant)),
+                                style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.8,
+                                    color: AppTheme.onSurfaceVariant)),
                           ),
                         const SizedBox(width: 4),
                         IconButton(
-                          icon: const Icon(Icons.edit_rounded, size: 18, color: AppTheme.primary),
+                          icon: const Icon(Icons.edit_rounded,
+                              size: 18, color: AppTheme.primary),
                           onPressed: () => _showRenameDialog(context, ref, cat),
                         ),
                         if (!cat.isBuiltIn)
                           IconButton(
-                            icon: const Icon(Icons.delete_rounded, size: 18, color: AppTheme.error),
+                            icon: const Icon(Icons.delete_rounded,
+                                size: 18, color: AppTheme.error),
                             onPressed: () async {
                               final ok = await showDialog<bool>(
                                 context: context,
@@ -439,17 +444,23 @@ class _CategoriesTab extends ConsumerWidget {
                                   title: const Text('Delete Category'),
                                   content: Text('Delete "${cat.displayName}"?'),
                                   actions: [
-                                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(ctx, false),
+                                        child: const Text('Cancel')),
                                     TextButton(
                                       onPressed: () => Navigator.pop(ctx, true),
-                                      style: TextButton.styleFrom(foregroundColor: AppTheme.error),
+                                      style: TextButton.styleFrom(
+                                          foregroundColor: AppTheme.error),
                                       child: const Text('Delete'),
                                     ),
                                   ],
                                 ),
                               );
                               if (ok == true) {
-                                ref.read(categoryNotifierProvider.notifier).delete(cat);
+                                ref
+                                    .read(categoryNotifierProvider.notifier)
+                                    .delete(cat);
                               }
                             },
                           ),
@@ -472,10 +483,12 @@ class _CategoriesTab extends ConsumerWidget {
           controller: ctrl,
           autofocus: true,
           decoration: const InputDecoration(
-              hintText: 'Category name (e.g. Juices)', labelText: 'Display Name'),
+              hintText: 'Category name (e.g. Juices)',
+              labelText: 'Display Name'),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               if (ctrl.text.trim().isNotEmpty) {
@@ -503,11 +516,14 @@ class _CategoriesTab extends ConsumerWidget {
           decoration: const InputDecoration(labelText: 'Display Name'),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               if (ctrl.text.trim().isNotEmpty) {
-                ref.read(categoryNotifierProvider.notifier).rename(cat, ctrl.text);
+                ref
+                    .read(categoryNotifierProvider.notifier)
+                    .rename(cat, ctrl.text);
                 Navigator.pop(ctx);
               }
             },
@@ -526,7 +542,8 @@ class _FilterChip extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
-  const _FilterChip({required this.label, required this.selected, required this.onTap});
+  const _FilterChip(
+      {required this.label, required this.selected, required this.onTap});
 
   @override
   Widget build(BuildContext context) => GestureDetector(

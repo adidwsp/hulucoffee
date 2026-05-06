@@ -22,14 +22,14 @@ class CartScreen extends ConsumerWidget {
           color: AppTheme.outlineVariant, size: 28);
     }
     if (imageUrl.startsWith('http')) {
-      return Image.network(imageUrl, fit: BoxFit.cover,
+      return Image.network(imageUrl,
+          fit: BoxFit.cover,
           errorBuilder: (_, __, ___) => const Icon(Icons.broken_image));
     }
     if (!kIsWeb) {
       return Image.file(File(imageUrl),
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) =>
-              const Icon(Icons.broken_image));
+          errorBuilder: (_, __, ___) => const Icon(Icons.broken_image));
     }
     return const Icon(Icons.coffee_rounded,
         color: AppTheme.outlineVariant, size: 28);
@@ -53,8 +53,7 @@ class CartScreen extends ConsumerWidget {
             const SizedBox(width: 8),
             if (cartState.itemCount > 0)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: AppTheme.primary,
                   borderRadius: BorderRadius.circular(12),
@@ -94,8 +93,8 @@ class CartScreen extends ConsumerWidget {
                       color: AppTheme.onSurfaceVariant.withValues(alpha: 0.3)),
                   const SizedBox(height: 16),
                   const Text('Your cart is empty',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600)),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   TextButton.icon(
                     onPressed: () => context.goNamed('home'),
@@ -173,7 +172,7 @@ class CartScreen extends ConsumerWidget {
                                                 .withValues(alpha: 0.7))),
                                   const SizedBox(height: 4),
                                   Text(fmt.format(item.product.price),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 13,
                                           color: AppTheme.primary,
                                           fontWeight: FontWeight.w600)),
@@ -245,8 +244,7 @@ class CartScreen extends ConsumerWidget {
                                     color: AppTheme.onSurfaceVariant)),
                             Text(fmt.format(cartState.subtotal),
                                 style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const SizedBox(height: 12),
@@ -275,6 +273,31 @@ class CartScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 52,
+                          child: OutlinedButton(
+                            onPressed: () => context.goNamed('home'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppTheme.primary,
+                              side: const BorderSide(color: AppTheme.primary),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14)),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_circle_outline_rounded),
+                                SizedBox(width: 8),
+                                Text('Add Another Item',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -290,8 +313,7 @@ class _QtyBtn extends StatelessWidget {
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
-  const _QtyBtn(
-      {required this.icon, required this.color, required this.onTap});
+  const _QtyBtn({required this.icon, required this.color, required this.onTap});
 
   @override
   Widget build(BuildContext context) => GestureDetector(

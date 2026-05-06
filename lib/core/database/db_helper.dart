@@ -1,7 +1,6 @@
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
@@ -116,10 +115,25 @@ class DBHelper {
 
   Future<void> _seedCategories(Database db) async {
     final seeds = [
-      {'id': 'coffee', 'name': 'coffee', 'displayName': 'Coffee', 'isBuiltIn': 1},
-      {'id': 'nonCoffee', 'name': 'nonCoffee', 'displayName': 'Non-Coffee', 'isBuiltIn': 1},
+      {
+        'id': 'coffee',
+        'name': 'coffee',
+        'displayName': 'Coffee',
+        'isBuiltIn': 1
+      },
+      {
+        'id': 'nonCoffee',
+        'name': 'nonCoffee',
+        'displayName': 'Non-Coffee',
+        'isBuiltIn': 1
+      },
       {'id': 'tea', 'name': 'tea', 'displayName': 'Tea', 'isBuiltIn': 1},
-      {'id': 'snacks', 'name': 'snacks', 'displayName': 'Snacks', 'isBuiltIn': 1},
+      {
+        'id': 'snacks',
+        'name': 'snacks',
+        'displayName': 'Snacks',
+        'isBuiltIn': 1
+      },
     ];
     for (final seed in seeds) {
       await db.insert('categories', seed,

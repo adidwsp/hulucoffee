@@ -114,20 +114,20 @@ class AppBottomNav extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      Transform.translate(
-                        offset: const Offset(0, -8),
-                        child: Text(
-                          'POS',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w800,
-                            color: currentIndex == 2
-                                ? AppTheme.primary
-                                : AppTheme.outline,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ),
+                      // Transform.translate(
+                      //   offset: const Offset(0, -8),
+                      //   child: Text(
+                      //     'POS',
+                      //     style: TextStyle(
+                      //       fontSize: 10,
+                      //       fontWeight: FontWeight.w800,
+                      //       color: currentIndex == 2
+                      //           ? AppTheme.primary
+                      //           : AppTheme.outline,
+                      //       letterSpacing: 0.5,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -198,8 +198,7 @@ class _NavItem extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight:
-                    isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color: color,
               ),
             ),
@@ -283,8 +282,7 @@ class _NavItemBadged extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight:
-                    isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color: color,
               ),
             ),
