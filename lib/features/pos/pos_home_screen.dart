@@ -6,6 +6,7 @@ import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/features/menu/category_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/product_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/cart_provider.dart';
+import 'package:hulu_coffee_pos/features/pos/providers/sort_provider.dart';
 import 'package:hulu_coffee_pos/shared/models/product_models.dart';
 import 'package:hulu_coffee_pos/shared/widgets/app_header.dart';
 import 'package:hulu_coffee_pos/shared/widgets/app_bottom_nav.dart';
@@ -19,20 +20,72 @@ final searchQueryProvider = StateProvider<String>((ref) => '');
 class PosHomeScreen extends ConsumerWidget {
   const PosHomeScreen({super.key});
 
+  List<Product> _sortProducts(
+    List<Product> products,
+    SortMode mode,
+    Map<String, Map<String, dynamic>> buyStats,
+  ) {
+    final sorted = List<Product>.from(products);
+    switch (mode) {
+      case SortMode.nameAsc:
+        sorted.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        break;
+      case SortMode.mostBought:
+        sorted.sort((a, b) {
+          final aQty = (buyStats[a.name]?['totalQty'] as int?) ?? 0;
+          final bQty = (buyStats[b.name]?['totalQty'] as int?) ?? 0;
+          if (bQty != aQty) return bQty.compareTo(aQty);
+          return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+        });
+        break;
+      case SortMode.latestBought:
+        sorted.sort((a, b) {
+          final aDate = buyStats[a.name]?['lastBoughtAt'] as DateTime?;
+          final bDate = buyStats[b.name]?['lastBoughtAt'] as DateTime?;
+          if (aDate == null && bDate == null) {
+            return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+          }
+          if (aDate == null) return 1;
+          if (bDate == null) return -1;
+          return bDate.compareTo(aDate);
+        });
+        break;
+    }
+    return sorted;
+  }
+
+  String _sortLabel(SortMode mode) {
+    switch (mode) {
+      case SortMode.nameAsc:
+        return 'Name A–Z';
+      case SortMode.mostBought:
+        return 'Most Bought';
+      case SortMode.latestBought:
+        return 'Latest Bought';
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final searchQuery = ref.watch(searchQueryProvider).toLowerCase();
     final productsAsync = ref.watch(productNotifierProvider);
     final categoriesAsync = ref.watch(categoryNotifierProvider);
+    final sortMode = ref.watch(sortModeProvider);
+    final buyStatsAsync = ref.watch(productBuyStatsProvider);
+
+    final buyStats = buyStatsAsync.whenOrNull(data: (d) => d) ?? {};
 
     final filteredProducts = productsAsync.when(
-      data: (products) => products.where((p) {
-        final matchesSearch = p.name.toLowerCase().contains(searchQuery);
-        final matchesCategory =
-            selectedCategory == 'all' || p.category == selectedCategory;
-        return matchesSearch && matchesCategory && p.isAvailable;
-      }).toList(),
+      data: (products) {
+        final filtered = products.where((p) {
+          final matchesSearch = p.name.toLowerCase().contains(searchQuery);
+          final matchesCategory =
+              selectedCategory == 'all' || p.category == selectedCategory;
+          return matchesSearch && matchesCategory && p.isAvailable;
+        }).toList();
+        return _sortProducts(filtered, sortMode, buyStats);
+      },
       loading: () => <Product>[],
       error: (_, __) => <Product>[],
     );
@@ -49,27 +102,58 @@ class PosHomeScreen extends ConsumerWidget {
           children: [
             Column(
               children: [
-                // ── Search Bar ──────────────────────────────────────────────
+                // ── Search Bar + Sort ──────────────────────────────────────
                 Container(
                   color: AppTheme.surface,
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                  child: TextField(
-                    onChanged: (v) =>
-                        ref.read(searchQueryProvider.notifier).state = v,
-                    decoration: InputDecoration(
-                      hintText: 'Search menu items...',
-                      hintStyle: TextStyle(
-                          color: AppTheme.onSurfaceVariant.withValues(alpha: 0.5)),
-                      prefixIcon: const Icon(Icons.search,
-                          color: AppTheme.onSurfaceVariant),
-                      filled: true,
-                      fillColor: AppTheme.surfaceContainerHighest,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none),
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 12),
-                    ),
+                  padding: const EdgeInsets.fromLTRB(16, 8, 8, 12),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          onChanged: (v) =>
+                              ref.read(searchQueryProvider.notifier).state = v,
+                          decoration: InputDecoration(
+                            hintText: 'Search menu items...',
+                            hintStyle: TextStyle(
+                                color: AppTheme.onSurfaceVariant
+                                    .withValues(alpha: 0.5)),
+                            prefixIcon: const Icon(Icons.search,
+                                color: AppTheme.onSurfaceVariant),
+                            filled: true,
+                            fillColor: AppTheme.surfaceContainerHighest,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      PopupMenuButton<SortMode>(
+                        icon: const Icon(Icons.sort_rounded,
+                            color: AppTheme.onSurfaceVariant),
+                        tooltip: 'Sort by',
+                        onSelected: (mode) =>
+                            ref.read(sortModeProvider.notifier).state = mode,
+                        itemBuilder: (_) => SortMode.values
+                            .map((m) => PopupMenuItem(
+                                  value: m,
+                                  child: Row(
+                                    children: [
+                                      if (m == sortMode)
+                                        const Icon(Icons.check_rounded,
+                                            size: 18, color: AppTheme.primary)
+                                      else
+                                        const SizedBox(width: 18),
+                                      const SizedBox(width: 8),
+                                      Text(_sortLabel(m)),
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ],
                   ),
                 ),
 

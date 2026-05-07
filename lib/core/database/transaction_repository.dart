@@ -83,6 +83,31 @@ class TransactionRepository {
     return sorted.take(limit).toList();
   }
 
+  /// Returns buy stats per product name: {totalQty, lastBoughtAt}
+  Future<Map<String, Map<String, dynamic>>> getProductBuyStats() async {
+    final all = await getAll();
+    final Map<String, Map<String, dynamic>> stats = {};
+    for (final tx in all) {
+      for (final item in tx.items) {
+        final name = item['name'] as String;
+        final qty = (item['qty'] as num).toInt();
+        if (stats.containsKey(name)) {
+          stats[name]!['totalQty'] = (stats[name]!['totalQty'] as int) + qty;
+          final existing = stats[name]!['lastBoughtAt'] as DateTime;
+          if (tx.createdAt.isAfter(existing)) {
+            stats[name]!['lastBoughtAt'] = tx.createdAt;
+          }
+        } else {
+          stats[name] = {
+            'totalQty': qty,
+            'lastBoughtAt': tx.createdAt,
+          };
+        }
+      }
+    }
+    return stats;
+  }
+
   Future<Transaction> saveFromCart(CartState cart) async {
     final db = await _db.database;
     // Generate order number: count existing + 1
@@ -90,13 +115,22 @@ class TransactionRepository {
     final count = rows.first['c'] as int? ?? 0;
     final orderNumber = '#${(count + 1).toString().padLeft(3, '0')}';
 
-    final itemsJson = jsonEncode(cart.items.map((item) => {
-          'name': item.product.name,
-          'qty': item.quantity,
-          'price': item.product.price,
-          'total': item.totalPrice,
-          'options': item.options.size ?? '',
-        }).toList());
+    final itemsJson = jsonEncode(cart.items.map((item) {
+      final optsSummary = [
+        if (item.options.size != null) item.options.size,
+        if (item.options.temperature != null) item.options.temperature,
+        if (item.options.sugarLevel != null) item.options.sugarLevel,
+        ...item.options.selectedAddons,
+      ].whereType<String>().join(', ');
+
+      return {
+        'name': item.product.name,
+        'qty': item.quantity,
+        'price': item.product.price,
+        'total': item.totalPrice,
+        'options': optsSummary,
+      };
+    }).toList());
 
     final tx = Transaction(
       id: const Uuid().v4(),

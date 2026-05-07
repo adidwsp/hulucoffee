@@ -123,8 +123,8 @@ class CartScreen extends ConsumerWidget {
                       if (item.options.sugarLevel != 'Normal') {
                         opts.add(item.options.sugarLevel ?? '');
                       }
-                      if (item.options.extraShots > 0) {
-                        opts.add('+${item.options.extraShots} Shot');
+                      if (item.options.selectedAddons.isNotEmpty) {
+                        opts.addAll(item.options.selectedAddons);
                       }
 
                       return Container(

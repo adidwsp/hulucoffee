@@ -51,72 +51,77 @@ class ProductCard extends StatelessWidget {
     );
   }
 
+  Future<void> _openCustomization(BuildContext context) async {
+    if (!product.isAvailable) return;
+
+    if (!product.hasCustomization) {
+      onAdd(const CustomizationOptions());
+      return;
+    }
+
+    final result = await showModalBottomSheet<CustomizationOptions>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => ProductCustomizationSheet(product: product),
+    );
+    if (result != null && context.mounted) {
+      onAdd(result);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final fmt = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
-    return Card(
-      margin: EdgeInsets.zero,
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  color: AppTheme.surfaceContainerHighest,
-                  child: _buildImage(),
+    return GestureDetector(
+      onTap: () => _openCustomization(context),
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Image
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    color: AppTheme.surfaceContainerHighest,
+                    child: _buildImage(),
+                  ),
                 ),
-              ),
-              // Info
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(product.name,
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 2),
-                    Text(product.description,
-                        style: TextStyle(fontSize: 10, letterSpacing: 0.8,
-                            color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7)),
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(fmt.format(product.price),
-                              style: const TextStyle(
-                                  color: AppTheme.primary,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 13),
-                              maxLines: 1, overflow: TextOverflow.ellipsis),
-                        ),
-                        GestureDetector(
-                          onTap: product.isAvailable
-                              ? () async {
-                                  final result =
-                                      await showModalBottomSheet<CustomizationOptions>(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (_) =>
-                                        ProductCustomizationSheet(product: product),
-                                  );
-                                  if (result != null && context.mounted) {
-                                    onAdd(result);
-                                  }
-                                }
-                              : null,
-                          child: Container(
+                // Info
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(product.name,
+                          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                          maxLines: 1, overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 2),
+                      Text(product.description,
+                          style: TextStyle(fontSize: 10, letterSpacing: 0.8,
+                              color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7)),
+                          maxLines: 1, overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(fmt.format(product.price),
+                                style: const TextStyle(
+                                    color: AppTheme.primary,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 13),
+                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                          ),
+                          Container(
                             width: 32, height: 32,
                             decoration: BoxDecoration(
                               color: product.isAvailable
@@ -130,34 +135,34 @@ class ProductCard extends StatelessWidget {
                                     ? Colors.white
                                     : AppTheme.outlineVariant),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          if (!product.isAvailable)
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.45),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                alignment: Alignment.center,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: const Text('OUT OF STOCK',
-                      style: TextStyle(color: Colors.white,
-                          fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                ),
-              ),
+              ],
             ),
-        ],
+            if (!product.isAvailable)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.45),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  alignment: Alignment.center,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.circular(6)),
+                    child: const Text('OUT OF STOCK',
+                        style: TextStyle(color: Colors.white,
+                            fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

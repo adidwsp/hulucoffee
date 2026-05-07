@@ -14,6 +14,7 @@ import 'package:uuid/uuid.dart';
 import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/features/menu/category_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/product_provider.dart';
+import 'package:hulu_coffee_pos/shared/models/customization_option_model.dart';
 import 'package:hulu_coffee_pos/shared/models/product_models.dart';
 
 class ProductFormPage extends ConsumerStatefulWidget {
@@ -33,6 +34,12 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
   String _selectedCategory = 'coffee';
   bool _isAvailable = true;
   bool _saving = false;
+  List<String> _enabledOptions = [
+    OptionType.size,
+    OptionType.temperature,
+    OptionType.sugarLevel,
+    OptionType.addon,
+  ];
 
   bool get _isEdit => widget.product != null;
 
@@ -47,6 +54,13 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
     _imagePath = p?.imageUrl ?? '';
     _selectedCategory = p?.category ?? 'coffee';
     _isAvailable = p?.isAvailable ?? true;
+    _enabledOptions = p?.enabledOptions.toList() ??
+        [
+          OptionType.size,
+          OptionType.temperature,
+          OptionType.sugarLevel,
+          OptionType.addon,
+        ];
   }
 
   @override
@@ -171,6 +185,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
         imageUrl: _imagePath,
         category: _selectedCategory,
         isAvailable: _isAvailable,
+        enabledOptions: _enabledOptions,
       );
       final notifier = ref.read(productNotifierProvider.notifier);
       if (_isEdit) {
@@ -353,6 +368,88 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                 controller: _descCtrl,
                 decoration: _inputDeco('Short description of the item'),
                 maxLines: 3,
+              ),
+
+              const SizedBox(height: 16),
+
+              // ── Customization Options ──────────────────────────────────
+              const _FieldLabel('Customization Options'),
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.outlineVariant),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        'Enable for this product:',
+                        style: TextStyle(fontSize: 12, color: AppTheme.onSurfaceVariant),
+                      ),
+                    ),
+                    ...[
+                      (OptionType.size, Icons.straighten_rounded, 'Size (Small/Medium/Large)'),
+                      (OptionType.temperature, Icons.thermostat_rounded, 'Temperature (Hot/Iced)'),
+                      (OptionType.sugarLevel, Icons.water_drop_rounded, 'Sugar Level'),
+                      (OptionType.addon, Icons.add_circle_rounded, 'Add-ons (Extra Shot, etc.)'),
+                    ].map((entry) {
+                      final (type, icon, label) = entry;
+                      final isEnabled = _enabledOptions.contains(type);
+                      return InkWell(
+                        onTap: () => setState(() {
+                          if (isEnabled) {
+                            _enabledOptions.remove(type);
+                          } else {
+                            _enabledOptions.add(type);
+                          }
+                        }),
+                        borderRadius: BorderRadius.circular(8),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              Icon(icon,
+                                  size: 18,
+                                  color: isEnabled
+                                      ? AppTheme.primary
+                                      : AppTheme.outlineVariant),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(label,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: isEnabled
+                                            ? FontWeight.w600
+                                            : FontWeight.normal,
+                                        color: isEnabled
+                                            ? AppTheme.onSurface
+                                            : AppTheme.onSurfaceVariant)),
+                              ),
+                              Switch(
+                                value: isEnabled,
+                                onChanged: (val) => setState(() {
+                                  if (val) {
+                                    _enabledOptions.add(type);
+                                  } else {
+                                    _enabledOptions.remove(type);
+                                  }
+                                }),
+                                activeThumbColor: AppTheme.primary,
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
               ),
 
               const SizedBox(height: 16),

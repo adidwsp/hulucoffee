@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,33 +21,44 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     routes: [
       GoRoute(path: '/', name: 'splash',
-          builder: (context, state) => const SplashScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: SplashScreen())),
       GoRoute(path: '/login', name: 'login',
-          builder: (context, state) => const LoginScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: LoginScreen())),
       GoRoute(path: '/dashboard', name: 'dashboard',
-          builder: (context, state) => const DashboardScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: DashboardScreen())),
       GoRoute(path: '/home', name: 'home',
-          builder: (context, state) => const PosHomeScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: PosHomeScreen())),
       GoRoute(path: '/cart', name: 'cart',
-          builder: (context, state) => const CartScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: CartScreen())),
       GoRoute(path: '/payment', name: 'payment',
-          builder: (context, state) => const QrisPaymentScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: QrisPaymentScreen())),
       GoRoute(path: '/payment-success', name: 'payment_success',
-          builder: (context, state) => const PaymentSuccessScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: PaymentSuccessScreen())),
       GoRoute(path: '/history', name: 'history',
-          builder: (context, state) => const TransactionHistoryScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: TransactionHistoryScreen())),
       GoRoute(path: '/reports', name: 'reports',
-          builder: (context, state) => const SalesDashboardScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: SalesDashboardScreen())),
       GoRoute(path: '/menu', name: 'menu',
-          builder: (context, state) => const MenuManagementScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: MenuManagementScreen())),
       GoRoute(
         path: '/product-form',
         name: 'product_form',
-        builder: (context, state) =>
-            ProductFormPage(product: state.extra as Product?),
+        pageBuilder: (context, state) => NoTransitionPage(
+            child: ProductFormPage(product: state.extra as Product?)),
       ),
       GoRoute(path: '/settings', name: 'settings',
-          builder: (context, state) => const SettingsScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+              child: SettingsScreen())),
     ],
   );
 });

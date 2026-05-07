@@ -66,5 +66,15 @@ final List<Product> dummyProducts = [
     price: 35000,
     imageUrl: '',
     category: 'snacks',
+    enabledOptions: [], // Snacks usually have no customization
+  ),
+  const Product(
+    id: 'p9',
+    name: 'Mineral Water',
+    description: '600ML BOTTLE',
+    price: 15000,
+    imageUrl: '',
+    category: 'nonCoffee',
+    enabledOptions: [], // Plain water has no options
   ),
 ];

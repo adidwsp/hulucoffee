@@ -23,7 +23,7 @@ class DBHelper {
       return await databaseFactory.openDatabase(
         'hulu_coffee.db',
         options: OpenDatabaseOptions(
-          version: 3,
+          version: 5,
           onCreate: _onCreate,
           onUpgrade: _onUpgrade,
         ),
@@ -38,7 +38,7 @@ class DBHelper {
       return await databaseFactory.openDatabase(
         path,
         options: OpenDatabaseOptions(
-          version: 3,
+          version: 5,
           onCreate: _onCreate,
           onUpgrade: _onUpgrade,
         ),
@@ -48,7 +48,7 @@ class DBHelper {
       final path = join(docsDir.path, 'hulu_coffee.db');
       return await openDatabase(
         path,
-        version: 3,
+        version: 5,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );
@@ -60,6 +60,8 @@ class DBHelper {
     await _createTransactionsTable(db);
     await _createCategoriesTable(db);
     await _seedCategories(db);
+    await _createCustomizationOptionsTable(db);
+    await _seedCustomizationOptions(db);
     debugPrint('DEBUG: Database v$version created.');
   }
 
@@ -72,6 +74,16 @@ class DBHelper {
       await _createCategoriesTable(db);
       await _seedCategories(db);
     }
+    if (oldVersion < 4) {
+      await _createCustomizationOptionsTable(db);
+      await _seedCustomizationOptions(db);
+    }
+    if (oldVersion < 5) {
+      // Add enabledOptions column — default all options enabled
+      await db.execute(
+        "ALTER TABLE products ADD COLUMN enabledOptions TEXT NOT NULL DEFAULT '[\"size\",\"temperature\",\"sugar_level\",\"addon\"]'"
+      );
+    }
   }
 
   Future<void> _createProductsTable(Database db) async {
@@ -83,7 +95,8 @@ class DBHelper {
         price REAL NOT NULL,
         imageUrl TEXT,
         isAvailable INTEGER NOT NULL DEFAULT 1,
-        category TEXT NOT NULL
+        category TEXT NOT NULL,
+        enabledOptions TEXT NOT NULL DEFAULT '["size","temperature","sugar_level","addon"]'
       )
     ''');
   }
@@ -113,6 +126,20 @@ class DBHelper {
     ''');
   }
 
+  Future<void> _createCustomizationOptionsTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS customization_options(
+        id TEXT PRIMARY KEY,
+        type TEXT NOT NULL,
+        label TEXT NOT NULL,
+        subtitle TEXT NOT NULL DEFAULT '',
+        priceModifier REAL NOT NULL DEFAULT 0,
+        sortOrder INTEGER NOT NULL DEFAULT 0,
+        isActive INTEGER NOT NULL DEFAULT 1
+      )
+    ''');
+  }
+
   Future<void> _seedCategories(Database db) async {
     final seeds = [
       {
@@ -137,6 +164,30 @@ class DBHelper {
     ];
     for (final seed in seeds) {
       await db.insert('categories', seed,
+          conflictAlgorithm: ConflictAlgorithm.ignore);
+    }
+  }
+
+  Future<void> _seedCustomizationOptions(Database db) async {
+    final seeds = [
+      // Sizes — Small free, Medium +3000, Large +6000
+      {'id': 'size_small', 'type': 'size', 'label': 'Small', 'subtitle': '12 oz', 'priceModifier': 0.0, 'sortOrder': 0, 'isActive': 1},
+      {'id': 'size_medium', 'type': 'size', 'label': 'Medium', 'subtitle': '16 oz', 'priceModifier': 3000.0, 'sortOrder': 1, 'isActive': 1},
+      {'id': 'size_large', 'type': 'size', 'label': 'Large', 'subtitle': '20 oz', 'priceModifier': 6000.0, 'sortOrder': 2, 'isActive': 1},
+      // Temperatures — no price modifier
+      {'id': 'temp_hot', 'type': 'temperature', 'label': 'Hot', 'subtitle': '', 'priceModifier': 0.0, 'sortOrder': 0, 'isActive': 1},
+      {'id': 'temp_iced', 'type': 'temperature', 'label': 'Iced', 'subtitle': '', 'priceModifier': 0.0, 'sortOrder': 1, 'isActive': 1},
+      // Sugar Levels — no price modifier
+      {'id': 'sugar_none', 'type': 'sugar_level', 'label': 'No Sugar', 'subtitle': '', 'priceModifier': 0.0, 'sortOrder': 0, 'isActive': 1},
+      {'id': 'sugar_25', 'type': 'sugar_level', 'label': '25%', 'subtitle': '', 'priceModifier': 0.0, 'sortOrder': 1, 'isActive': 1},
+      {'id': 'sugar_50', 'type': 'sugar_level', 'label': '50%', 'subtitle': '', 'priceModifier': 0.0, 'sortOrder': 2, 'isActive': 1},
+      {'id': 'sugar_normal', 'type': 'sugar_level', 'label': 'Normal', 'subtitle': '', 'priceModifier': 0.0, 'sortOrder': 3, 'isActive': 1},
+      // Add-ons — price modifier applies
+      {'id': 'addon_espresso', 'type': 'addon', 'label': 'Extra Espresso Shot', 'subtitle': '', 'priceModifier': 15000.0, 'sortOrder': 0, 'isActive': 1},
+      {'id': 'addon_oatmilk', 'type': 'addon', 'label': 'Oat Milk', 'subtitle': '', 'priceModifier': 10000.0, 'sortOrder': 1, 'isActive': 1},
+    ];
+    for (final seed in seeds) {
+      await db.insert('customization_options', seed,
           conflictAlgorithm: ConflictAlgorithm.ignore);
     }
   }

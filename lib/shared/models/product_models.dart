@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:equatable/equatable.dart';
+import 'package:hulu_coffee_pos/shared/models/customization_option_model.dart';
 
 // Keep this enum only for POS filter UI — not stored in DB anymore
 enum ProductCategory { all, coffee, nonCoffee, tea, snacks }
@@ -10,7 +12,12 @@ class Product extends Equatable {
   final double price;
   final String imageUrl;
   final bool isAvailable;
-  final String category; // NOW a plain String (category name key)
+  final String category;
+
+  /// Which option types are enabled for this product.
+  /// Stored as JSON in DB, e.g. '["size","temperature","sugar_level","addon"]'
+  /// Empty list = no customization (e.g. plain water, snacks)
+  final List<String> enabledOptions;
 
   const Product({
     required this.id,
@@ -20,11 +27,23 @@ class Product extends Equatable {
     required this.imageUrl,
     this.isAvailable = true,
     required this.category,
+    this.enabledOptions = const [
+      OptionType.size,
+      OptionType.temperature,
+      OptionType.sugarLevel,
+      OptionType.addon,
+    ],
   });
+
+  bool get hasCustomization => enabledOptions.isNotEmpty;
+  bool get hasSize => enabledOptions.contains(OptionType.size);
+  bool get hasTemperature => enabledOptions.contains(OptionType.temperature);
+  bool get hasSugarLevel => enabledOptions.contains(OptionType.sugarLevel);
+  bool get hasAddon => enabledOptions.contains(OptionType.addon);
 
   @override
   List<Object?> get props =>
-      [id, name, description, price, imageUrl, isAvailable, category];
+      [id, name, description, price, imageUrl, isAvailable, category, enabledOptions];
 
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -34,17 +53,38 @@ class Product extends Equatable {
         'imageUrl': imageUrl,
         'isAvailable': isAvailable ? 1 : 0,
         'category': category,
+        'enabledOptions': jsonEncode(enabledOptions),
       };
 
-  factory Product.fromMap(Map<String, dynamic> map) => Product(
-        id: map['id'] as String,
-        name: map['name'] as String,
-        description: map['description'] as String,
-        price: (map['price'] as num).toDouble(),
-        imageUrl: map['imageUrl'] as String,
-        isAvailable: (map['isAvailable'] as int?) == 1,
-        category: map['category'] as String? ?? 'coffee',
-      );
+  factory Product.fromMap(Map<String, dynamic> map) {
+    List<String> parsedOptions;
+    final raw = map['enabledOptions'];
+    if (raw == null || (raw is String && raw.isEmpty)) {
+      // Default for existing products: all options enabled
+      parsedOptions = [
+        OptionType.size,
+        OptionType.temperature,
+        OptionType.sugarLevel,
+        OptionType.addon,
+      ];
+    } else {
+      try {
+        parsedOptions = List<String>.from(jsonDecode(raw as String));
+      } catch (_) {
+        parsedOptions = [];
+      }
+    }
+    return Product(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      description: map['description'] as String,
+      price: (map['price'] as num).toDouble(),
+      imageUrl: map['imageUrl'] as String,
+      isAvailable: (map['isAvailable'] as int?) == 1,
+      category: map['category'] as String? ?? 'coffee',
+      enabledOptions: parsedOptions,
+    );
+  }
 
   Product copyWith({
     String? name,
@@ -53,6 +93,7 @@ class Product extends Equatable {
     String? imageUrl,
     bool? isAvailable,
     String? category,
+    List<String>? enabledOptions,
   }) =>
       Product(
         id: id,
@@ -62,40 +103,69 @@ class Product extends Equatable {
         imageUrl: imageUrl ?? this.imageUrl,
         isAvailable: isAvailable ?? this.isAvailable,
         category: category ?? this.category,
+        enabledOptions: enabledOptions ?? this.enabledOptions,
       );
 }
 
 class CustomizationOptions extends Equatable {
   final String? size;
+  final double sizePriceModifier;
   final String? temperature;
+  final double tempPriceModifier;
   final String? sugarLevel;
-  final int extraShots;
+  final double sugarPriceModifier;
+  final List<String> selectedAddons;
+  final double addonsTotal;
   final String? notes;
 
   const CustomizationOptions({
-    this.size = 'Regular',
-    this.temperature = 'Iced',
-    this.sugarLevel = 'Normal',
-    this.extraShots = 0,
+    this.size,
+    this.sizePriceModifier = 0,
+    this.temperature,
+    this.tempPriceModifier = 0,
+    this.sugarLevel,
+    this.sugarPriceModifier = 0,
+    this.selectedAddons = const [],
+    this.addonsTotal = 0,
     this.notes,
   });
 
+  double get totalModifier =>
+      sizePriceModifier + tempPriceModifier + sugarPriceModifier + addonsTotal;
+
   @override
-  List<Object?> get props =>
-      [size, temperature, sugarLevel, extraShots, notes];
+  List<Object?> get props => [
+        size,
+        sizePriceModifier,
+        temperature,
+        tempPriceModifier,
+        sugarLevel,
+        sugarPriceModifier,
+        selectedAddons,
+        addonsTotal,
+        notes
+      ];
 
   CustomizationOptions copyWith({
     String? size,
+    double? sizePriceModifier,
     String? temperature,
+    double? tempPriceModifier,
     String? sugarLevel,
-    int? extraShots,
+    double? sugarPriceModifier,
+    List<String>? selectedAddons,
+    double? addonsTotal,
     String? notes,
   }) =>
       CustomizationOptions(
         size: size ?? this.size,
+        sizePriceModifier: sizePriceModifier ?? this.sizePriceModifier,
         temperature: temperature ?? this.temperature,
+        tempPriceModifier: tempPriceModifier ?? this.tempPriceModifier,
         sugarLevel: sugarLevel ?? this.sugarLevel,
-        extraShots: extraShots ?? this.extraShots,
+        sugarPriceModifier: sugarPriceModifier ?? this.sugarPriceModifier,
+        selectedAddons: selectedAddons ?? this.selectedAddons,
+        addonsTotal: addonsTotal ?? this.addonsTotal,
         notes: notes ?? this.notes,
       );
 }
@@ -113,7 +183,7 @@ class CartItem extends Equatable {
     this.options = const CustomizationOptions(),
   });
 
-  double get totalPrice => product.price * quantity;
+  double get totalPrice => (product.price + options.totalModifier) * quantity;
 
   @override
   List<Object?> get props => [id, product, quantity, options];
