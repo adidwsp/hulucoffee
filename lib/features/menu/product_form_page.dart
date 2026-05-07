@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/features/menu/category_provider.dart';
+import 'package:hulu_coffee_pos/features/menu/customization_option_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/product_provider.dart';
 import 'package:hulu_coffee_pos/shared/models/customization_option_model.dart';
 import 'package:hulu_coffee_pos/shared/models/product_models.dart';
@@ -40,6 +41,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
     OptionType.sugarLevel,
     OptionType.addon,
   ];
+  Map<String, double> _optionPriceOverrides = {};
 
   bool get _isEdit => widget.product != null;
 
@@ -61,6 +63,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
           OptionType.sugarLevel,
           OptionType.addon,
         ];
+    _optionPriceOverrides = Map.from(p?.optionPriceOverrides ?? {});
   }
 
   @override
@@ -186,6 +189,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
         category: _selectedCategory,
         isAvailable: _isAvailable,
         enabledOptions: _enabledOptions,
+        optionPriceOverrides: _optionPriceOverrides,
       );
       final notifier = ref.read(productNotifierProvider.notifier);
       if (_isEdit) {
@@ -453,6 +457,106 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
               ),
 
               const SizedBox(height: 16),
+
+              // ── Option Price Overrides ────────────────────────────────
+              if (_enabledOptions.isNotEmpty) ...[
+                const _FieldLabel('Custom Option Prices (Overrides)'),
+                const SizedBox(height: 6),
+                ref.watch(customizationOptionProvider).when(
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (_, __) => const Text('Error loading options'),
+                      data: (allOptions) {
+                        final activeOpts = allOptions
+                            .where((o) => _enabledOptions.contains(o.type))
+                            .toList();
+
+                        if (activeOpts.isEmpty) return const SizedBox();
+
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppTheme.outlineVariant),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Leave at 0 to use global default price.',
+                                style: TextStyle(
+                                    fontSize: 11, color: AppTheme.onSurfaceVariant),
+                              ),
+                              const SizedBox(height: 12),
+                              ...activeOpts.map((opt) {
+                                final currentVal =
+                                    _optionPriceOverrides[opt.id] ?? 0;
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(opt.label,
+                                                style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600)),
+                                            Text(
+                                                '${OptionType.displayName(opt.type)} • Default: ${opt.priceModifier.toInt()}',
+                                                style: const TextStyle(
+                                                    fontSize: 10,
+                                                    color:
+                                                        AppTheme.onSurfaceVariant)),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        flex: 1,
+                                        child: TextFormField(
+                                          initialValue: currentVal > 0
+                                              ? currentVal.toInt().toString()
+                                              : '',
+                                          decoration: const InputDecoration(
+                                            hintText: '0',
+                                            prefixText: 'Rp ',
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 8),
+                                            isDense: true,
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.digitsOnly
+                                          ],
+                                          onChanged: (v) {
+                                            final val = double.tryParse(v) ?? 0;
+                                            setState(() {
+                                              if (val > 0) {
+                                                _optionPriceOverrides[opt.id] =
+                                                    val;
+                                              } else {
+                                                _optionPriceOverrides
+                                                    .remove(opt.id);
+                                              }
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                const SizedBox(height: 16),
+              ],
 
               // ── Availability ───────────────────────────────────────────────
               Container(

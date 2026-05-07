@@ -16,8 +16,12 @@ class Product extends Equatable {
 
   /// Which option types are enabled for this product.
   /// Stored as JSON in DB, e.g. '["size","temperature","sugar_level","addon"]'
-  /// Empty list = no customization (e.g. plain water, snacks)
   final List<String> enabledOptions;
+
+  /// Custom prices for specific options on THIS product.
+  /// Maps optionId -> price override.
+  /// Stored as JSON in DB, e.g. '{"size_medium": 5000, "addon_espresso": 15000}'
+  final Map<String, double> optionPriceOverrides;
 
   const Product({
     required this.id,
@@ -33,6 +37,7 @@ class Product extends Equatable {
       OptionType.sugarLevel,
       OptionType.addon,
     ],
+    this.optionPriceOverrides = const {},
   });
 
   bool get hasCustomization => enabledOptions.isNotEmpty;
@@ -43,7 +48,7 @@ class Product extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, name, description, price, imageUrl, isAvailable, category, enabledOptions];
+      [id, name, description, price, imageUrl, isAvailable, category, enabledOptions, optionPriceOverrides];
 
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -54,13 +59,13 @@ class Product extends Equatable {
         'isAvailable': isAvailable ? 1 : 0,
         'category': category,
         'enabledOptions': jsonEncode(enabledOptions),
+        'optionPriceOverrides': jsonEncode(optionPriceOverrides),
       };
 
   factory Product.fromMap(Map<String, dynamic> map) {
     List<String> parsedOptions;
-    final raw = map['enabledOptions'];
-    if (raw == null || (raw is String && raw.isEmpty)) {
-      // Default for existing products: all options enabled
+    final rawOptions = map['enabledOptions'];
+    if (rawOptions == null || (rawOptions is String && rawOptions.isEmpty)) {
       parsedOptions = [
         OptionType.size,
         OptionType.temperature,
@@ -69,11 +74,21 @@ class Product extends Equatable {
       ];
     } else {
       try {
-        parsedOptions = List<String>.from(jsonDecode(raw as String));
+        parsedOptions = List<String>.from(jsonDecode(rawOptions as String));
       } catch (_) {
         parsedOptions = [];
       }
     }
+
+    Map<String, double> parsedOverrides = {};
+    final rawOverrides = map['optionPriceOverrides'];
+    if (rawOverrides != null && rawOverrides is String && rawOverrides.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(rawOverrides) as Map<String, dynamic>;
+        parsedOverrides = decoded.map((key, value) => MapEntry(key, (value as num).toDouble()));
+      } catch (_) {}
+    }
+
     return Product(
       id: map['id'] as String,
       name: map['name'] as String,
@@ -83,6 +98,7 @@ class Product extends Equatable {
       isAvailable: (map['isAvailable'] as int?) == 1,
       category: map['category'] as String? ?? 'coffee',
       enabledOptions: parsedOptions,
+      optionPriceOverrides: parsedOverrides,
     );
   }
 
@@ -94,6 +110,7 @@ class Product extends Equatable {
     bool? isAvailable,
     String? category,
     List<String>? enabledOptions,
+    Map<String, double>? optionPriceOverrides,
   }) =>
       Product(
         id: id,
@@ -104,6 +121,7 @@ class Product extends Equatable {
         isAvailable: isAvailable ?? this.isAvailable,
         category: category ?? this.category,
         enabledOptions: enabledOptions ?? this.enabledOptions,
+        optionPriceOverrides: optionPriceOverrides ?? this.optionPriceOverrides,
       );
 }
 

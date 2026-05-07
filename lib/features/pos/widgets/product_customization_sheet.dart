@@ -41,10 +41,15 @@ class _ProductCustomizationSheetState
     super.dispose();
   }
 
+  double _getEffectivePrice(CustomizationOption opt) {
+    // Priority: Product-specific override > Global default
+    return widget.product.optionPriceOverrides[opt.id] ?? opt.priceModifier;
+  }
+
   void _recalcAddons(List<CustomizationOption> addons) {
     _addonsTotal = addons
         .where((a) => selectedAddonIds.contains(a.id))
-        .fold(0.0, (sum, a) => sum + a.priceModifier);
+        .fold(0.0, (sum, a) => sum + _getEffectivePrice(a));
   }
 
   @override
@@ -63,7 +68,7 @@ class _ProductCustomizationSheetState
         final match = sizes.where((s) => s.label == 'Small');
         final def = match.isNotEmpty ? match.first : sizes.first;
         selectedSize = def.label;
-        selectedSizePrice = def.priceModifier;
+        selectedSizePrice = _getEffectivePrice(def);
       }
     });
     tempsAsync?.whenData((temps) {
@@ -71,7 +76,7 @@ class _ProductCustomizationSheetState
         final match = temps.where((t) => t.label == 'Iced');
         final def = match.isNotEmpty ? match.first : temps.first;
         selectedTemp = def.label;
-        selectedTempPrice = def.priceModifier;
+        selectedTempPrice = _getEffectivePrice(def);
       }
     });
     sugarsAsync?.whenData((sugars) {
@@ -79,7 +84,7 @@ class _ProductCustomizationSheetState
         final match = sugars.where((s) => s.label == 'Normal');
         final def = match.isNotEmpty ? match.first : sugars.first;
         selectedSugar = def.label;
-        selectedSugarPrice = def.priceModifier;
+        selectedSugarPrice = _getEffectivePrice(def);
       }
     });
 
@@ -309,6 +314,7 @@ class _ProductCustomizationSheetState
         Row(
           children: sizes.asMap().entries.map((entry) {
             final s = entry.value;
+            final price = _getEffectivePrice(s);
             final isSelected = selectedSize == s.label;
             return Expanded(
               child: Padding(
@@ -316,7 +322,7 @@ class _ProductCustomizationSheetState
                 child: GestureDetector(
                   onTap: () => setState(() {
                     selectedSize = s.label;
-                    selectedSizePrice = s.priceModifier;
+                    selectedSizePrice = price;
                   }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
@@ -344,9 +350,9 @@ class _ProductCustomizationSheetState
                             style: TextStyle(
                                 fontSize: 10,
                                 color: AppTheme.onSurfaceVariant)),
-                        if (s.priceModifier > 0) ...[
+                        if (price > 0) ...[
                           const SizedBox(height: 2),
-                          Text('+${fmt.format(s.priceModifier)}',
+                          Text('+${fmt.format(price)}',
                               style: const TextStyle(
                                   fontSize: 10,
                                   color: AppTheme.primary,
@@ -374,6 +380,7 @@ class _ProductCustomizationSheetState
         Row(
           children: temps.asMap().entries.map((entry) {
             final t = entry.value;
+            final price = _getEffectivePrice(t);
             final isSelected = selectedTemp == t.label;
             final activeColor = t.label == 'Hot' ? AppTheme.error : AppTheme.primary;
             final icon = t.label == 'Hot' ? Icons.wb_sunny_outlined : Icons.ac_unit;
@@ -383,7 +390,7 @@ class _ProductCustomizationSheetState
                 child: GestureDetector(
                   onTap: () => setState(() {
                     selectedTemp = t.label;
-                    selectedTempPrice = t.priceModifier;
+                    selectedTempPrice = price;
                   }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
@@ -412,9 +419,9 @@ class _ProductCustomizationSheetState
                                     color: isSelected ? activeColor : AppTheme.onSurface)),
                           ],
                         ),
-                        if (t.priceModifier > 0) ...[
+                        if (price > 0) ...[
                           const SizedBox(height: 2),
-                          Text('+${fmt.format(t.priceModifier)}',
+                          Text('+${fmt.format(price)}',
                               style: TextStyle(
                                   fontSize: 10,
                                   color: activeColor,
@@ -443,14 +450,15 @@ class _ProductCustomizationSheetState
           spacing: 8,
           runSpacing: 10,
           children: sugars.map((s) {
+            final price = _getEffectivePrice(s);
             final isSelected = selectedSugar == s.label;
             return ChoiceChip(
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(s.label),
-                  if (s.priceModifier > 0)
-                    Text('+${fmt.format(s.priceModifier)}',
+                  if (price > 0)
+                    Text('+${fmt.format(price)}',
                         style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold)),
                 ],
               ),
@@ -458,7 +466,7 @@ class _ProductCustomizationSheetState
               onSelected: (val) {
                 if (val) setState(() {
                   selectedSugar = s.label;
-                  selectedSugarPrice = s.priceModifier;
+                  selectedSugarPrice = price;
                 });
               },
               selectedColor: AppTheme.primary.withValues(alpha: 0.15),
@@ -489,6 +497,7 @@ class _ProductCustomizationSheetState
         const SizedBox(height: 12),
         ...addonsList.asMap().entries.map((entry) {
           final addon = entry.value;
+          final price = _getEffectivePrice(addon);
           final isSelected = selectedAddonIds.contains(addon.id);
           return Padding(
             padding: EdgeInsets.only(top: entry.key > 0 ? 10 : 0),
@@ -524,7 +533,7 @@ class _ProductCustomizationSheetState
                         children: [
                           Text(addon.label,
                               style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Text('+${fmt.format(addon.priceModifier)}',
+                          Text('+${fmt.format(price)}',
                               style: const TextStyle(
                                   fontSize: 12, color: AppTheme.onSurfaceVariant)),
                         ],

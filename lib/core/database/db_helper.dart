@@ -23,7 +23,7 @@ class DBHelper {
       return await databaseFactory.openDatabase(
         'hulu_coffee.db',
         options: OpenDatabaseOptions(
-          version: 5,
+          version: 6,
           onCreate: _onCreate,
           onUpgrade: _onUpgrade,
         ),
@@ -38,7 +38,7 @@ class DBHelper {
       return await databaseFactory.openDatabase(
         path,
         options: OpenDatabaseOptions(
-          version: 5,
+          version: 6,
           onCreate: _onCreate,
           onUpgrade: _onUpgrade,
         ),
@@ -48,7 +48,7 @@ class DBHelper {
       final path = join(docsDir.path, 'hulu_coffee.db');
       return await openDatabase(
         path,
-        version: 5,
+        version: 6,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );
@@ -84,6 +84,12 @@ class DBHelper {
         "ALTER TABLE products ADD COLUMN enabledOptions TEXT NOT NULL DEFAULT '[\"size\",\"temperature\",\"sugar_level\",\"addon\"]'"
       );
     }
+    if (oldVersion < 6) {
+      // Add optionPriceOverrides column — default empty map
+      await db.execute(
+        "ALTER TABLE products ADD COLUMN optionPriceOverrides TEXT NOT NULL DEFAULT '{}'"
+      );
+    }
   }
 
   Future<void> _createProductsTable(Database db) async {
@@ -96,7 +102,8 @@ class DBHelper {
         imageUrl TEXT,
         isAvailable INTEGER NOT NULL DEFAULT 1,
         category TEXT NOT NULL,
-        enabledOptions TEXT NOT NULL DEFAULT '["size","temperature","sugar_level","addon"]'
+        enabledOptions TEXT NOT NULL DEFAULT '["size","temperature","sugar_level","addon"]',
+        optionPriceOverrides TEXT NOT NULL DEFAULT '{}'
       )
     ''');
   }
