@@ -15,6 +15,7 @@ import 'package:hulu_coffee_pos/features/menu/menu_management_screen.dart';
 import 'package:hulu_coffee_pos/features/menu/product_form_page.dart';
 import 'package:hulu_coffee_pos/features/settings/settings_screen.dart';
 import 'package:hulu_coffee_pos/shared/models/product_models.dart';
+import 'package:hulu_coffee_pos/features/pos/providers/cart_provider.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -39,8 +40,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           pageBuilder: (context, state) => const NoTransitionPage(
               child: QrisPaymentScreen())),
       GoRoute(path: '/payment-success', name: 'payment_success',
-          pageBuilder: (context, state) => const NoTransitionPage(
-              child: PaymentSuccessScreen())),
+          pageBuilder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            return NoTransitionPage(
+                child: PaymentSuccessScreen(
+                    cartState: extra?['cart'] as CartState?,
+                    paymentMethod: extra?['paymentMethod'] as String?));
+          }),
       GoRoute(path: '/history', name: 'history',
           pageBuilder: (context, state) => const NoTransitionPage(
               child: TransactionHistoryScreen())),

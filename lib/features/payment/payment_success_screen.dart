@@ -3,17 +3,83 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+
 import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/core/database/transaction_repository.dart';
 import 'package:hulu_coffee_pos/features/orders/transaction_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/cart_provider.dart';
 
 class PaymentSuccessScreen extends ConsumerWidget {
-  const PaymentSuccessScreen({super.key});
+  final CartState? cartState;
+  final String? paymentMethod;
+
+  const PaymentSuccessScreen({super.key, this.cartState, this.paymentMethod});
+
+  Future<void> _printReceipt(CartState state) async {
+    final doc = pw.Document();
+    final fmt = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+
+    doc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.roll80,
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                  child: pw.Text('Hulu Coffee',
+                      style: pw.TextStyle(
+                          fontSize: 24, fontWeight: pw.FontWeight.bold))),
+              pw.SizedBox(height: 10),
+              pw.Center(
+                  child: pw.Text('Receipt',
+                      style: const pw.TextStyle(fontSize: 16))),
+              pw.SizedBox(height: 10),
+              pw.Divider(),
+              ...state.items.map((item) {
+                return pw.Padding(
+                  padding: const pw.EdgeInsets.symmetric(vertical: 2),
+                  child: pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Expanded(
+                            child: pw.Text(
+                                '${item.quantity}x ${item.product.name}')),
+                        pw.Text(fmt.format(item.totalPrice)),
+                      ]),
+                );
+              }),
+              pw.Divider(),
+              pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text('TOTAL:',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    pw.Text(fmt.format(state.subtotal),
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  ]),
+              pw.SizedBox(height: 8),
+              pw.Text('Payment: ${paymentMethod ?? 'QRIS'}',
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 20),
+              pw.Center(child: pw.Text('Thank you for your visit!')),
+            ],
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartState = ref.watch(cartProvider);
+    // Use the passed cart state, or fallback to the provider (which might be empty)
+    final CartState currentState = cartState ?? ref.watch(cartProvider);
     final fmt = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
@@ -67,18 +133,17 @@ class PaymentSuccessScreen extends ConsumerWidget {
                             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                               color: AppTheme.onSurfaceVariant, letterSpacing: 1.5, fontWeight: FontWeight.w700)),
                           const SizedBox(height: 8),
-                          Text(fmt.format(cartState.subtotal),
+                          Text(fmt.format(currentState.subtotal),
                             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.w900, color: AppTheme.primary)),
                           const SizedBox(height: 16),
                           const Divider(),
                           const SizedBox(height: 8),
-                          Text('${cartState.itemCount} item${cartState.itemCount == 1 ? '' : 's'} • QRIS',
+                          Text('${currentState.itemCount} item${currentState.itemCount == 1 ? '' : 's'} • ${paymentMethod ?? 'QRIS'}',
                             style: TextStyle(color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7), fontSize: 13)),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity, height: 56,
                       child: ElevatedButton.icon(
@@ -86,12 +151,7 @@ class PaymentSuccessScreen extends ConsumerWidget {
                           backgroundColor: AppTheme.primary, foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                         onPressed: () async {
-                          // Save transaction then clear cart
-                          final repo = ref.read(transactionRepositoryProvider);
-                          await repo.saveFromCart(cartState);
-                          ref.invalidate(allTransactionsProvider);
-                          ref.invalidate(todayStatsProvider);
-                          ref.read(cartProvider.notifier).clearCart();
+                          // Cart was already saved and cleared in the previous screen
                           if (context.mounted) context.goNamed('home');
                         },
                         icon: const Icon(Icons.add_rounded),
@@ -105,6 +165,18 @@ class PaymentSuccessScreen extends ConsumerWidget {
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppTheme.onSurface,
                           side: const BorderSide(color: AppTheme.outlineVariant),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                        onPressed: () => _printReceipt(currentState),
+                        icon: const Icon(Icons.print_rounded),
+                        label: const Text('Print Receipt', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity, height: 56,
+                      child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppTheme.onSurfaceVariant,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                         onPressed: () => context.goNamed('history'),
                         icon: const Icon(Icons.history_rounded),

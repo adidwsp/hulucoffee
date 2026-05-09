@@ -55,8 +55,16 @@ class TransactionRepository {
     final today = await getToday();
     final revenue = today.fold<double>(0, (sum, t) => sum + t.total);
     final orders = today.length;
+    final productsSold = today.fold<int>(0, (sum, t) {
+      return sum + t.itemCount;
+    });
     final avg = orders > 0 ? revenue / orders : 0.0;
-    return {'revenue': revenue, 'orders': orders, 'avg': avg};
+    return {
+      'revenue': revenue,
+      'orders': orders,
+      'productsSold': productsSold,
+      'avg': avg
+    };
   }
 
   /// Top selling items from all transactions (returns [{name, qty, revenue}])
@@ -108,7 +116,8 @@ class TransactionRepository {
     return stats;
   }
 
-  Future<Transaction> saveFromCart(CartState cart) async {
+  Future<Transaction> saveFromCart(CartState cart,
+      {String paymentMethod = 'QRIS'}) async {
     final db = await _db.database;
     // Generate order number: count existing + 1
     final rows = await db.rawQuery('SELECT COUNT(*) as c FROM transactions');
@@ -139,7 +148,7 @@ class TransactionRepository {
       itemsJson: itemsJson,
       total: cart.subtotal,
       itemCount: cart.itemCount,
-      paymentMethod: 'QRIS',
+      paymentMethod: paymentMethod,
     );
 
     await db.insert('transactions', tx.toMap());

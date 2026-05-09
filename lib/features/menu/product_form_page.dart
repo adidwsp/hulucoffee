@@ -35,12 +35,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
   String _selectedCategory = 'coffee';
   bool _isAvailable = true;
   bool _saving = false;
-  List<String> _enabledOptions = [
-    OptionType.size,
-    OptionType.temperature,
-    OptionType.sugarLevel,
-    OptionType.addon,
-  ];
+  List<String> _enabledOptions = [];
   Map<String, double> _optionPriceOverrides = {};
 
   bool get _isEdit => widget.product != null;
@@ -56,13 +51,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
     _imagePath = p?.imageUrl ?? '';
     _selectedCategory = p?.category ?? 'coffee';
     _isAvailable = p?.isAvailable ?? true;
-    _enabledOptions = p?.enabledOptions.toList() ??
-        [
-          OptionType.size,
-          OptionType.temperature,
-          OptionType.sugarLevel,
-          OptionType.addon,
-        ];
+    _enabledOptions = p?.enabledOptions.toList() ?? [];
     _optionPriceOverrides = Map.from(p?.optionPriceOverrides ?? {});
   }
 
@@ -379,184 +368,192 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
               // ── Customization Options ──────────────────────────────────
               const _FieldLabel('Customization Options'),
               const SizedBox(height: 6),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.outlineVariant),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        'Enable for this product:',
-                        style: TextStyle(fontSize: 12, color: AppTheme.onSurfaceVariant),
-                      ),
-                    ),
-                    ...[
-                      (OptionType.size, Icons.straighten_rounded, 'Size (Small/Medium/Large)'),
-                      (OptionType.temperature, Icons.thermostat_rounded, 'Temperature (Hot/Iced)'),
-                      (OptionType.sugarLevel, Icons.water_drop_rounded, 'Sugar Level'),
-                      (OptionType.addon, Icons.add_circle_rounded, 'Add-ons (Extra Shot, etc.)'),
-                    ].map((entry) {
-                      final (type, icon, label) = entry;
-                      final isEnabled = _enabledOptions.contains(type);
-                      return InkWell(
-                        onTap: () => setState(() {
-                          if (isEnabled) {
-                            _enabledOptions.remove(type);
-                          } else {
-                            _enabledOptions.add(type);
-                          }
-                        }),
-                        borderRadius: BorderRadius.circular(8),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Row(
-                            children: [
-                              Icon(icon,
-                                  size: 18,
-                                  color: isEnabled
-                                      ? AppTheme.primary
-                                      : AppTheme.outlineVariant),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(label,
+              ref.watch(customizationOptionProvider).when(
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (e, _) => Text('Error: $e'),
+                    data: (allOptions) {
+                      return Column(
+                        children: OptionType.all.map((type) {
+                          final isEnabled = _enabledOptions.contains(type);
+                          final typeOptions =
+                              allOptions.where((o) => o.type == type).toList();
+
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border:
+                                  Border.all(color: AppTheme.outlineVariant),
+                            ),
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                leading: Switch(
+                                  value: isEnabled,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      if (val)
+                                        _enabledOptions.add(type);
+                                      else
+                                        _enabledOptions.remove(type);
+                                    });
+                                  },
+                                  activeThumbColor: AppTheme.primary,
+                                ),
+                                title: Text(OptionType.displayName(type),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14)),
+                                subtitle: Text(
+                                    isEnabled
+                                        ? '${typeOptions.length} options enabled'
+                                        : 'Disabled',
                                     style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: isEnabled
-                                            ? FontWeight.w600
-                                            : FontWeight.normal,
-                                        color: isEnabled
-                                            ? AppTheme.onSurface
-                                            : AppTheme.onSurfaceVariant)),
+                                        fontSize: 12,
+                                        color: AppTheme.onSurfaceVariant)),
+                                children: [
+                                  const Divider(
+                                      height: 1,
+                                      color: AppTheme.outlineVariant),
+                                  if (typeOptions.isEmpty)
+                                    const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Text('No options available.',
+                                          style: TextStyle(
+                                              color: AppTheme.outline)),
+                                    ),
+                                  ...typeOptions.map((opt) {
+                                    final currentVal =
+                                        _optionPriceOverrides[opt.id] ?? 0;
+                                    return Container(
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color:
+                                                    AppTheme.outlineVariant)),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(opt.label,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 13)),
+                                                Text(
+                                                    'Default: Rp ${opt.priceModifier.toInt()}',
+                                                    style: const TextStyle(
+                                                        fontSize: 11,
+                                                        color: AppTheme
+                                                            .onSurfaceVariant)),
+                                              ],
+                                            ),
+                                          ),
+                                          if (isEnabled) ...[
+                                            SizedBox(
+                                              width: 90,
+                                              height: 36,
+                                              child: TextFormField(
+                                                initialValue: currentVal > 0
+                                                    ? currentVal
+                                                        .toInt()
+                                                        .toString()
+                                                    : '',
+                                                decoration: InputDecoration(
+                                                  hintText: 'Override',
+                                                  prefixText: 'Rp ',
+                                                  hintStyle: const TextStyle(
+                                                      fontSize: 11),
+                                                  prefixStyle: const TextStyle(
+                                                      fontSize: 11),
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 0),
+                                                  border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6)),
+                                                ),
+                                                style: const TextStyle(
+                                                    fontSize: 12),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .digitsOnly
+                                                ],
+                                                onChanged: (v) {
+                                                  final val =
+                                                      double.tryParse(v) ?? 0;
+                                                  setState(() {
+                                                    if (val > 0)
+                                                      _optionPriceOverrides[
+                                                          opt.id] = val;
+                                                    else
+                                                      _optionPriceOverrides
+                                                          .remove(opt.id);
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                          ],
+                                          IconButton(
+                                            icon: const Icon(Icons.edit_rounded,
+                                                size: 16,
+                                                color: AppTheme.primary),
+                                            onPressed: () =>
+                                                _showEditOptionDialog(
+                                                    context, ref, opt),
+                                            constraints: const BoxConstraints(),
+                                            padding: const EdgeInsets.all(8),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 16,
+                                                color: AppTheme.error),
+                                            onPressed: () => _deleteOption(opt),
+                                            constraints: const BoxConstraints(),
+                                            padding: const EdgeInsets.all(8),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextButton.icon(
+                                      onPressed: () => _showAddOptionDialog(
+                                          context, ref, type),
+                                      icon: const Icon(Icons.add_rounded,
+                                          size: 18),
+                                      label: const Text('Add Option'),
+                                      style: TextButton.styleFrom(
+                                          foregroundColor: AppTheme.primary),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Switch(
-                                value: isEnabled,
-                                onChanged: (val) => setState(() {
-                                  if (val) {
-                                    _enabledOptions.add(type);
-                                  } else {
-                                    _enabledOptions.remove(type);
-                                  }
-                                }),
-                                activeThumbColor: AppTheme.primary,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       );
-                    }),
-                  ],
-                ),
-              ),
+                    },
+                  ),
 
               const SizedBox(height: 16),
-
-              // ── Option Price Overrides ────────────────────────────────
-              if (_enabledOptions.isNotEmpty) ...[
-                const _FieldLabel('Custom Option Prices (Overrides)'),
-                const SizedBox(height: 6),
-                ref.watch(customizationOptionProvider).when(
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (_, __) => const Text('Error loading options'),
-                      data: (allOptions) {
-                        final activeOpts = allOptions
-                            .where((o) => _enabledOptions.contains(o.type))
-                            .toList();
-
-                        if (activeOpts.isEmpty) return const SizedBox();
-
-                        return Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppTheme.outlineVariant),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Leave at 0 to use global default price.',
-                                style: TextStyle(
-                                    fontSize: 11, color: AppTheme.onSurfaceVariant),
-                              ),
-                              const SizedBox(height: 12),
-                              ...activeOpts.map((opt) {
-                                final currentVal =
-                                    _optionPriceOverrides[opt.id] ?? 0;
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 12),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(opt.label,
-                                                style: const TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w600)),
-                                            Text(
-                                                '${OptionType.displayName(opt.type)} • Default: ${opt.priceModifier.toInt()}',
-                                                style: const TextStyle(
-                                                    fontSize: 10,
-                                                    color:
-                                                        AppTheme.onSurfaceVariant)),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        flex: 1,
-                                        child: TextFormField(
-                                          initialValue: currentVal > 0
-                                              ? currentVal.toInt().toString()
-                                              : '',
-                                          decoration: const InputDecoration(
-                                            hintText: '0',
-                                            prefixText: 'Rp ',
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 8),
-                                            isDense: true,
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.digitsOnly
-                                          ],
-                                          onChanged: (v) {
-                                            final val = double.tryParse(v) ?? 0;
-                                            setState(() {
-                                              if (val > 0) {
-                                                _optionPriceOverrides[opt.id] =
-                                                    val;
-                                              } else {
-                                                _optionPriceOverrides
-                                                    .remove(opt.id);
-                                              }
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                const SizedBox(height: 16),
-              ],
 
               // ── Availability ───────────────────────────────────────────────
               Container(
@@ -640,6 +637,148 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
         ),
       ),
     );
+  }
+
+  void _showAddOptionDialog(BuildContext context, WidgetRef ref, String type) {
+    final labelCtrl = TextEditingController();
+    final subtitleCtrl = TextEditingController();
+    final priceCtrl = TextEditingController(text: '0');
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Add ${OptionType.displayName(type)}'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: labelCtrl,
+              autofocus: true,
+              decoration:
+                  const InputDecoration(labelText: 'Label (e.g. Large)'),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: subtitleCtrl,
+              decoration:
+                  const InputDecoration(labelText: 'Subtitle (optional)'),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: priceCtrl,
+              decoration:
+                  const InputDecoration(labelText: 'Price modifier (Rp)'),
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+              if (labelCtrl.text.trim().isNotEmpty) {
+                ref.read(customizationOptionProvider.notifier).add(
+                      type: type,
+                      label: labelCtrl.text.trim(),
+                      subtitle: subtitleCtrl.text.trim(),
+                      priceModifier: double.tryParse(priceCtrl.text) ?? 0,
+                    );
+                Navigator.pop(ctx);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary),
+            child: const Text('Add', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEditOptionDialog(
+      BuildContext context, WidgetRef ref, CustomizationOption opt) {
+    final labelCtrl = TextEditingController(text: opt.label);
+    final subtitleCtrl = TextEditingController(text: opt.subtitle);
+    final priceCtrl =
+        TextEditingController(text: opt.priceModifier.toInt().toString());
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Edit Option'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: labelCtrl,
+              autofocus: true,
+              decoration: const InputDecoration(labelText: 'Label'),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: subtitleCtrl,
+              decoration:
+                  const InputDecoration(labelText: 'Subtitle (optional)'),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: priceCtrl,
+              decoration:
+                  const InputDecoration(labelText: 'Price modifier (Rp)'),
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+              if (labelCtrl.text.trim().isNotEmpty) {
+                ref
+                    .read(customizationOptionProvider.notifier)
+                    .updateOption(opt.copyWith(
+                      label: labelCtrl.text.trim(),
+                      subtitle: subtitleCtrl.text.trim(),
+                      priceModifier: double.tryParse(priceCtrl.text) ?? 0,
+                    ));
+                Navigator.pop(ctx);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary),
+            child: const Text('Save', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteOption(CustomizationOption opt) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete Option'),
+        content: Text('Delete "${opt.label}"?'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.error),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      ref.read(customizationOptionProvider.notifier).deleteOption(opt.id);
+      setState(() {
+        _optionPriceOverrides.remove(opt.id);
+      });
+    }
   }
 
   InputDecoration _inputDeco(String? hint) => InputDecoration(

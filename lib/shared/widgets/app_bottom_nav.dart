@@ -20,7 +20,7 @@ class AppBottomNav extends ConsumerWidget {
         context.goNamed('dashboard');
         break;
       case 1:
-        context.goNamed('cart');
+        context.goNamed('cart'); // Changed cart into orders visually
         break;
       case 2:
         context.goNamed('home');
@@ -67,9 +67,9 @@ class AppBottomNav extends ConsumerWidget {
                 onTap: () => _onTap(context, 0),
               ),
 
-              // ── Cart ────────────────────────────────────────────
+              // ── was Cart ────────────────────────────────────────────
               _NavItemBadged(
-                icon: Icons.shopping_cart_rounded,
+                icon: Icons.receipt_long_rounded,
                 label: 'Cart',
                 isSelected: currentIndex == 1,
                 badge: cartCount > 0 ? '$cartCount' : null,
@@ -136,7 +136,7 @@ class AppBottomNav extends ConsumerWidget {
               // ── History ──────────────────────────────────────────
               _NavItem(
                 icon: Icons.history_rounded,
-                label: 'History',
+                label: 'History', // User explicitly asked to keep history
                 isSelected: currentIndex == 3,
                 onTap: () => _onTap(context, 3),
               ),

@@ -16,6 +16,7 @@ import 'package:hulu_coffee_pos/shared/models/product_models.dart';
 
 final _menuSearchProvider = StateProvider<String>((ref) => '');
 final _menuCategoryProvider = StateProvider<String>((ref) => 'all');
+final _menuSortProvider = StateProvider<String>((ref) => 'name_asc');
 
 class MenuManagementScreen extends ConsumerStatefulWidget {
   const MenuManagementScreen({super.key});
@@ -32,7 +33,7 @@ class _MenuManagementScreenState extends ConsumerState<MenuManagementScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -78,7 +79,6 @@ class _MenuManagementScreenState extends ConsumerState<MenuManagementScreen>
           tabs: const [
             Tab(text: 'Products'),
             Tab(text: 'Categories'),
-            Tab(text: 'Options'),
           ],
         ),
       ),
@@ -87,7 +87,6 @@ class _MenuManagementScreenState extends ConsumerState<MenuManagementScreen>
         children: const [
           _ProductsTab(),
           _CategoriesTab(),
-          _OptionsTab(),
         ],
       ),
     );
@@ -131,12 +130,26 @@ class _ProductsTab extends ConsumerWidget {
     final productsAsync = ref.watch(productNotifierProvider);
     final categoriesAsync = ref.watch(categoryNotifierProvider);
 
+    final sortMode = ref.watch(_menuSortProvider);
+
     final filtered = productsAsync.when(
-      data: (ps) => ps.where((p) {
-        final matchSearch = p.name.toLowerCase().contains(searchQ);
-        final matchCat = selectedCat == 'all' || p.category == selectedCat;
-        return matchSearch && matchCat;
-      }).toList(),
+      data: (ps) {
+        final list = ps.where((p) {
+          final matchSearch = p.name.toLowerCase().contains(searchQ);
+          final matchCat = selectedCat == 'all' || p.category == selectedCat;
+          return matchSearch && matchCat;
+        }).toList();
+
+        list.sort((a, b) {
+          if (sortMode == 'name_asc') return a.name.compareTo(b.name);
+          if (sortMode == 'name_desc') return b.name.compareTo(a.name);
+          if (sortMode == 'price_asc') return a.price.compareTo(b.price);
+          if (sortMode == 'price_desc') return b.price.compareTo(a.price);
+          return 0;
+        });
+
+        return list;
+      },
       loading: () => <Product>[],
       error: (_, __) => <Product>[],
     );
@@ -149,19 +162,54 @@ class _ProductsTab extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Column(
             children: [
-              TextField(
-                onChanged: (v) =>
-                    ref.read(_menuSearchProvider.notifier).state = v,
-                decoration: InputDecoration(
-                  hintText: 'Search products...',
-                  prefixIcon: const Icon(Icons.search, color: AppTheme.outline),
-                  filled: true,
-                  fillColor: AppTheme.surfaceContainerLow,
-                  border: OutlineInputBorder(
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onChanged: (v) =>
+                          ref.read(_menuSearchProvider.notifier).state = v,
+                      decoration: InputDecoration(
+                        hintText: 'Search products...',
+                        prefixIcon:
+                            const Icon(Icons.search, color: AppTheme.outline),
+                        filled: true,
+                        fillColor: AppTheme.surfaceContainerLow,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.surfaceContainerLow,
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                ),
+                    ),
+                    child: PopupMenuButton<String>(
+                      icon: const Icon(Icons.sort_rounded,
+                          color: AppTheme.outline),
+                      tooltip: 'Sort Products',
+                      initialValue: ref.read(_menuSortProvider),
+                      onSelected: (val) =>
+                          ref.read(_menuSortProvider.notifier).state = val,
+                      itemBuilder: (ctx) => const [
+                        PopupMenuItem(
+                            value: 'name_asc', child: Text('Name (A-Z)')),
+                        PopupMenuItem(
+                            value: 'name_desc', child: Text('Name (Z-A)')),
+                        PopupMenuItem(
+                            value: 'price_asc',
+                            child: Text('Price (Low-High)')),
+                        PopupMenuItem(
+                            value: 'price_desc',
+                            child: Text('Price (High-Low)')),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -270,12 +318,6 @@ class _ProductsTab extends ConsumerWidget {
                                             : AppTheme.onSurfaceVariant),
                                   ),
                                 ),
-                                const SizedBox(width: 6),
-                                Text(product.category,
-                                    style: TextStyle(
-                                        fontSize: 11,
-                                        color: AppTheme.onSurfaceVariant
-                                            .withValues(alpha: 0.6))),
                               ]),
                             ],
                           ),
@@ -570,383 +612,3 @@ class _FilterChip extends StatelessWidget {
         ),
       );
 }
-
-// ── Options Tab ────────────────────────────────────────────────────────────────
-
-class _OptionsTab extends ConsumerWidget {
-  const _OptionsTab();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final optionsAsync = ref.watch(customizationOptionProvider);
-    final fmt = NumberFormat.currency(
-        locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
-
-    return optionsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('Error: $e')),
-      data: (allOptions) {
-        // Group by type
-        final grouped = <String, List<CustomizationOption>>{};
-        for (final type in OptionType.all) {
-          grouped[type] =
-              allOptions.where((o) => o.type == type).toList();
-        }
-
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-          children: OptionType.all.map((type) {
-            final items = grouped[type] ?? [];
-            return _OptionSection(
-              type: type,
-              items: items,
-              fmt: fmt,
-              onAdd: () => _showAddOptionDialog(context, ref, type),
-              onEdit: (opt) =>
-                  _showEditOptionDialog(context, ref, opt),
-              onToggle: (opt) => ref
-                  .read(customizationOptionProvider.notifier)
-                  .toggleActive(opt),
-              onDelete: (opt) async {
-                final ok = await showDialog<bool>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text('Delete Option'),
-                    content: Text('Delete "${opt.label}"?'),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.pop(ctx, false),
-                          child: const Text('Cancel')),
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, true),
-                        style: TextButton.styleFrom(
-                            foregroundColor: AppTheme.error),
-                        child: const Text('Delete'),
-                      ),
-                    ],
-                  ),
-                );
-                if (ok == true) {
-                  ref
-                      .read(customizationOptionProvider.notifier)
-                      .deleteOption(opt.id);
-                }
-              },
-            );
-          }).toList(),
-        );
-      },
-    );
-  }
-
-  void _showAddOptionDialog(
-      BuildContext context, WidgetRef ref, String type) {
-    final labelCtrl = TextEditingController();
-    final subtitleCtrl = TextEditingController();
-    final priceCtrl = TextEditingController(text: '0');
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Add ${OptionType.displayName(type)}'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: labelCtrl,
-              autofocus: true,
-              decoration:
-                  const InputDecoration(labelText: 'Label (e.g. Large)'),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: subtitleCtrl,
-              decoration: const InputDecoration(
-                  labelText: 'Subtitle (e.g. 20 oz, optional)'),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: priceCtrl,
-              decoration:
-                  const InputDecoration(labelText: 'Price modifier (Rp)'),
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              if (labelCtrl.text.trim().isNotEmpty) {
-                ref.read(customizationOptionProvider.notifier).add(
-                      type: type,
-                      label: labelCtrl.text.trim(),
-                      subtitle: subtitleCtrl.text.trim(),
-                      priceModifier:
-                          double.tryParse(priceCtrl.text) ?? 0,
-                    );
-                Navigator.pop(ctx);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primary),
-            child:
-                const Text('Add', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showEditOptionDialog(
-      BuildContext context, WidgetRef ref, CustomizationOption opt) {
-    final labelCtrl = TextEditingController(text: opt.label);
-    final subtitleCtrl = TextEditingController(text: opt.subtitle);
-    final priceCtrl = TextEditingController(
-        text: opt.priceModifier.toInt().toString());
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Edit Option'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: labelCtrl,
-              autofocus: true,
-              decoration: const InputDecoration(labelText: 'Label'),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: subtitleCtrl,
-              decoration:
-                  const InputDecoration(labelText: 'Subtitle (optional)'),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: priceCtrl,
-              decoration:
-                  const InputDecoration(labelText: 'Price modifier (Rp)'),
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              if (labelCtrl.text.trim().isNotEmpty) {
-                ref
-                    .read(customizationOptionProvider.notifier)
-                    .updateOption(opt.copyWith(
-                      label: labelCtrl.text.trim(),
-                      subtitle: subtitleCtrl.text.trim(),
-                      priceModifier:
-                          double.tryParse(priceCtrl.text) ?? 0,
-                    ));
-                Navigator.pop(ctx);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primary),
-            child: const Text('Save',
-                style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _OptionSection extends StatelessWidget {
-  final String type;
-  final List<CustomizationOption> items;
-  final NumberFormat fmt;
-  final VoidCallback onAdd;
-  final Function(CustomizationOption) onEdit;
-  final Function(CustomizationOption) onToggle;
-  final Function(CustomizationOption) onDelete;
-
-  const _OptionSection({
-    required this.type,
-    required this.items,
-    required this.fmt,
-    required this.onAdd,
-    required this.onEdit,
-    required this.onToggle,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2)),
-        ],
-      ),
-      child: Column(
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 8, 8),
-            child: Row(
-              children: [
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: AppTheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
-                    _iconForType(type),
-                    color: AppTheme.primary,
-                    size: 18,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    OptionType.displayName(type),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800, fontSize: 15),
-                  ),
-                ),
-                Text('${items.length} items',
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: AppTheme.onSurfaceVariant
-                            .withValues(alpha: 0.6))),
-                IconButton(
-                  icon: const Icon(Icons.add_rounded,
-                      color: AppTheme.primary, size: 22),
-                  onPressed: onAdd,
-                  tooltip: 'Add',
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1),
-          // Items
-          if (items.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Text('No options yet',
-                  style: TextStyle(color: AppTheme.onSurfaceVariant)),
-            )
-          else
-            ...items.map((opt) => _OptionItemTile(
-                  option: opt,
-                  fmt: fmt,
-                  onEdit: () => onEdit(opt),
-                  onToggle: () => onToggle(opt),
-                  onDelete: () => onDelete(opt),
-                )),
-        ],
-      ),
-    );
-  }
-
-  IconData _iconForType(String type) {
-    switch (type) {
-      case 'size':
-        return Icons.straighten_rounded;
-      case 'temperature':
-        return Icons.thermostat_rounded;
-      case 'sugar_level':
-        return Icons.water_drop_rounded;
-      case 'addon':
-        return Icons.add_circle_rounded;
-      default:
-        return Icons.label_rounded;
-    }
-  }
-}
-
-class _OptionItemTile extends StatelessWidget {
-  final CustomizationOption option;
-  final NumberFormat fmt;
-  final VoidCallback onEdit;
-  final VoidCallback onToggle;
-  final VoidCallback onDelete;
-
-  const _OptionItemTile({
-    required this.option,
-    required this.fmt,
-    required this.onEdit,
-    required this.onToggle,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(option.label,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: option.isActive
-                          ? AppTheme.onSurface
-                          : AppTheme.onSurfaceVariant,
-                    )),
-                if (option.subtitle.isNotEmpty ||
-                    option.priceModifier > 0)
-                  Text(
-                    [
-                      if (option.subtitle.isNotEmpty) option.subtitle,
-                      if (option.priceModifier > 0)
-                        '+${fmt.format(option.priceModifier)}',
-                    ].join(' • '),
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: AppTheme.onSurfaceVariant
-                            .withValues(alpha: 0.6)),
-                  ),
-              ],
-            ),
-          ),
-          Switch(
-            value: option.isActive,
-            onChanged: (_) => onToggle(),
-            activeThumbColor: AppTheme.primary,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit_rounded,
-                size: 16, color: AppTheme.primary),
-            onPressed: onEdit,
-            visualDensity: VisualDensity.compact,
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete_rounded,
-                size: 16, color: AppTheme.error),
-            onPressed: onDelete,
-            visualDensity: VisualDensity.compact,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
