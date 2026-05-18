@@ -8,8 +8,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import 'package:hulu_coffee_pos/core/config/theme.dart';
-import 'package:hulu_coffee_pos/core/database/transaction_repository.dart';
-import 'package:hulu_coffee_pos/features/orders/transaction_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/cart_provider.dart';
 
 class PaymentSuccessScreen extends ConsumerWidget {
@@ -109,41 +107,64 @@ class PaymentSuccessScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(32),
                   boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 32, offset: const Offset(0, 8))],
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 96, height: 96,
-                      decoration: const BoxDecoration(color: AppTheme.secondaryContainer, shape: BoxShape.circle),
-                      child: const Icon(Icons.check_circle_rounded, color: AppTheme.onSecondaryContainer, size: 52),
-                    ),
-                    const SizedBox(height: 24),
-                    Text('Payment Successful',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900)),
-                    const SizedBox(height: 8),
-                    Text('Transaction has been saved.',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.onSurfaceVariant)),
-                    const SizedBox(height: 32),
-                    Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(color: AppTheme.surfaceContainerLow, borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        children: [
-                          Text('TOTAL PAID',
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppTheme.onSurfaceVariant, letterSpacing: 1.5, fontWeight: FontWeight.w700)),
-                          const SizedBox(height: 8),
-                          Text(fmt.format(currentState.subtotal),
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w900, color: AppTheme.primary)),
-                          const SizedBox(height: 16),
-                          const Divider(),
-                          const SizedBox(height: 8),
-                          Text('${currentState.itemCount} item${currentState.itemCount == 1 ? '' : 's'} • ${paymentMethod ?? 'QRIS'}',
-                            style: TextStyle(color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7), fontSize: 13)),
-                        ],
+                child: TweenAnimationBuilder<double>(
+                  duration: const Duration(milliseconds: 600),
+                  tween: Tween<double>(begin: 0.0, end: 1.0),
+                  builder: (context, value, child) {
+                    return Opacity(
+                      opacity: value,
+                      child: Transform.translate(
+                        offset: Offset(0, 20 * (1 - value)),
+                        child: child,
                       ),
-                    ),
+                    );
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TweenAnimationBuilder<double>(
+                        duration: const Duration(milliseconds: 800),
+                        curve: Curves.elasticOut,
+                        tween: Tween<double>(begin: 0.0, end: 1.0),
+                        builder: (context, value, child) {
+                          return Transform.scale(
+                            scale: value,
+                            child: child,
+                          );
+                        },
+                        child: Container(
+                          width: 96, height: 96,
+                          decoration: const BoxDecoration(color: AppTheme.secondaryContainer, shape: BoxShape.circle),
+                          child: const Icon(Icons.check_circle_rounded, color: AppTheme.onSecondaryContainer, size: 52),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Text('Payment Successful',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900)),
+                      const SizedBox(height: 8),
+                      Text('Transaction has been saved.',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.onSurfaceVariant)),
+                      const SizedBox(height: 32),
+                      Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(color: AppTheme.surfaceContainerLow, borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          children: [
+                            Text('TOTAL PAID',
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                color: AppTheme.onSurfaceVariant, letterSpacing: 1.5, fontWeight: FontWeight.w700)),
+                            const SizedBox(height: 8),
+                            Text(fmt.format(currentState.subtotal),
+                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.w900, color: AppTheme.primary)),
+                            const SizedBox(height: 16),
+                            const Divider(),
+                            const SizedBox(height: 8),
+                            Text('${currentState.itemCount} item${currentState.itemCount == 1 ? '' : 's'} • ${paymentMethod ?? 'QRIS'}',
+                              style: TextStyle(color: AppTheme.onSurfaceVariant.withValues(alpha: 0.7), fontSize: 13)),
+                          ],
+                        ),
+                      ),
                     SizedBox(
                       width: double.infinity, height: 56,
                       child: ElevatedButton.icon(
@@ -184,6 +205,7 @@ class PaymentSuccessScreen extends ConsumerWidget {
                       ),
                     ),
                   ],
+                ),
                 ),
               ),
             ),

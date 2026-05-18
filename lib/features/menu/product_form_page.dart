@@ -395,10 +395,11 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                                   value: isEnabled,
                                   onChanged: (val) {
                                     setState(() {
-                                      if (val)
+                                      if (val) {
                                         _enabledOptions.add(type);
-                                      else
+                                      } else {
                                         _enabledOptions.remove(type);
+                                      }
                                     });
                                   },
                                   activeThumbColor: AppTheme.primary,
@@ -411,7 +412,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                                     isEnabled
                                         ? '${typeOptions.length} options enabled'
                                         : 'Disabled',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12,
                                         color: AppTheme.onSurfaceVariant)),
                                 children: [
@@ -497,12 +498,13 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                                                   final val =
                                                       double.tryParse(v) ?? 0;
                                                   setState(() {
-                                                    if (val > 0)
+                                                    if (val > 0) {
                                                       _optionPriceOverrides[
                                                           opt.id] = val;
-                                                    else
+                                                    } else {
                                                       _optionPriceOverrides
                                                           .remove(opt.id);
+                                                    }
                                                   });
                                                 },
                                               ),

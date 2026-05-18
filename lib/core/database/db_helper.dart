@@ -38,7 +38,7 @@ class DBHelper {
       return await databaseFactory.openDatabase(
         path,
         options: OpenDatabaseOptions(
-          version: 6,
+          version: 7,
           onCreate: _onCreate,
           onUpgrade: _onUpgrade,
         ),
@@ -48,7 +48,7 @@ class DBHelper {
       final path = join(docsDir.path, 'hulu_coffee.db');
       return await openDatabase(
         path,
-        version: 6,
+        version: 7,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );
@@ -89,6 +89,16 @@ class DBHelper {
       await db.execute(
         "ALTER TABLE products ADD COLUMN optionPriceOverrides TEXT NOT NULL DEFAULT '{}'"
       );
+    }
+    if (oldVersion < 7) {
+      // Add paymentMethod column to transactions if it doesn't exist
+      try {
+        await db.execute(
+          "ALTER TABLE transactions ADD COLUMN paymentMethod TEXT NOT NULL DEFAULT 'QRIS'"
+        );
+      } catch (e) {
+        debugPrint('DEBUG: Column paymentMethod might already exist: $e');
+      }
     }
   }
 

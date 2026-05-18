@@ -1,17 +1,14 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:hulu_coffee_pos/core/config/theme.dart';
 import 'package:hulu_coffee_pos/features/menu/category_provider.dart';
-import 'package:hulu_coffee_pos/features/menu/customization_option_provider.dart';
 import 'package:hulu_coffee_pos/features/pos/providers/product_provider.dart';
 import 'package:hulu_coffee_pos/shared/models/category_model.dart';
-import 'package:hulu_coffee_pos/shared/models/customization_option_model.dart';
 import 'package:hulu_coffee_pos/shared/models/product_models.dart';
 
 final _menuSearchProvider = StateProvider<String>((ref) => '');

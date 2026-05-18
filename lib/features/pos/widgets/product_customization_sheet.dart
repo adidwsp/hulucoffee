@@ -23,16 +23,16 @@ class _ProductCustomizationSheetState
   // Selected values and their prices
   String? selectedSize;
   double selectedSizePrice = 0;
-  
+
   String? selectedTemp;
   double selectedTempPrice = 0;
-  
+
   String? selectedSugar;
   double selectedSugarPrice = 0;
-  
+
   final Set<String> selectedAddonIds = {};
   double _addonsTotal = 0;
-  
+
   final TextEditingController _notesController = TextEditingController();
 
   @override
@@ -54,12 +54,15 @@ class _ProductCustomizationSheetState
 
   @override
   Widget build(BuildContext context) {
-    final fmt = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final fmt =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final p = widget.product;
 
     final sizesAsync = p.hasSize ? ref.watch(activeSizesProvider) : null;
-    final tempsAsync = p.hasTemperature ? ref.watch(activeTemperaturesProvider) : null;
-    final sugarsAsync = p.hasSugarLevel ? ref.watch(activeSugarLevelsProvider) : null;
+    final tempsAsync =
+        p.hasTemperature ? ref.watch(activeTemperaturesProvider) : null;
+    final sugarsAsync =
+        p.hasSugarLevel ? ref.watch(activeSugarLevelsProvider) : null;
     final addonsAsync = p.hasAddon ? ref.watch(activeAddonsProvider) : null;
 
     // Set sensible defaults on first build
@@ -89,7 +92,10 @@ class _ProductCustomizationSheetState
     });
 
     final addons = addonsAsync?.valueOrNull ?? [];
-    final totalModifier = selectedSizePrice + selectedTempPrice + selectedSugarPrice + _addonsTotal;
+    final totalModifier = selectedSizePrice +
+        selectedTempPrice +
+        selectedSugarPrice +
+        _addonsTotal;
     final totalPrice = p.price + totalModifier;
 
     return SafeArea(
@@ -131,7 +137,8 @@ class _ProductCustomizationSheetState
                             color: AppTheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.coffee, size: 40, color: AppTheme.primary),
+                          child: const Icon(Icons.coffee,
+                              size: 40, color: AppTheme.primary),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -140,10 +147,12 @@ class _ProductCustomizationSheetState
                             children: [
                               Text(p.name,
                                   style: const TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.w900)),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900)),
                               Text(p.description,
                                   style: const TextStyle(
-                                      fontSize: 12, color: AppTheme.onSurfaceVariant)),
+                                      fontSize: 12,
+                                      color: AppTheme.onSurfaceVariant)),
                               const SizedBox(height: 4),
                               Text(fmt.format(p.price),
                                   style: const TextStyle(
@@ -238,7 +247,7 @@ class _ProductCustomizationSheetState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Total',
+                      const Text('Total',
                           style: TextStyle(
                               fontSize: 11, color: AppTheme.onSurfaceVariant)),
                       Text(fmt.format(totalPrice),
@@ -282,7 +291,8 @@ class _ProductCustomizationSheetState
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add_shopping_cart, color: Colors.white, size: 20),
+                            Icon(Icons.add_shopping_cart,
+                                color: Colors.white, size: 20),
                             SizedBox(width: 8),
                             Text('Add to Cart',
                                 style: TextStyle(
@@ -343,11 +353,13 @@ class _ProductCustomizationSheetState
                         Text(s.label,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? AppTheme.primary : AppTheme.onSurface,
+                              color: isSelected
+                                  ? AppTheme.primary
+                                  : AppTheme.onSurface,
                             )),
                         const SizedBox(height: 2),
                         Text(s.subtitle,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 10,
                                 color: AppTheme.onSurfaceVariant)),
                         if (price > 0) ...[
@@ -382,8 +394,10 @@ class _ProductCustomizationSheetState
             final t = entry.value;
             final price = _getEffectivePrice(t);
             final isSelected = selectedTemp == t.label;
-            final activeColor = t.label == 'Hot' ? AppTheme.error : AppTheme.primary;
-            final icon = t.label == 'Hot' ? Icons.wb_sunny_outlined : Icons.ac_unit;
+            final activeColor =
+                t.label == 'Hot' ? AppTheme.error : AppTheme.primary;
+            final icon =
+                t.label == 'Hot' ? Icons.wb_sunny_outlined : Icons.ac_unit;
             return Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: entry.key > 0 ? 10 : 0),
@@ -411,12 +425,16 @@ class _ProductCustomizationSheetState
                           children: [
                             Icon(icon,
                                 size: 18,
-                                color: isSelected ? activeColor : AppTheme.onSurfaceVariant),
+                                color: isSelected
+                                    ? activeColor
+                                    : AppTheme.onSurfaceVariant),
                             const SizedBox(width: 6),
                             Text(t.label,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: isSelected ? activeColor : AppTheme.onSurface)),
+                                    color: isSelected
+                                        ? activeColor
+                                        : AppTheme.onSurface)),
                           ],
                         ),
                         if (price > 0) ...[
@@ -440,7 +458,8 @@ class _ProductCustomizationSheetState
     );
   }
 
-  Widget _buildSugarSection(NumberFormat fmt, List<CustomizationOption> sugars) {
+  Widget _buildSugarSection(
+      NumberFormat fmt, List<CustomizationOption> sugars) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -459,15 +478,18 @@ class _ProductCustomizationSheetState
                   Text(s.label),
                   if (price > 0)
                     Text('+${fmt.format(price)}',
-                        style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold)),
+                        style: const TextStyle(
+                            fontSize: 9, fontWeight: FontWeight.bold)),
                 ],
               ),
               selected: isSelected,
               onSelected: (val) {
-                if (val) setState(() {
-                  selectedSugar = s.label;
-                  selectedSugarPrice = price;
-                });
+                if (val) {
+                  setState(() {
+                    selectedSugar = s.label;
+                    selectedSugarPrice = price;
+                  });
+                }
               },
               selectedColor: AppTheme.primary.withValues(alpha: 0.15),
               labelStyle: TextStyle(
@@ -489,7 +511,8 @@ class _ProductCustomizationSheetState
     );
   }
 
-  Widget _buildAddonsSection(NumberFormat fmt, List<CustomizationOption> addonsList) {
+  Widget _buildAddonsSection(
+      NumberFormat fmt, List<CustomizationOption> addonsList) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -525,17 +548,21 @@ class _ProductCustomizationSheetState
                 child: Row(
                   children: [
                     Icon(Icons.add_circle_outline,
-                        color: isSelected ? AppTheme.primary : AppTheme.onSurfaceVariant),
+                        color: isSelected
+                            ? AppTheme.primary
+                            : AppTheme.onSurfaceVariant),
                     const SizedBox(width: 14),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(addon.label,
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           Text('+${fmt.format(price)}',
                               style: const TextStyle(
-                                  fontSize: 12, color: AppTheme.onSurfaceVariant)),
+                                  fontSize: 12,
+                                  color: AppTheme.onSurfaceVariant)),
                         ],
                       ),
                     ),
@@ -545,14 +572,16 @@ class _ProductCustomizationSheetState
                       height: 24,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isSelected ? AppTheme.primary : Colors.transparent,
+                        color:
+                            isSelected ? AppTheme.primary : Colors.transparent,
                         border: Border.all(
                             color: isSelected
                                 ? AppTheme.primary
                                 : AppTheme.outlineVariant),
                       ),
                       child: isSelected
-                          ? const Icon(Icons.check, size: 16, color: Colors.white)
+                          ? const Icon(Icons.check,
+                              size: 16, color: Colors.white)
                           : null,
                     ),
                   ],
